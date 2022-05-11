@@ -16,7 +16,10 @@ const index = require("./routes/index.js");
 app.use(express.json()); //Used to parse JSON bodies
 app.use(express.urlencoded()); //Parse URL-encoded bodies
 
-app.use("/", index);
+//FRONTEND
+app.use("/", express.static("www"));
+//BACKEND
+app.use("/api", index);
 
 app.listen(PORT, function() {
     console.log('Server running on port ', 3000);
