@@ -1,0 +1,24 @@
+{
+  "name": "gamery_js",
+  "version": "1.0.0",
+  "description": "Web app di gamery",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FisioBari-Enterprise/Gamery_js.git"
+  },
+  "author": "Leonardo Lazzarin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FisioBari-Enterprise/Gamery_js/issues"
+  },
+  "homepage": "https://github.com/FisioBari-Enterprise/Gamery_js#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.3.3"
+  }
+}
