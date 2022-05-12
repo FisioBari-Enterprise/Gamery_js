@@ -2,10 +2,13 @@ const PORT = process.env.PORT || 3000;
 let express = require('express');
 let app = express();
 const mongoose = require("mongoose");
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 //Connessione a MongoDB
 mongoose.connect(
-    "mongodb+srv://gamery_js:mBoj8OwRU1cAqEoz@freecluster.xj48j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@freecluster.xj48j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
     function (error) {
         console.log("Connected to Trading database")
     });
