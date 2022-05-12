@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const helmet = require("helmet");
 const morgan = require('morgan');
-const {MongoDBUser, MongoDBPassword} = require('config');
+const {MongoDBUser, MongoDBPassword} = require('./config');
 
 //Connessione a MongoDB
 mongoose.connect(
