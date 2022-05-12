@@ -1,17 +1,14 @@
 let express = require('express');
 let app = express();
 const mongoose = require("mongoose");
-const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const helmet = require("helmet");
 const morgan = require('morgan');
-
-//Configura le env variables
-dotenv.config();
+const {MongoDBUser, MongoDBPassword} = require('config');
 
 //Connessione a MongoDB
 mongoose.connect(
-    `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@freecluster.xj48j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+    `mongodb+srv://${MongoDBUser}:${MongoDBPassword}@freecluster.xj48j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
     function (error) {
         console.log(error != null ? `DB connection error: ${error.message}` : 'Connected to the MongoDB');
     });
