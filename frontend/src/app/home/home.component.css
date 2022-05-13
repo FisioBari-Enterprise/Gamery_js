@@ -1,0 +1,23 @@
+.dark_blue{
+    background-color: #08273F;
+}
+
+.customImage{
+    position:absolute;  
+    width: 30px;
+    height: 30px;
+}
+
+.noMargin{
+    margin:0px !important
+}
+
+.padding10{
+    padding: 10px;
+}
+
+#iconName{
+    position: relative;
+    width: 200px;
+    height: 30px;
+}
