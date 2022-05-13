@@ -10,8 +10,9 @@ const {MongoDBUser, MongoDBPassword} = require('./config');
 mongoose.connect(
     `mongodb+srv://${MongoDBUser}:${MongoDBPassword}@freecluster.xj48j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
     function (error) {
-        console.log(error != null ? `DB connection error: ${error.message}` : 'Connected to the MongoDB');
-    });
+        console.log(error != null ? `DB connection error: ${error.message}` : 'Connected to MongoDB');
+    }
+);
 
 //ROUTING
 const index = require("./routes/index.js");
