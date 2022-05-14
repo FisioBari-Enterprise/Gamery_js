@@ -6,5 +6,6 @@ dotenv.config();
 module.exports = {
     MongoDBUser: process.env.MONGODB_USER,
     MongoDBPassword: process.env.MONGODB_PASSWORD,
-    port: process.env.PORT
+    Port: process.env.PORT,
+    TokenSecret: process.env.TOKEN_SECRET
 };
