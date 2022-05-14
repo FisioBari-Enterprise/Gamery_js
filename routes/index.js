@@ -1,10 +1,9 @@
 let express = require("express");
-let User = require('../classes/users/user');
+const SessionModel = require('../database/users/session');
 let router = express.Router();
 
-router.get("", function (req, res, next) {
-    res.send('Success!!!!');
-    res.sta
+router.get("", async function (req, res, next) {
+    res.status(200).json({data: true});
 });
 
 module.exports = router

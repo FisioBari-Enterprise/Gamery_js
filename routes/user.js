@@ -8,7 +8,7 @@ router.post("/login", async function (req, res) {
     //Controlla se ha inviato un uuid
     if(req.body.uuid !== undefined){
         let user = new User();
-        await user.getUser(null, null, null, req.body.uuid, true, function (err, token, user) {
+        await user.getUser(req.socket.remoteAddress, null, null, null, req.body.uuid, true, function (err, token, user) {
             if(err !== null) {
                 StaticFunctions.sendError(res, err.message);
             } else {
@@ -22,7 +22,7 @@ router.post("/login", async function (req, res) {
 //Registra un utente temporaneo
 router.get("/registerTemporary", function (req, res) {
     const newUser = new User();
-    newUser.createTemporary((err, token, uuid) => {
+    newUser.createTemporary(req.socket.remoteAddress, (err, token, uuid) => {
        if(err != null || token === undefined) {
            StaticFunctions.sendError(res, token === undefined ? 'Error during creation token' : err.message);
        } else {

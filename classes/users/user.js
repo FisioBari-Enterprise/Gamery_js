@@ -33,9 +33,10 @@ class User {
 
     /**
      * Genera un nuovo utente temporaneo
+     * @param {String} ipAddress Indirirzzo ip della richiesta
      * @param {CreateTemporary} callback Funzione da eseguire alla conclusione
      */
-    createTemporary(callback) {
+    createTemporary(ipAddress, callback) {
         //Genera il nuovo numero da metter dopo player
         UserModel.countDocuments({ uuid: { $exists: true } }, async function (err, c) {
             if (err != null) {
@@ -53,7 +54,7 @@ class User {
                 const newUser = new UserModel({username: `Player${newNumber}`, uuid: uuid});
                 await newUser.save();
                 const newUserJson = JSON.parse(JSON.stringify(newUser));
-                Token.createToken(newUserJson, (err, token) => {
+                Token.createToken(newUserJson, ipAddress, (err, token) => {
                     callback(err, token, uuid);
                 });
             }
@@ -62,6 +63,7 @@ class User {
 
     /**
      * Cerca l'utente in base ai dati passati
+     * @param { String | null } ipAddress Indirizzo ip della richiesta necessario per la generazione del toke
      * @param { String | null | undefined } id Id assegnato all'utente
      * @param { String | null | undefined } email Email inserita dall'utente
      * @param { String | null | undefined } password Password
@@ -69,7 +71,7 @@ class User {
      * @param { boolean } getToken Nella funziona ritorna il token
      * @param { Login } callback Azione da richiamare al completamento delle operazioni
      */
-    async getUser(id=null, email=null, password=null, uuid=null, getToken=true, callback) {
+    async getUser(ipAddress=null,id=null, email=null, password=null, uuid=null, getToken=true, callback) {
         let userJson = null;
         //Ricerca per UUID
         if (uuid !== null) {
@@ -85,7 +87,7 @@ class User {
             if (!getToken) {
                 return callback(null, null, userJson);
             }
-            Token.createToken(userJson, function (err, token) {
+            Token.createToken(userJson, ipAddress,function (err, token) {
                 if(err) {
                     callback(err, null, null);
                 } else {
