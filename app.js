@@ -16,7 +16,7 @@ mongoose.connect(
 
 //ROUTING
 const index = require("./routes/index.js");
-const user = require("./routes/user.js");
+const user = require("./routes/client.js");
 
 //Migliora la sicurezza
 app.use(helmet());

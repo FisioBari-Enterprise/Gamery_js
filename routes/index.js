@@ -1,5 +1,4 @@
 let express = require("express");
-const SessionModel = require('../database/users/session');
 let router = express.Router();
 
 router.get("", async function (req, res, next) {

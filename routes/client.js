@@ -1,5 +1,5 @@
 let express = require("express");
-let User = require('../classes/users/user');
+let Client = require('../classes/users/user');
 const StaticFunctions = require("../static");
 const Token = require("../classes/token");
 let router = express.Router();
@@ -7,7 +7,7 @@ let router = express.Router();
 router.post("/login", async function (req, res) {
     //Controlla se ha inviato un uuid
     if(req.body.uuid !== undefined){
-        let user = new User();
+        let user = new Client();
         await user.getUser(req.socket.remoteAddress, null, null, null, req.body.uuid, true, function (err, token, user) {
             if(err !== null) {
                 StaticFunctions.sendError(res, err.message);
@@ -21,7 +21,7 @@ router.post("/login", async function (req, res) {
 });
 //Registra un utente temporaneo
 router.get("/registerTemporary", function (req, res) {
-    const newUser = new User();
+    const newUser = new Client();
     newUser.createTemporary(req.socket.remoteAddress, (err, token, uuid) => {
        if(err != null || token === undefined) {
            StaticFunctions.sendError(res, token === undefined ? 'Error during creation token' : err.message);
