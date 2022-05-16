@@ -4,7 +4,8 @@ import {CookieService} from "ngx-cookie-service";
 import {Subscription} from "rxjs";
 import {TokenData} from "../classes/web/TokenResponse";
 import {MatDialog} from "@angular/material/dialog";
-import {ComponentType} from "@angular/cdk/overlay";
+import {BaseService} from "../base.service";
+import {ErrorComponent} from "../dialogs/error/error.component";
 
 @Component({
   selector: 'app-home',
@@ -21,18 +22,27 @@ export class HomeComponent implements OnInit {
   loadingText: string = "";
 
   constructor(
+    private base: BaseService,
     private userService: UserService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     //Controllo sul uuid dell'utente temporaneo
     const uuid = this.cookieService.get('uuid');
     if (uuid === "") {
-      this.newTemporaryUser();
+      //this.newTemporaryUser();
     } else {
       this.loginUserTemporary(uuid)
     }
+  }
+
+  test() {
+    let dialogRef = this.dialog.open(ErrorComponent, {
+      height: '400px',
+      width: '600px',
+    });
   }
 
   /**

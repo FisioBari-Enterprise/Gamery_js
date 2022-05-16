@@ -6,6 +6,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import {HttpClientModule} from "@angular/common/http";
 import {CookieService} from "ngx-cookie-service";
+import {MatDialogModule} from "@angular/material/dialog";
+import {DialogModule} from "./dialogs/dialog.module";
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import {CookieService} from "ngx-cookie-service";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    DialogModule,
+    MatDialogModule
   ],
   providers: [
     CookieService
