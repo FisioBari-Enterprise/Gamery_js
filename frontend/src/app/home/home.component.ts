@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (uuid === "") {
       this.newTemporaryUser();
     } else {
-      this.loginUserTemporary(uuid);
+      this.checkToken();
     }
   }
 
@@ -64,6 +64,29 @@ export class HomeComponent implements OnInit, OnDestroy {
       }, error => {
         this.dialog.closeDialog();
         this.dialog.showError(error.message, (res) => this.newTemporaryUser());
+      })
+    );
+  }
+
+  /**
+   * Controlla il token assegnato
+   * Se non lo trova o non è valido fa l'accesso con l'account temporaneo
+   * @private
+   */
+  private checkToken() {
+    this.allSubscriptions.push(
+      this.userService.validToken().subscribe(res => {
+        this.dialog.closeDialog();
+      }, error => {
+        if(error.status == 403 || error.status == 401) {
+          //Il token non è più valido quindi fa il login
+          const uuid = this.cookieService.get('uuid');
+          this.loginUserTemporary(uuid);
+        } else {
+          //Errore generico
+          this.dialog.closeDialog();
+          this.dialog.showError(error.message, (res) => this.checkToken());
+        }
       })
     );
   }
