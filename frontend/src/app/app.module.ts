@@ -8,6 +8,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {CookieService} from "ngx-cookie-service";
 import {MatDialogModule} from "@angular/material/dialog";
 import {DialogModule} from "./dialogs/dialog.module";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {DialogModule} from "./dialogs/dialog.module";
     AppRoutingModule,
     HttpClientModule,
     DialogModule,
-    MatDialogModule
+    MatDialogModule,
+    BrowserAnimationsModule
   ],
   providers: [
     CookieService

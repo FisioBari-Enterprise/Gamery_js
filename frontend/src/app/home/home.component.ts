@@ -24,8 +24,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private base: BaseService,
     private userService: UserService,
-    private cookieService: CookieService,
-    private dialog: MatDialog
+    private cookieService: CookieService
   ) { }
 
   ngOnInit(): void {
@@ -36,13 +35,6 @@ export class HomeComponent implements OnInit {
     } else {
       this.loginUserTemporary(uuid)
     }
-  }
-
-  test() {
-    let dialogRef = this.dialog.open(ErrorComponent, {
-      height: '400px',
-      width: '600px',
-    });
   }
 
   /**

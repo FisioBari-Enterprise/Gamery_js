@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import * as moment from 'moment';
+import {MatDialog} from "@angular/material/dialog";
+import {ComponentType} from "@angular/cdk/overlay";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,7 @@ export class BaseService {
   private readonly _client = 'api/client';
 
   constructor(
-    private http: HttpClient
+    private dialog: MatDialog
   ) { }
 
   /**
@@ -78,6 +80,18 @@ export class BaseService {
    */
   getStringDate(date: Date): string{
     return moment(date).format('MM/DD/YYYY');
+  }
+
+  /**
+   * Mostra un dialog a schermo
+   * @param component Componente da mostrare
+   * @param afterClose Funzione da eseguire con i dati ritornati dal component
+   * @param config Configurazione da passare al dialog.open
+   */
+  showDialog(component: ComponentType<unknown>, afterClose, config = {height: '400px', width: '600px'}) {
+    let dialogRef = this.dialog.open(component, config);
+    dialogRef.afterClosed().subscribe(res => afterClose(res));
+    return dialogRef
   }
 
 }

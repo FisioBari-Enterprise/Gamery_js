@@ -10,9 +10,11 @@ export class ErrorComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<ErrorComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit(): void {
+
   }
 
 }
