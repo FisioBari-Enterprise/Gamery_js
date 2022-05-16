@@ -9,7 +9,7 @@ class StaticFunctions {
      * @param {number} code Codice dell'errore
      */
     static sendError(res, error, code=400) {
-        return res.status(code).json({'error': error});
+        return res.status(code).json({error: error});
     }
 
     /**
