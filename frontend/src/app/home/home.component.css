@@ -3,10 +3,17 @@
     src: local("Exo2"), url(../../assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
 }
 
-.mainContainer{
+.topContainer{
   background-color: #08273F;
   height: 70px;
   padding: 10px;
+  margin: 0px;
+}
+
+.mainContainer{
+  background-color: #167379;
+  height: calc(100% - 70px);
+  margin: 0px;
 }
 
 .customImage{
@@ -62,4 +69,30 @@
   transform: translate(-50%, -50%);
   color: #fff;
   font-family: "Exo2", serif;
+}
+
+.button {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  background-color: #2F5173;
+  border-radius: 8px;
+  border: #222222;
+  border-width: 1px;
+  margin-right: 10px;
+}
+
+.buttonArea {
+  position: absolute;
+  right: 10px;
+  margin: 0px;
+}
+
+.smallImage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 35px;
+  height: 35px;
 }
