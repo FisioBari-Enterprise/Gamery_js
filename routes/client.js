@@ -20,7 +20,7 @@ router.post("/login", async function (req, res) {
     }
 });
 //Registra un utente temporaneo
-router.get("/registerTemporary", function (req, res) {
+router.get("/register/temporary", function (req, res) {
     const newUser = new Client();
     newUser.createTemporary(req.socket.remoteAddress, (err, token, uuid) => {
        if(err != null || token === undefined) {
