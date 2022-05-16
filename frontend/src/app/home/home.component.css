@@ -3,33 +3,16 @@
     src: local("Exo2"), url(../../assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
 }
 
-.dark_blue{
-    background-color: #08273F;
+.mainContainer{
+  background-color: #08273F;
+  height: 70px;
+  padding: 10px;
 }
 
 .customImage{
-    position:absolute;  
+    position:absolute;
     width: 46px;
     height: 46px;
-}
-
-.noMargin{
-    margin:0px !important
-}
-
-.padding10{
-    padding: 10px;
-}
-
-.letterName{
-    margin: 0px;
-    position: absolute;
-    color: white;
-    top: 10px;
-    left: 16px;
-
-    font-size: 24px;
-
 }
 
 .labelName{
@@ -37,18 +20,46 @@
     min-width: 100px;
     top: 10px;
     left: 30px;
-    margin: 0px;
-    padding: 5px;
-    padding-left: 20px;
+    margin: 0;
+    padding: 5px 5px 5px 20px;
     background-color: white;
     color: black;
     font-size: 16px;
-    font-family:"Exo2";
+
     border-radius: 8px;
 }
 
-#iconName{
-    position: relative;
-    width: 200px;
-    height: 46px;
+.containerUsername {
+  position: fixed;
+  height: 49px;
+}
+
+.username {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 300px;
+  height: 35px;
+  background: #fff;
+  border-radius: 10px;
+  margin-left: 25px;
+  padding: 5px 20px 0 30px;
+  font-family: "Exo2", serif;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.backgroundLetter {
+  position: fixed;
+  width: 46px;
+  height: 46px;
+}
+
+.letterName {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-family: "Exo2", serif;
 }
