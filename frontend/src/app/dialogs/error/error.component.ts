@@ -17,4 +17,11 @@ export class ErrorComponent implements OnInit {
 
   }
 
+  /**
+   * Azione del bottone "retry"
+   */
+  retryAction() {
+    this.dialogRef.close()
+  }
+
 }

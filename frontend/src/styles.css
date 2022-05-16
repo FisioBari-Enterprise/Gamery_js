@@ -1,3 +1,11 @@
-html,body {margin: 0px}
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(./assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+html, body
+{
+  margin: 0;
+  overflow: hidden;
+  font-family: "Exo2", serif;
+}

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {BaseService} from "../base.service";
+import {BaseService} from "../services/base.service";
 import {Observable} from "rxjs";
 import {BaseDataResponse} from "../classes/web/BaseResponse";
 import {TokenDataResponse} from "../classes/web/TokenResponse";

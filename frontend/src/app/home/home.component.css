@@ -3,26 +3,26 @@
     src: local("Exo2"), url(../../assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
 }
 
-.topContainer{
+.top-container{
   background-color: #08273F;
   height: 70px;
   padding: 10px;
   margin: 0px;
 }
 
-.mainContainer{
+.main-container{
   background-color: #167379;
   height: calc(100% - 70px);
-  margin: 0px;
+  margin: 0;
 }
 
-.customImage{
+.custom-image{
     position:absolute;
     width: 46px;
     height: 46px;
 }
 
-.labelName{
+.label-name{
     position: absolute;
     min-width: 100px;
     top: 10px;
@@ -36,7 +36,7 @@
     border-radius: 8px;
 }
 
-.containerUsername {
+.container-username {
   position: fixed;
   height: 49px;
 }
@@ -56,13 +56,13 @@
   overflow: hidden;
 }
 
-.backgroundLetter {
+.background-letter {
   position: fixed;
   width: 46px;
   height: 46px;
 }
 
-.letterName {
+.letter-name {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -82,13 +82,13 @@
   margin-right: 10px;
 }
 
-.buttonArea {
+.button-area {
   position: absolute;
   right: 10px;
   margin: 0px;
 }
 
-.smallImage {
+.small-image {
   position: absolute;
   top: 50%;
   left: 50%;

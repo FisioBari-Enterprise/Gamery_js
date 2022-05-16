@@ -10,7 +10,7 @@ import {
   UrlTree
 } from '@angular/router';
 import {catchError, map, Observable, of} from 'rxjs';
-import {BaseService} from "../base.service";
+import {BaseService} from "../services/base.service";
 import {UserService} from "./user.service";
 
 @Injectable({
