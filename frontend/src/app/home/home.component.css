@@ -1,11 +1,16 @@
+@font-face {
+    font-family: "Exo2";
+    src: local("Exo2"), url(../../assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
 .dark_blue{
     background-color: #08273F;
 }
 
 .customImage{
     position:absolute;  
-    width: 30px;
-    height: 30px;
+    width: 46px;
+    height: 46px;
 }
 
 .noMargin{
@@ -16,8 +21,34 @@
     padding: 10px;
 }
 
+.letterName{
+    margin: 0px;
+    position: absolute;
+    color: white;
+    top: 10px;
+    left: 16px;
+
+    font-size: 24px;
+
+}
+
+.labelName{
+    position: absolute;
+    width: 100px;
+    top: 10px;
+    left: 30px;
+    margin: 0px;
+    padding: 5px;
+    padding-left: 20px;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    font-family:"Exo2";
+    border-radius: 8px;
+}
+
 #iconName{
     position: relative;
     width: 200px;
-    height: 30px;
+    height: 46px;
 }
