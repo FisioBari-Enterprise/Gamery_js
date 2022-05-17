@@ -17,6 +17,9 @@ const { v4: uuidv4 } = require('uuid');
  * @param { * } user Oggetto JS con i dati contenuti nell'utente
  */
 
+// const user = new User(req.user._id);
+// user.serialize();
+
 /**
  * Classe di gestione degli utenti
  */
@@ -24,21 +27,11 @@ class User {
     /**
      * Crea la classe
      * @param {String | null} id Id dell'utente
+     * @param {* | null} user Istanza di un utente
      */
-    constructor(id=null) {
+    constructor(id=null, user=null) {
         this.id = id;
-        this.user = null;
-        //
-    }
-
-    /**
-     * Costruisce user da id ricevuto nel costruttore
-     * @throws utente non trovato
-     */
-    async buildUser() {
-        this.user = await UserModel.findOne({_id : this.id}).exec();
-        if(this.user === null)
-            throw "Utente non trovato";
+        this.user = user;
     }
 
     /**
@@ -81,7 +74,7 @@ class User {
      * @param { boolean } getToken Nella funziona ritorna il token
      * @param { Login } callback Azione da richiamare al completamento delle operazioni
      */
-    async login(ipAddress=null,id=null, email=null, password=null, uuid=null, getToken=true, callback) {
+    async getUser(ipAddress=null,id=null, email=null, password=null, uuid=null, getToken=true, callback) {
         let userJson = null;
         //Ricerca per UUID
         if (uuid !== null) {
@@ -105,18 +98,6 @@ class User {
                 }
             });
         }
-    }
-
-    serialize() {
-        if(this.user === null)
-            return {};
-        
-        let res = {
-            "_id" : this.id,
-            "username" : this.user.username
-        }
-    
-        return res;
     }
 }
 

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const helmet = require("helmet");
 const morgan = require('morgan');
 const {MongoDBUser, MongoDBPassword, Port} = require('./config');
+const StaticFunctions = require("./static");
 
 //Connessione a MongoDB
 mongoose.connect(
@@ -17,6 +18,7 @@ mongoose.connect(
 //ROUTING
 const index = require("./routes/index.js");
 const user = require("./routes/client.js");
+const game = require("./routes/game.js");
 
 //Migliora la sicurezza
 app.use(helmet());
@@ -50,6 +52,11 @@ app.use("/", express.static("www"));
 //BACKEND
 app.use("/api", index);
 app.use("/api/client", user);
+app.use("/api/game", game);
+//Errore se non trova endpoint validi
+app.use(function(req, res, next) {
+    StaticFunctions.sendError(res, 'Url or method not valid');
+});
 
 app.listen(Port || 3000, function() {
     console.log('Server running on port ', 3000);
