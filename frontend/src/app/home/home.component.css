@@ -96,3 +96,11 @@
   width: 35px;
   height: 35px;
 }
+
+.screen-box {
+  align-self: center;
+  background-color: #08273F;
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+}
