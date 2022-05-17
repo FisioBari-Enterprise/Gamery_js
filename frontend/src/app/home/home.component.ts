@@ -23,13 +23,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     //Controllo sul uuid dell'utente temporaneo
-    this.dialog.showLoading("Checking data...");
+    /*this.dialog.showLoading("Checking data...");
     const uuid = this.cookieService.get('uuid');
     if (uuid === "") {
       this.newTemporaryUser();
     } else {
       this.checkToken();
-    }
+    }*/
   }
 
   ngOnDestroy(): void {

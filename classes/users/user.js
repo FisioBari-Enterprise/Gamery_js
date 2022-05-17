@@ -24,11 +24,21 @@ class User {
     /**
      * Crea la classe
      * @param {String | null} id Id dell'utente
-     * @param {User | null} user Utente completo
      */
-    constructor(id=null, user=null) {
+    constructor(id=null) {
         this.id = id;
-        this.user = user;
+        this.user = null;
+        //
+    }
+
+    /**
+     * Costruisce user da id ricevuto nel costruttore
+     * @throws utente non trovato
+     */
+    async buildUser() {
+        this.user = await UserModel.findOne({_id : this.id}).exec();
+        if(this.user === null)
+            throw "Utente non trovato";
     }
 
     /**
@@ -71,7 +81,7 @@ class User {
      * @param { boolean } getToken Nella funziona ritorna il token
      * @param { Login } callback Azione da richiamare al completamento delle operazioni
      */
-    async getUser(ipAddress=null,id=null, email=null, password=null, uuid=null, getToken=true, callback) {
+    async login(ipAddress=null,id=null, email=null, password=null, uuid=null, getToken=true, callback) {
         let userJson = null;
         //Ricerca per UUID
         if (uuid !== null) {
@@ -95,6 +105,18 @@ class User {
                 }
             });
         }
+    }
+
+    serialize() {
+        if(this.user === null)
+            return {};
+        
+        let res = {
+            "_id" : this.id,
+            "username" : this.user.username
+        }
+    
+        return res;
     }
 }
 

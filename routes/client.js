@@ -2,13 +2,14 @@ let express = require("express");
 let Client = require('../classes/users/user');
 const StaticFunctions = require("../static");
 const Token = require("../classes/token");
+const User = require("../classes/users/user");
 let router = express.Router();
 //View per effettuare il login
 router.post("/login", async function (req, res) {
     //Controlla se ha inviato un uuid
     if(req.body.uuid !== undefined){
         let user = new Client();
-        await user.getUser(req.socket.remoteAddress, null, null, null, req.body.uuid, true, function (err, token, user) {
+        await user.login(req.socket.remoteAddress, null, null, null, req.body.uuid, true, function (err, token, user) {
             if(err !== null) {
                 StaticFunctions.sendError(res, err.message);
             } else {
@@ -30,9 +31,22 @@ router.get("/register/temporary", function (req, res) {
        }
     });
 });
+
 //Controlla che il token ricevuto sia valido
 router.get("/check", Token.autenticateUser, function (req, res) {
-    StaticFunctions.sendSuccess(res, true);
+    StaticFunctions.sendSuccess(res,true);
+});
+
+router.get("", Token.autenticateUser, async function(req,res){
+
+    let user = new User(req.user._id)
+    try{
+         await user.buildUser();
+    } catch (error) {
+        return StaticFunctions.sendError(res, error);
+        
+    }
+    StaticFunctions.sendSuccess(res, user.serialize());
 });
 
 module.exports = router

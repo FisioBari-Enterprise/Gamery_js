@@ -3,6 +3,11 @@
     src: local("Exo2"), url(../../assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
 }
 
+@font-face{
+  font-family: "Lobster";
+  src: local("Lobster"), url(../../assets/fonts/Lobster/Lobster-Regular.ttf) format("truetype");
+}
+
 .top-container{
   background-color: #08273F;
   height: 70px;
@@ -14,6 +19,7 @@
   background-color: #167379;
   height: calc(100% - 70px);
   margin: 0;
+  position: relative;
 }
 
 .custom-image{
@@ -97,10 +103,67 @@
   height: 35px;
 }
 
-.screen-box {
+.home-box {
+  position:relative;
   align-self: center;
   background-color: #08273F;
-  width: 100px;
-  height: 100px;
+  height: 80%;
   border-radius: 10px;
+  margin: auto;
+  padding: 50px;
+}
+
+.title-box {
+  height: 20%;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  color: white;
+  font-family: "Lobster" , serif;
+  font-size: 75px;
+  padding-top: 30px;
+}
+
+.center-area {
+  align-items: center;
+  margin: auto;
+  height: 80%;
+}
+
+.mText {
+  font-family: "Exo2";
+  color: white;
+  text-align: center;
+  font-weight: bold;
+
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.container-play {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%);
+  width: 100%;
+  height: 100px;
+}
+
+.play-button {
+  margin: auto;
+  height: 50px;
+  width: 200px;
+  background-color: #FFE62A;
+  border-radius: 10px;
+}
+
+.play-text {
+  font-family: "Exo2";
+  color: black;
+  text-align: center;
+  font-weight: bold;
+  padding: 8px;
 }
