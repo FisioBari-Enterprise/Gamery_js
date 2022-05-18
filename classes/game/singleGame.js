@@ -55,5 +55,12 @@ export class SingleGame {
         // Controllo non completamento di un round
     }
 
-    async get
+    /**
+     * Ottiene le parole presenti in un determinato round
+     * @param {number} round Numero del round. Con -1 li prende tutti
+     * @return {Promise<void>}
+     */
+    async getRound(round=-1) {
+
+    }
 }
