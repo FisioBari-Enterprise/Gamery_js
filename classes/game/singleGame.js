@@ -1,5 +1,6 @@
-let GameRound = require("../../database/game/gameRound");
-let SingleGameDB = require("../../database/game/singleGame");
+import {generateNewRound} from "./words";
+const GameRound = require("../../database/game/gameRound");
+const SingleGameDB = require("../../database/game/singleGame");
 
 /**
  * Classe per la gestione di una partita in singolo
@@ -24,12 +25,20 @@ export class SingleGame {
     }
 
     /**
+     * Controlla che siano presenti le informazioni della partita
+     * @return {boolean} Risultato del controllo
+     */
+    checkData() {
+        return this.id !== null && this.game !== null && this.user !== null
+    }
+
+    /**
      * Crea una nuova partita
      * @return {Promise<void>}
      */
     async createNewGame() {
-        if (this.id !== null) {
-            throw "Id partita già presente";
+        if (!this.checkData()) {
+            throw "E' già presente un'istanza di una partita"
         }
         //Controllo che non ci sia già una partita attiva
         let game = await SingleGameDB.findOne({complete: false}).exec();
@@ -48,11 +57,7 @@ export class SingleGame {
      * @return {Promise<void>}
      */
     async generateNewRound() {
-        // Controllo conclusione della partita
-        if (this.game.complete || this.game.end !== null) {
-            throw "Il gioco è già stato completato";
-        }
-        // Controllo non completamento di un round
+        await generateNewRound(this.game);
     }
 
     /**

@@ -4,7 +4,15 @@ const StaticFunctions = require("../static");
 const Token = require("../classes/token");
 const User = require("../classes/users/user");
 let router = express.Router();
-//View per effettuare il login
+/**
+ * @openapi
+ * \api\client\login:
+ *  post:
+ *      description: Effettua il login
+ *      responses:
+ *          200:
+ *              description: Login effettuato con successo
+ */
 router.post("/login", async function (req, res) {
     //Controlla se ha inviato un uuid
     if(req.body.uuid !== undefined){
@@ -44,7 +52,7 @@ router.get("", Token.autenticateUser, async function(req,res){
          await user.buildUser();
     } catch (error) {
         return StaticFunctions.sendError(res, error);
-        
+
     }
     StaticFunctions.sendSuccess(res, user.serialize());
 });

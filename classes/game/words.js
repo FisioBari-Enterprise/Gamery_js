@@ -1,6 +1,7 @@
 let StaticFunctions = require("../../static") ;
 let Words = require("../../database/game/word");
-const {models} = require("mongoose");
+const GameRound = require("../../database/game/gameRound");
+const { MaxWordForRound } = require('../../config');
 
 module.exports = {
     saveWords,
@@ -56,9 +57,65 @@ async function saveWords(res, words) {
 
 /**
  * Genera un nuovo round in base alle parole che sono già state usate
- * @param { model } game Modello del gioco di riferimento
+ * @param { * } game Modello del gioco di riferimento
  * @return {Promise<void>}
  */
 async function generateNewRound(game) {
-
+    // Controllo conclusione della partita
+    if (game.complete ) {
+        throw "Il gioco è già stato completato";
+    }
+    // Controllo del non completamento dell'ultimo round
+    const rounds = await GameRound.find({game: game._id, word_insert: { $eq: null}, round: game.max_round - 1}).exec();
+    if (rounds.length > 0) {
+        throw "Non hai completato l'ultimo round"
+    }
+    // Genera il nuovo round
+    const maxUsage = await GameRound.findOne({game: game._id}).sort('-word_usage').exec();
+    const wordsLastUsage = await GameRound.find({game: game._id, word_usage: maxUsage.word_usage})
+        .distinct('word')
+        .populate('word')
+        .exec();
+    const allWords = wordsLastUsage.map(item => item.it);
+    // Calcolo lunghezza e numero massimo di parole
+    let nWords = (Math.trunc(game.max_round / 3) + 1) * 4;
+    if (nWords > MaxWordForRound) {
+        nWords = MaxWordForRound;
+    }
+    const maxLength = Math.trunc(nWords / 4) * 6;
+    // Prende le nuove parole
+    let newWords = await Words.aggregate([
+        {
+            $match: {
+                it_length: { $lte: maxLength },
+                it: { $nin: allWords }
+            }
+        },
+        { $sample: { size: nWords }}
+    ]).exec();
+    let toAdd = [{words: newWords, word_usage: maxUsage}]
+    // Se non ha raggiunto il numero di parole ne aggiunge
+    if (nWords.length < MaxWordForRound) {
+        newWords = await Words.aggregate([
+            { $match: { it_length: { $lte: maxLength } } },
+            { $sample: { size: MaxWordForRound - nWords }}
+        ]).exec();
+        toAdd.push({words: newWords, word_usage: maxUsage + 1});
+    }
+    // Carica le nuove parole nel prossimo round
+    let newRounds = [];
+    for (const add of toAdd) {
+        for (const word of add.words) {
+            newRounds.push({
+                word: word._id,
+                word_usage: add.word_usage,
+                game: game._id,
+                round: game.max_round + 1
+            });
+        }
+    }
+    await GameRound.insertMany(newRounds);
+    // Aggiorna il campo round della partita
+    game.max_round += 1;
+    await game.save();
 }

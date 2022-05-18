@@ -2,8 +2,6 @@ const {Schema, model, Types} = require("mongoose");
 
 const singleGames = new Schema({
     user: { type: Types.ObjectId, ref: 'users' },
-    start: { type: Date, default: Date.now },
-    end: { type: Date, default: null },
     game_time: { type: Number, default: 0 },
     points: { type: Number, default: 0 },
     record: { type: Boolean, default: false },

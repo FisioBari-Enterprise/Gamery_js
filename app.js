@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const helmet = require("helmet");
 const morgan = require('morgan');
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require('swagger-jsdoc');
 const {MongoDBUser, MongoDBPassword, Port} = require('./config');
 const StaticFunctions = require("./static");
 
@@ -14,6 +16,21 @@ mongoose.connect(
         console.log(error != null ? `DB connection error: ${error.message}` : 'Connected to MongoDB');
     }
 );
+
+// Opzioni della documentazione
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Gamery js',
+            version: '1.0.0',
+        },
+    },
+    apis: ['./routes/*.js'],
+};
+//End point per la documentazione
+const swaggerDocument = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 //ROUTING
 const index = require("./routes/index.js");
@@ -60,5 +77,5 @@ app.use(function(req, res, next) {
 
 app.listen(Port || 3000, function() {
     console.log('Server running on port ', 3000);
-    
+
 });
