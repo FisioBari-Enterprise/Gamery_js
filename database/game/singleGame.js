@@ -2,7 +2,6 @@ const {Schema, model, Types} = require("mongoose");
 
 const singleGames = new Schema({
     user: { type: Types.ObjectId, ref: 'users' },
-    rounds: [{ type: Types.ObjectId, ref: 'gameRounds' }],
     start: { type: Date, default: Date.now },
     end: { type: Date, default: null },
     game_time: { type: Number, default: 0 },

@@ -1,6 +1,5 @@
 let GameRound = require("../../database/game/gameRound");
 let SingleGameDB = require("../../database/game/singleGame");
-let Word = require("../../database/game/word");
 
 /**
  * Classe per la gestione di una partita in singolo
@@ -13,6 +12,7 @@ export class SingleGame {
      */
     async constructor(user, id=null) {
         this.id = id;
+        this.user = user;
         //Ottiene l'istanza del gioco
         this.game = null;
         if (this.id !== null) {
@@ -25,6 +25,7 @@ export class SingleGame {
 
     /**
      * Crea una nuova partita
+     * @return {Promise<void>}
      */
     async createNewGame() {
         if (this.id !== null) {
@@ -36,6 +37,23 @@ export class SingleGame {
             throw "Hai già una partita iniziata"
         }
         //Genera la nuova partita
-        let newGame = new SingleGameDB({})
+        this.game = new SingleGameDB({ user: this.user._id });
+        await this.game.save();
+        this.id = this.game._id;
     }
+
+    /**
+     * Genera un nuovo round
+     * @throws {String} Errore durante la creazione
+     * @return {Promise<void>}
+     */
+    async generateNewRound() {
+        // Controllo conclusione della partita
+        if (this.game.complete || this.game.end !== null) {
+            throw "Il gioco è già stato completato";
+        }
+        // Controllo non completamento di un round
+    }
+
+    async get
 }

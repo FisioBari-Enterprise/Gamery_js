@@ -1,12 +1,18 @@
 let StaticFunctions = require("../../static") ;
 let Words = require("../../database/game/word");
+const {models} = require("mongoose");
+
+module.exports = {
+    saveWords,
+    generateNewRound
+}
 
 /**
  * Salva la lista di parole
  * @param { Response } res Risposta da inviare
  * @param { * } words Oggetto contente it ed en come campi
  */
-export async function saveWords(res, words) {
+async function saveWords(res, words) {
     //Controllo del body
     if (words == null) {
         return StaticFunctions.sendError(res, 'Words not found');
@@ -30,7 +36,8 @@ export async function saveWords(res, words) {
     }
     //Inserisce tutte le parole
     const allWords = await Words.find().lean().exec();
-    for (const word of req.body.words) {
+    let i = 1;
+    for (const word of words) {
         const index = allWords.findIndex(item => item.it === word.it && item.en === word.en);
         if (index === -1) {
             const newWord = new Words({
@@ -41,6 +48,17 @@ export async function saveWords(res, words) {
             });
             await newWord.save()
         }
+        console.log(`Complete ${i} / ${words.length}`);
+        i += 1;
     }
     StaticFunctions.sendSuccess(res, true);
+}
+
+/**
+ * Genera un nuovo round in base alle parole che sono già state usate
+ * @param { model } game Modello del gioco di riferimento
+ * @return {Promise<void>}
+ */
+async function generateNewRound(game) {
+
 }
