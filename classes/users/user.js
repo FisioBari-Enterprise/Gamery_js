@@ -74,7 +74,7 @@ class User {
      * @param { boolean } getToken Nella funziona ritorna il token
      * @param { Login } callback Azione da richiamare al completamento delle operazioni
      */
-    async getUser(ipAddress=null,id=null, email=null, password=null, uuid=null, getToken=true, callback) {
+    async login(ipAddress=null,id=null, email=null, password=null, uuid=null, getToken=true, callback) {
         let userJson = null;
         //Ricerca per UUID
         if (uuid !== null) {

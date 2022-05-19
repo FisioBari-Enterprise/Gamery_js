@@ -5,10 +5,13 @@ const Token = require("../classes/token");
 const User = require("../classes/users/user");
 let router = express.Router();
 /**
- * @openapi
+ * @swagger
  * \api\client\login:
  *  post:
  *      description: Effettua il login
+ *      tags: [Users]
+ *      produces:
+ *          - application/json
  *      responses:
  *          200:
  *              description: Login effettuato con successo

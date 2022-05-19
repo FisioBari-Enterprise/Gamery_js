@@ -7,7 +7,8 @@ const singleGames = new Schema({
     record: { type: Boolean, default: false },
     max_round: { type: Number, default: 0 },
     remaining_pause: { type: Number, default: 3 },
-    time_for_round: { type: Number, default: 0 },
+    memorize_time_for_round: { type: Number, default: 0 },
+    writing_time_for_round: { type: Number, default: 0 },
     complete: { type: Boolean, default: false },
 }, { timestamps: true });
 

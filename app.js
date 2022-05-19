@@ -20,7 +20,7 @@ mongoose.connect(
 // Opzioni della documentazione
 const swaggerOptions = {
     definition: {
-        openapi: '3.0.0',
+        swagger: "2.0",
         info: {
             title: 'Gamery js',
             version: '1.0.0',
