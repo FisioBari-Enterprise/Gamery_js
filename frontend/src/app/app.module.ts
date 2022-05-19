@@ -9,12 +9,16 @@ import {CookieService} from "ngx-cookie-service";
 import {MatDialogModule} from "@angular/material/dialog";
 import {DialogModule} from "./dialogs/dialog.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { RegisterComponent } from './register/register.component';
+import { FormsModule, NgForm } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -22,9 +26,12 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     HttpClientModule,
     DialogModule,
     MatDialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CommonModule,
+    FormsModule  
   ],
   providers: [
+
     CookieService
   ],
   bootstrap: [AppComponent]

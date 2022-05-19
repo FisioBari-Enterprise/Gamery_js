@@ -1,21 +1,38 @@
-<div class="main">
+<div class="main-container">
 
-    <div class="title">
-        <p>Gamery</p>
-    </div>
+    <p class="title">Gamery</p>
 
     <div class="loginbox">
-        <h1>Login here</h1>
-        <form>
-            <p>Username</p>
-            <input type="text" name="" placeholder="Enter Username">
-            <p>Password</p>
-            <input type="text" name="" placeholder="Enter Password">
-            <input type="submit" name="" value="Login"><br>
-            <a href="#">Lost your password?</a><br>
-            <a href="#">Don't have an account?</a>
-        </form>
+        <div *ngIf="isLogin">
+            <div>
+                <label for="username" class="form-label mytext" >Username</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control myinput" id="username" aria-describedby="basic-addon3">
+                    </div>
+                    <p class="errormsg" id="usernameError">Incorrect username</p>
+            </div>
 
+            <div>
+                <div class="row">
+                    <label for="password" class="form-label mytext col-4" >Password</label>
+                    <p class="col-8 pwforgotten" (click)="passwordForgotten()">Password forgotten?</p>
+                </div>
+                <div class="input-group">
+                    <input type="password" class="form-control myinput" id="password" aria-describedby="basic-addon3">
+                </div>
+                <p class="errormsg" id="passwordError">Incorrect password</p>
+            </div>  
+            <div style="position:relative; padding-top: 30px;">
+                <div class="login-button">
+                    <p class="login-text" (click)="login()">LOGIN</p>
+                </div>
+                <div class="register-button">
+                    <p class="register-text" (click)="register()">REGISTER</p>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!isLogin">
+            <app-register (isLoginChange)="isLogin=$event"></app-register>
+        </div>
     </div>
-    
 </div>
