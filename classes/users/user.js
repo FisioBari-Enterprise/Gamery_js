@@ -2,6 +2,7 @@ const Token = require('../token');
 const UserModel = require('../../database/users/user');
 const {cryptPassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
+let ObjectId = require("mongoose").Types.ObjectId;
 
 /**
  * @callback CreateTemporary
@@ -27,11 +28,20 @@ class User {
     /**
      * Crea la classe
      * @param {String | null} id Id dell'utente
-     * @param {* | null} user Istanza di un utente
      */
-    constructor(id=null, user=null) {
+    constructor(id=null) {
         this.id = id;
-        this.user = user;
+        this.user = null;
+    }
+
+    async buildUser(){
+        
+        let doc = await UserModel.findOne({_id : new ObjectId(this.id)}).exec();
+
+        if(doc === null)
+            throw "Utente non trovato"
+
+        this.user = doc;
     }
 
     /**

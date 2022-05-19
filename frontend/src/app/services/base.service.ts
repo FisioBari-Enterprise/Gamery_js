@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import * as moment from 'moment';
-import {MatDialog} from "@angular/material/dialog";
-import {ComponentType} from "@angular/cdk/overlay";
-import {LoadingComponent} from "../dialogs/loading/loading.component";
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +62,7 @@ export class BaseService {
    * @param subUrl subUrl dopo il service
    * @returns Url completo
    */
-  apiUrl(key: 'base' | 'client' = 'base', subUrl: string) {
+  apiUrl(key: 'base' | 'client' = 'base', subUrl: string = '') {
     let service = '';
     switch (key) {
       case "base": service = this._base; break;

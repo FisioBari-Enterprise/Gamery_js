@@ -5,6 +5,8 @@ import {Subscription} from "rxjs";
 import {TokenData} from "../classes/web/TokenResponse";
 import {BaseService} from "../services/base.service";
 import {DialogManagerService} from "../services/dialog-manager.service";
+import { HomeService } from '../services/home.service';
+import { User } from '../classes/User';
 
 @Component({
   selector: 'app-home',
@@ -14,22 +16,28 @@ import {DialogManagerService} from "../services/dialog-manager.service";
 export class HomeComponent implements OnInit, OnDestroy {
   /**Sottoscrizioni delle richieste web*/
   allSubscriptions: Subscription[] = [];
+  /**Utente attivo */
+  user : User;
+
+  username : String = ''
+  charUsername : String = ''
 
   constructor(
     private dialog: DialogManagerService,
     private userService: UserService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private homeService : HomeService
   ) { }
 
   ngOnInit(): void {
     //Controllo sul uuid dell'utente temporaneo
-    /*this.dialog.showLoading("Checking data...");
+    this.dialog.showLoading("Checking data...");
     const uuid = this.cookieService.get('uuid');
     if (uuid === "") {
       this.newTemporaryUser();
     } else {
       this.checkToken();
-    }*/
+    }
   }
 
   ngOnDestroy(): void {
@@ -44,7 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.allSubscriptions.push(
       this.userService.registerUserTemporary().subscribe(data => {
         this.saveTokenData(data.data);
-        this.dialog.closeDialog();
+        this.getUserInfo()
       }, error => {
         this.dialog.closeDialog();
         this.dialog.showError(error.message, (res) => this.newTemporaryUser());
@@ -60,7 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.allSubscriptions.push(
       this.userService.loginUserTemporary(uuid).subscribe(data => {
         this.saveTokenData(data.data);
-        this.dialog.closeDialog();
+        this.getUserInfo()
       }, error => {
         this.dialog.closeDialog();
         this.dialog.showError(error.message, (res) => this.newTemporaryUser());
@@ -76,7 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private checkToken() {
     this.allSubscriptions.push(
       this.userService.validToken().subscribe(res => {
-        this.dialog.closeDialog();
+        this.getUserInfo()
       }, error => {
         if(error.status == 403 || error.status == 401) {
           //Il token non è più valido quindi fa il login
@@ -101,6 +109,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (data.uuid !== null && data.uuid !== undefined) {
       this.cookieService.set('uuid', data.uuid);
     }
+  }
+
+  getUserInfo(){
+    this.allSubscriptions.push(
+      this.homeService.getUserInfo().subscribe(
+        res => {
+          this.user = res;
+          this.setUserInfo();
+          this.dialog.closeDialog();
+        }, 
+        err => {
+          console.log(err);
+          this.dialog.closeDialog();
+        }
+      )
+    )
+  }
+
+  setUserInfo(){
+    console.log(this.user)
+    this.username = this.user.data.username;
+    this.charUsername = this.user.data.username.charAt(0);
   }
 
 }

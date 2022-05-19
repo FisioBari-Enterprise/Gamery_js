@@ -54,10 +54,11 @@ router.get("", Token.autenticateUser, async function(req,res){
     try{
          await user.buildUser();
     } catch (error) {
+        console.log(error)
         return StaticFunctions.sendError(res, error);
 
     }
-    StaticFunctions.sendSuccess(res, user.serialize());
+    StaticFunctions.sendSuccess(res, user.user);
 });
 
 module.exports = router
