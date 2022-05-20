@@ -108,10 +108,10 @@ module.exports = class SingleGame {
     }
 
     /**
-     * 
-     * @param {String[]} body 
-     * @param {number} gameTime
-     * @returns 
+     * Controllo se ho passato il round in base alle parole inserite dall'utente
+     * @param {String[]} words parole inserite dall'utente 
+     * @param {number} gameTime tempo impiegato nel round in secondi
+     * @returns {Promise<void>}
      */
     async checkRound(words, gameTime){
         console.log(words);
@@ -129,14 +129,16 @@ module.exports = class SingleGame {
         if(Object.prototype.toString.call(words) !== '[object Array]' || typeof gameTime !== 'number') {
             throw "Variable type not valid";
         }
+        //rimuovo spazi multipli all'inizio e alla fine della parole e inserisco spazio unico tra le parole
         for(let i = 0; i < words.length; i++){
-            words[i] = words[i].replace(/^\s+|\s+$/g, '').replace(/ +(?= )/g, '');
+            words[i] = words[i].replace(/^\s+|\s+$/g, '').replace(/ +(?= )/g, ' ');
         }
         //Controllo delle parole inserite
         let roundData  = await GameRound.find({game: new ObjectId(this.id), round: this.game.max_round}).populate('word').exec();
         if(roundData.length === 0){
             throw "Round information not found"
         }
+        //Ciclo per tutte le parole del round in modo da vedere quali sono state inserite corretamente
         for(let i = 0; i < roundData.length; i++){
             for(let j = 0; j < words.length; j++){
                 if(roundData[i].word.en === words[j]){
@@ -156,9 +158,7 @@ module.exports = class SingleGame {
             //Caso round non passato
             await elaborateLose(this.game);
         } else {
-            //caso round passato. Genera un nuovo round
-            /*
-            return await this.getRound(this.game.max_round);*/
+            //se passo il round genero il round successivo
             await this.generateNewRound();
         }
     }

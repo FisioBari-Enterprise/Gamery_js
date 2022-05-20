@@ -154,8 +154,8 @@ router.post('/round', Token.autenticateUser, async function (req, res) {
 /**
  * @swagger
  * \api\game\round:
- *  post:
- *      description: Lista di un terminato round
+ *  get:
+ *      description: informazioni di un terminato round
  *      tags: [Game]
  *      produces:
  *          - application/json
@@ -180,6 +180,37 @@ router.get('/round/:id', Token.autenticateUser, async function (req, res) {
     }
 });
 
+/**
+ * @swagger
+ * \api\game\round:
+ *  put:
+ *      description: Controllo su parole inserite al termine del round
+ *      tags: [Game]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *          - name: words
+ *            description: Lista delle parole inserite dall'utente
+ *            in: formData
+ *            required: true
+ *            type: array
+ *            items:
+ *              type: string
+ *          - name : gameTime
+ *            description: Tempo impiegato nel round in secondi
+ *            in: formData
+ *            required: true
+ *            type: number
+ *      responses:
+ *          200:
+ *              description: Informazioni sulla partita in corso
+ *          400:
+ *              description: Errore riscontrato in fase di update
+ *          401:
+ *              description: Token non passato
+ *          403:
+ *              description: Sessione o token non validi
+ */
 router.put('/round', Token.autenticateUser, async function (req, res) {
     let game = new SingleGame(req.user);
     try {
