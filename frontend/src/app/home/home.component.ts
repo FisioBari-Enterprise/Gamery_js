@@ -1,9 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "../auth/user.service";
-import {CookieService} from "ngx-cookie-service";
 import {Subscription} from "rxjs";
 import {TokenData} from "../classes/web/TokenResponse";
-import {BaseService} from "../services/base.service";
 import {DialogManagerService} from "../services/dialog-manager.service";
 import { HomeService } from '../services/home.service';
 import { User } from '../classes/User';
@@ -25,15 +23,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: DialogManagerService,
     private userService: UserService,
-    private cookieService: CookieService,
     private homeService : HomeService
   ) { }
 
   ngOnInit(): void {
     //Controllo sul uuid dell'utente temporaneo
     this.dialog.showLoading("Checking data...");
-    const uuid = this.cookieService.get('uuid');
-    if (uuid === "") {
+    const uuid = localStorage.getItem('uuid');
+    if (uuid === null) {
       this.newTemporaryUser();
     } else {
       this.checkToken();
@@ -51,7 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private newTemporaryUser() {
     this.allSubscriptions.push(
       this.userService.registerUserTemporary().subscribe(data => {
-        this.saveTokenData(data.data);
+        HomeComponent.saveTokenData(data.data);
         this.getUserInfo()
       }, error => {
         this.dialog.closeDialog();
@@ -67,7 +64,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private loginUserTemporary(uuid: string) {
     this.allSubscriptions.push(
       this.userService.loginUserTemporary(uuid).subscribe(data => {
-        this.saveTokenData(data.data);
+        HomeComponent.saveTokenData(data.data);
         this.getUserInfo()
       }, error => {
         this.dialog.closeDialog();
@@ -88,7 +85,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }, error => {
         if(error.status == 403 || error.status == 401) {
           //Il token non è più valido quindi fa il login
-          const uuid = this.cookieService.get('uuid');
+          const uuid = localStorage.getItem('uuid')!;
           this.loginUserTemporary(uuid);
         } else {
           //Errore generico
@@ -104,10 +101,10 @@ export class HomeComponent implements OnInit, OnDestroy {
    * @param data Dati ricevuti
    * @private
    */
-  private saveTokenData(data: TokenData) {
+  private static saveTokenData(data: TokenData) {
     sessionStorage.setItem('auth_token', data.access)
     if (data.uuid !== null && data.uuid !== undefined) {
-      this.cookieService.set('uuid', data.uuid);
+      localStorage.setItem('uuid', data.uuid);
     }
   }
 
@@ -118,7 +115,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.user = res;
           this.setUserInfo();
           this.dialog.closeDialog();
-        }, 
+        },
         err => {
           console.log(err);
           this.dialog.closeDialog();
@@ -128,7 +125,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   setUserInfo(){
-    console.log(this.user)
     this.username = this.user.data.username;
     this.charUsername = this.user.data.username.charAt(0);
   }

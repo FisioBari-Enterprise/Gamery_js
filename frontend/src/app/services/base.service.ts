@@ -21,6 +21,7 @@ export class BaseService {
   //ENDPOINT
   private readonly _base = 'api';
   private readonly _client = 'api/client';
+  private readonly _game = 'api/game';
 
   constructor(
 
@@ -62,11 +63,12 @@ export class BaseService {
    * @param subUrl subUrl dopo il service
    * @returns Url completo
    */
-  apiUrl(key: 'base' | 'client' = 'base', subUrl: string = '') {
+  apiUrl(key: 'base' | 'client' | 'game' = 'base', subUrl: string = '') {
     let service = '';
     switch (key) {
       case "base": service = this._base; break;
       case "client": service = this._client; break;
+      case "game": service = this._game; break;
     }
     return `${this.Host}/${service}/${subUrl}`;
   }
