@@ -12,13 +12,15 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { RegisterComponent } from './register/register.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HomeGameComponent } from './game/components/home-game/home-game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    HomeGameComponent
   ],
   imports: [
     BrowserModule,

@@ -22,11 +22,13 @@ class Token {
      * @param {CreateToken} callback Funzione con due parametri: error e token
      */
     static createToken(userId, ipAddress, callback) {
-        jwt.sign(userId, TokenSecret, { expiresIn: '7200s' }, async function (err, token) {
+        jwt.sign({id: userId}, TokenSecret, { expiresIn: '2h' }, async function (err, token) {
             if (err != null) {
+                console.log(err);
                 callback(err, null);
             } else {
                 // Controlla se il token non è già stato usato
+                console.log('Sono qui');
                 const alreadyExist = await SessionModel.findOne({token: token, valid: true}).exec();
                 if (alreadyExist === null) {
                     const newSession = new SessionModel({token: token, valid: true, ipAddress: ipAddress, user: userId});
@@ -64,7 +66,7 @@ class Token {
                 return StaticFunctions.sendError(res, 'Session not found', 403);
             }
             // Controllo sull'utente attivo
-            if (session.user === null || session.user._id === userId) {
+            if (session.user === null || session.user._id === userId.id) {
                 return StaticFunctions.sendError(res, 'User not found', 403);
             }
             // Controllo se l'utente è attivo

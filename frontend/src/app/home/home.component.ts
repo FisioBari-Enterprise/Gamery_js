@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from "../auth/user.service";
+import {UserService} from "../auth/services/user.service";
 import {Subscription} from "rxjs";
 import {TokenData} from "../classes/web/TokenResponse";
 import {DialogManagerService} from "../services/dialog-manager.service";
@@ -27,6 +27,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // Cancella tutti i dati presenti nel local storage
+    // localStorage.clear();
+
     //Controllo sul uuid dell'utente temporaneo
     this.dialog.showLoading("Checking data...");
     const uuid = localStorage.getItem('uuid');

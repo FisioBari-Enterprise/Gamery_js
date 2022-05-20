@@ -35,7 +35,7 @@ class User {
     }
 
     async buildUser(){
-        
+
         let doc = await UserModel.findOne({_id : new ObjectId(this.id)}).exec();
 
         if(doc === null)
@@ -66,8 +66,7 @@ class User {
                 //Genera il nuovo utente
                 const newUser = new UserModel({username: `Player${newNumber}`, uuid: uuid});
                 await newUser.save();
-                const newUserJson = JSON.parse(JSON.stringify(newUser));
-                Token.createToken(newUserJson, ipAddress, (err, token) => {
+                Token.createToken(newUser._id.toString(), ipAddress, (err, token) => {
                     callback(err, token, uuid);
                 });
             }

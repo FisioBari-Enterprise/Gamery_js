@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs';
 import { User } from '../classes/User';
-import {GameResponse} from "../classes/game/gameResponse";
+import {GameResponse} from "../game/classes/gameResponse";
 
 @Injectable({
   providedIn: 'root'
