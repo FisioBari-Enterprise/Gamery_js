@@ -3,7 +3,6 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const GameRound = require("../../database/game/gameRound");
 const SingleGameDB = require("../../database/game/singleGame");
 const Words = require("../../database/game/word");
-const gameRound = require('../../database/game/gameRound');
 
 /**
  * Classe per la gestione di una partita in singolo
@@ -29,10 +28,11 @@ module.exports = class SingleGame {
     async build(last=false) {
         if (last) {
             //Sostituisce l'id e il gioco con l'ultimo generato
-            this.game = await SingleGameDB.findOne().sort('-createAt').exec();
-            if(this.game === null) {
+            const lastGame = await SingleGameDB.find({user: this.user._id}).sort({createdAt: -1}).exec();
+            if(lastGame.length === 0) {
                 throw "No game found for this user";
             }
+            this.game = lastGame[0];
             this.id = this.game._id;
         }
         if (this.id !== null && this.game === null) {
@@ -107,46 +107,73 @@ module.exports = class SingleGame {
         }
     }
 
-    async checkRound(body){
-        let round = body.round;
-        let words = body.words;
-        if(round === undefined || words === undefined){
-            throw "Body error"
-        }
-
+    /**
+     * 
+     * @param {String[]} body 
+     * @param {number} gameTime
+     * @returns 
+     */
+    async checkRound(words, gameTime){
+        console.log(words);
+        //Controllo dati partita
         if (!this.checkData()) {
             throw "Game instance not found";
         }
-        let roundData  = await GameRound.findOne({game : new ObjectId(this.id), round : round}).exec();
-        if(roundData === null){
+        if (this.game.complete) {
+            throw "Game already completed";
+        }
+        //Controllo sugli input
+        if(words == null || gameTime == null){
+            throw "Body error"
+        }
+        if(Object.prototype.toString.call(words) !== '[object Array]' || typeof gameTime !== 'number') {
+            throw "Variable type not valid";
+        }
+        for(let i = 0; i < words.length; i++){
+            words[i] = words[i].replace(/^\s+|\s+$/g, '').replace(/ +(?= )/g, '');
+        }
+        //Controllo delle parole inserite
+        let roundData  = await GameRound.find({game: new ObjectId(this.id), round: this.game.max_round}).populate('word').exec();
+        if(roundData.length === 0){
             throw "Round information not found"
         }
-        let roundWords = await Words.find({_id : roundData.word}).exec();
-        if(roundWords === null){
-            throw "parola non trovata"
-        }
-        let punti = 0;
-        let trovate = 0;
-        for(let i = 0; i < roundWords.length; i++){
+        for(let i = 0; i < roundData.length; i++){
             for(let j = 0; j < words.length; j++){
-                if(roundWords[i].it == words[j]){
-                    punti += roundWords[i].it_length;
-                    trovate++;
-                } else if (roundWords[i].en == words[j]){
-                    punti += roundWords[i].en_length;
-                    trovate++;
-                }
+                if(roundData[i].word.en === words[j]){
+                    this.game.points += roundData[i].word.en_length;
+                    roundData[i].points = roundData[i].word.en_length;
+                    roundData[i].correct = true;
+                    roundData[i].word_insert = words[j];
+                    await roundData[i].save();
+                    break;
+                } 
             }
         }
-        let findAll = trovate == roundWords.length;
-
-        await GameRound.updateOne(
-            {game : new ObjectId(this.id), round : round},
-            {
-                correct : findAll? true : false,
-                points : punti
-            }).exec();
-        
-        return await GameRound.findOne({game : new ObjectId(this.id), round : round}).exec();
+        this.game.game_time += gameTime;
+        await this.game.save();
+        // Controllo passaggio del round
+        if (roundData.some(item => !item.correct)) {
+            //Caso round non passato
+            await elaborateLose(this.game);
+        } else {
+            //caso round passato. Genera un nuovo round
+            /*
+            return await this.getRound(this.game.max_round);*/
+            await this.generateNewRound();
+        }
     }
+}
+
+/**
+ * Aggiorna i dati della partita in caso di sconfitta
+ * @param {*} game Partita da aggiornare
+ */
+async function elaborateLose(game) {
+    game.complete = true;
+    // Controllo se ha raggiunto il punteggio massimo
+    const currentRecord = await SingleGameDB.find({user: game.user}).sort({points: -1}).limit(1).lean().exec();
+    if (currentRecord.length === 0 || currentRecord[0]._id === game._id) {
+        game.record = true;
+    }
+    await game.save();
 }

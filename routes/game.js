@@ -116,7 +116,7 @@ router.get('/round', Token.autenticateUser, async function (req, res) {
    } catch (error) {
        return StaticFunctions.sendError(res, error);
    }
-   return StaticFunctions.sendSuccess(res, response, 200);
+   return StaticFunctions.sendSuccess(res, response);
 });
 
 /**
@@ -145,6 +145,7 @@ router.post('/round', Token.autenticateUser, async function (req, res) {
        await game.generateNewRound();
        response = await game.getRound(game.game.max_round, true);
    } catch (error) {
+       console.log(error);
        return StaticFunctions.sendError(res, error);
    }
    return StaticFunctions.sendSuccess(res, response, 201);
@@ -170,24 +171,29 @@ router.post('/round', Token.autenticateUser, async function (req, res) {
  */
 router.get('/round/:id', Token.autenticateUser, async function (req, res) {
     let game = new SingleGame(req.user);
-    let response = null;
     try {
         await game.build(true);
-        response = await game.getRound(req.params.id, true);
+        const response = await game.getRound(req.params.id, true);
+        return StaticFunctions.sendSuccess(res, response);
     } catch (error) {
         return StaticFunctions.sendError(res, error);
     }
-    return StaticFunctions.sendSuccess(res, response, 201);
 });
 
 router.put('/round', Token.autenticateUser, async function (req, res) {
     let game = new SingleGame(req.user);
     try {
         await game.build(true);
-        response = await game.checkRound(req.body);
-        return StaticFunctions.sendSuccess(res, response , 202);
+        await game.checkRound(req.body.words, req.body.gameTime);
+        // Invia la risposta
+        if(game.game.completed) {
+            return StaticFunctions.sendSuccess(res, {game: game.game});
+        }
+        const newRound = await game.getRound(game.game.max_round, true);
+        return StaticFunctions.sendSuccess(res, newRound);
     }
     catch (error) {
+        console.log(error);
         return StaticFunctions.sendError(res, error);
     }
 })

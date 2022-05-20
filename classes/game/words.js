@@ -67,8 +67,8 @@ async function generateNewRound(game) {
     if (game.complete ) {
         throw "Game already completed";
     }
-    // Controllo del non completamento dell'ultimo round ()
-    const rounds = await GameRound.find({game: new ObjectId(game._id), word_insert: { $eq: null}, round: game.max_round}).exec();
+    // Controllo del non completamento dell'ultimo round
+    const rounds = await GameRound.find({game: new ObjectId(game._id), word_insert: { $eq: null }, round: game.max_round}).exec();
     if (rounds.length > 0) {
         throw "You haven't completed last round"
     }
