@@ -180,4 +180,16 @@ router.get('/round/:id', Token.autenticateUser, async function (req, res) {
     return StaticFunctions.sendSuccess(res, response, 201);
 });
 
+router.put('/round', Token.autenticateUser, async function (req, res) {
+    let game = new SingleGame(req.user);
+    try {
+        await game.build(true);
+        response = await game.checkRound(req.body);
+        return StaticFunctions.sendSuccess(res, response , 202);
+    }
+    catch (error) {
+        return StaticFunctions.sendError(res, error);
+    }
+})
+
 module.exports = router
