@@ -2,6 +2,8 @@ const { generateNewRound, timeForRound } = require('./words');
 const ObjectId = require('mongoose').Types.ObjectId;
 const GameRound = require("../../database/game/gameRound");
 const SingleGameDB = require("../../database/game/singleGame");
+const Words = require("../../database/game/word");
+const gameRound = require('../../database/game/gameRound');
 
 /**
  * Classe per la gestione di una partita in singolo
@@ -103,5 +105,48 @@ module.exports = class SingleGame {
             'round': typeof round === 'string' ? parseInt(round) : round,
             'words': complete ? allWords : allWords.map(word => word.en)
         }
+    }
+
+    async checkRound(body){
+        let round = body.round;
+        let words = body.words;
+        if(round === undefined || words === undefined){
+            throw "Body error"
+        }
+
+        if (!this.checkData()) {
+            throw "Game instance not found";
+        }
+        let roundData  = await GameRound.findOne({game : new ObjectId(this.id), round : round}).exec();
+        if(roundData === null){
+            throw "Round information not found"
+        }
+        let roundWords = await Words.find({_id : roundData.word}).exec();
+        if(roundWords === null){
+            throw "parola non trovata"
+        }
+        let punti = 0;
+        let trovate = 0;
+        for(let i = 0; i < roundWords.length; i++){
+            for(let j = 0; j < words.length; j++){
+                if(roundWords[i].it == words[j]){
+                    punti += roundWords[i].it_length;
+                    trovate++;
+                } else if (roundWords[i].en == words[j]){
+                    punti += roundWords[i].en_length;
+                    trovate++;
+                }
+            }
+        }
+        let findAll = trovate == roundWords.length;
+
+        await GameRound.updateOne(
+            {game : new ObjectId(this.id), round : round},
+            {
+                correct : findAll? true : false,
+                points : punti
+            }).exec();
+        
+        return await GameRound.findOne({game : new ObjectId(this.id), round : round}).exec();
     }
 }
