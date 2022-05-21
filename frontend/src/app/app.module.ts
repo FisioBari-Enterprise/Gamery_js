@@ -13,6 +13,7 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HomeGameComponent } from './game/components/home-game/home-game.component';
+import { TabelComponent } from './tabel/tabel.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { HomeGameComponent } from './game/components/home-game/home-game.compone
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    HomeGameComponent
+    HomeGameComponent,
+    TabelComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { HomeGameComponent } from './game/components/home-game/home-game.compone
     MatDialogModule,
     BrowserAnimationsModule,
     CommonModule,
-    FormsModule  
+    FormsModule
   ],
   providers: [
 
