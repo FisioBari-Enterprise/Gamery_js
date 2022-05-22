@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ErrorComponent } from './error/error.component';
 import { LoadingComponent } from './loading/loading.component';
 import { PauseComponent } from './pause/pause.component';
+import { CompleteLevelComponent } from './complete-level/complete-level.component';
 
 
 
@@ -10,7 +11,8 @@ import { PauseComponent } from './pause/pause.component';
   declarations: [
     ErrorComponent,
     LoadingComponent,
-    PauseComponent
+    PauseComponent,
+    CompleteLevelComponent
   ],
   imports: [
     CommonModule
