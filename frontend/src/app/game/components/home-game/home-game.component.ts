@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Subject} from "rxjs";
 import {OnChangeBoard} from "../../classes/onChangeBoard";
 
@@ -10,31 +10,20 @@ import {OnChangeBoard} from "../../classes/onChangeBoard";
 export class HomeGameComponent implements OnInit {
   /**Modifiche al tempo*/
   timeSubject: Subject<OnChangeBoard> = new Subject<OnChangeBoard>();
+  /**Modifiche allo score*/
+  scoreSubject: Subject<OnChangeBoard> = new Subject<OnChangeBoard>();
+  /**Modifiche al livello*/
+  livelloSubject: Subject<OnChangeBoard> = new Subject<OnChangeBoard>();
 
-  constructor() {
-  }
+  /**Indica se creare una nuova partita o meno*/
+  @Input() newGame: boolean = true;
+
+  constructor(
+
+  ) {  }
 
   ngOnInit(): void {
-    const asd = setInterval( () => {
-      this.testInterval();
-      clearInterval(asd);
-    }, 1000);
-  }
 
-  testInterval() {
-    let n = -1;
-    let i = setInterval(() => {
-      if (n < 0) {
-        this.timeSubject.next(new OnChangeBoard(20, false, true));
-        n = 20;
-      } else {
-        this.timeSubject.next(new OnChangeBoard(-1));
-        n -= 1;
-      }
-      if (n === 0){
-        clearInterval(i)
-      }
-    }, 1000);
   }
 
 }
