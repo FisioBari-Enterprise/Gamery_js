@@ -1,0 +1,42 @@
+@font-face {
+    font-family: "Exo2";
+    src: local("Exo2"), url(../../../assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.main-container {
+    position: relative;
+    background-color: white;
+    border-radius: 20px;
+    width: 300px;
+    height: 50vh;
+    padding: 10px;
+}
+
+.my-text{
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: black;
+    font-family: "Exo2";
+    font-weight: bold;
+    text-align: center;
+}
+
+.resume-button {
+    position: absolute;
+    top: 66%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #FFE62A;
+    width: 120px;
+    height: 40px;
+    border-radius: 8px;
+}
+
+.button-text {
+    text-align: center;
+    padding-top: 3px;
+    font-family: "Exo2";
+    font-weight: bold;
+}

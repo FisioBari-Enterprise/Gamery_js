@@ -22,7 +22,7 @@ import { TabelComponent } from './components/tabel/tabel.component';
     LoginComponent,
     RegisterComponent,
     HomeGameComponent,
-    TabelComponent
+    TabelComponent  
   ],
   imports: [
     BrowserModule,

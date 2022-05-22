@@ -7,11 +7,19 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TabelComponent implements OnInit {
 
+  /** Lista parole da inserire */
   @Input() words: string[] = ['Apple', 'Orange', 'Banana', 'caio', 'Apple', 'Orange', 'Banana', 'caio']
+  /** Lista parole inserite dall'utente */
+  @Input() userWords : String[]
 
-  title : String = "MEMORIZATION PHASE" 
+  /** Titolo indicante la fase in corso */
+  title : String = "MEMORIZATION PHASE"
+  /** Indica se si è in fase di inserimento o di memorizzazione */ 
   isInsert : Boolean = true
-  userWords : String[]
+  
+
+  /**Mostra le parole all'interno dell'area. */
+  showWord : Boolean = true;
 
   constructor() {
     this.userWords = []

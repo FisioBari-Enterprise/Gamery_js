@@ -1,21 +1,23 @@
 <div class="main-container">
-    <div>
-        <h1 class="title">{{title}}</h1>
-    </div>
-    <div *ngIf="isInsert" class="row no-margin scroll-div hidescroll">
-        <ng-container *ngFor="let word of words; let i = index;">
-            <div *ngIf=" i % 3 == 0 && i != 0" class="w-100" style="margin-top: 30px;" ></div> 
-            <div class="box-word col-3">
-                <h2 class="word">{{word}}</h2>
-            </div>
-        </ng-container>
-    </div>
-    <div *ngIf="isInsert" class="row no-margin scroll-div hidescroll">
-        <ng-container *ngFor="let word of userWords; let i = index;">
-            <div *ngIf=" i % 3 == 0 && i != 0" class="w-100" style="margin-top: 30px;" ></div> 
-            <div class="box-word col-3">
-                <h2 class="word">{{word}}</h2>
-            </div>
-        </ng-container>
+    <div *ngIf="showWord">    
+        <div>
+            <h1 class="title">{{title}}</h1>
+        </div>
+        <div *ngIf="isInsert" class="row no-margin scroll-div hidescroll">
+            <ng-container *ngFor="let word of words; let i = index;">
+                <div *ngIf=" i % 3 == 0 && i != 0" class="w-100" style="margin-top: 30px;" ></div> 
+                <div class="box-word col-3">
+                    <h2 class="word">{{word}}</h2>
+                </div>
+            </ng-container>
+        </div>
+        <div *ngIf="isInsert" class="row no-margin scroll-div hidescroll">
+            <ng-container *ngFor="let word of userWords; let i = index;">
+                <div *ngIf=" i % 3 == 0 && i != 0" class="w-100" style="margin-top: 30px;" ></div> 
+                <div class="box-word col-3">
+                    <h2 class="word">{{word}}</h2>
+                </div>
+            </ng-container>
+        </div>
     </div>
 </div>
