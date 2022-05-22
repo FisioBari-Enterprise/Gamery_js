@@ -10,10 +10,11 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {DialogModule} from "./dialogs/dialog.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { RegisterComponent } from './components/register/register.component';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HomeGameComponent } from './game/components/home-game/home-game.component';
 import { TabelComponent } from './components/tabel/tabel.component';
+import {GameModule} from "./game/game.module";
+import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -21,21 +22,21 @@ import { TabelComponent } from './components/tabel/tabel.component';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    HomeGameComponent,
-    TabelComponent  
+    TabelComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     DialogModule,
+    GameModule,
+    SharedModule,
     MatDialogModule,
     BrowserAnimationsModule,
     CommonModule,
     FormsModule
   ],
   providers: [
-
     CookieService
   ],
   bootstrap: [AppComponent]

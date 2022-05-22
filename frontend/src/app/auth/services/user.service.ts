@@ -4,6 +4,7 @@ import {BaseService} from "../../services/base.service";
 import {Observable} from "rxjs";
 import {BaseDataResponse} from "../../classes/web/BaseResponse";
 import {TokenDataResponse} from "../../classes/web/TokenResponse";
+import {UserResponse} from "../../classes/UserResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,14 @@ export class UserService {
   registerUserTemporary(): Observable<TokenDataResponse>{
     const headers = this.base.CommonHeader
     return this.http.get<TokenDataResponse>(this.base.apiUrl('client', 'register/temporary'), {headers})
+  }
+
+  /**
+   * Ottengo i dati dell'utente attivo
+   * @returns Dati dell'utente che sta giocando
+   */
+  getUserInfo():Observable<UserResponse>{
+    let headers = this.base.TokenHeader;
+    return this.http.get<UserResponse>(this.base.apiUrl("client"),{headers});
   }
 }

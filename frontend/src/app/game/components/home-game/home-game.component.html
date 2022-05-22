@@ -1,1 +1,22 @@
-<p>home-game works!</p>
+<div class="page-container">
+  <!--Nav bar utente-->
+  <app-nav-bar [gameMode]="true" [skipLogin]="true"></app-nav-bar>
+  <!--Pagina principale-->
+  <div class="main-container">
+    <!--Dati sul livello-->
+    <div class="row justify-content-center" style="padding-top: 15px">
+      <!--Tempo-->
+      <div class="col-3" align="center">
+        <app-board [boardType]="0" [onChange]="timeSubject"></app-board>
+      </div>
+      <!--Punteggio-->
+      <div class="col-3" align="center">
+        <app-board [boardType]="1"></app-board>
+      </div>
+      <!--Livello-->
+      <div class="col-3" align="center">
+        <app-board [boardType]="2"></app-board>
+      </div>
+    </div>
+  </div>
+</div>
