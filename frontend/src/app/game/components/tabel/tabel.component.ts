@@ -8,32 +8,32 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class TabelComponent implements OnInit {
 
   /** Lista parole da inserire */
-  @Input() words: string[] = ['Apple', 'Orange', 'Banana', 'caio', 'Apple', 'Orange', 'Banana', 'caio']
+  @Input() words: string[] = []
   /** Lista parole inserite dall'utente */
-  @Input() userWords : String[]
+  @Input() userWords : string[] = [];
+  /** Indica parola selezionata */
+  @Output() indexSelected : EventEmitter<number> = new EventEmitter<number>();
 
-  @Output() indexSelected : EventEmitter<number>
+  /** Indica se si è in fase di inserimento o di memorizzazione */
+  @Input() isMemorization : Boolean = false;
 
   /** Titolo indicante la fase in corso */
   title : String = "MEMORIZATION PHASE"
-  /** Indica se si è in fase di inserimento o di memorizzazione */ 
-  isInsert : Boolean = true
-  
+
   /**Mostra le parole all'interno dell'area. */
   showWord : Boolean = true;
 
   constructor() {
-    this.userWords = []
+
   }
 
   ngOnInit(): void {
   }
 
-  addWord(word : String){
-    this.userWords.push(word)
-  }
-
   selectedBox(index : number){
+    if (this.isMemorization) {
+      return;
+    }
     this.indexSelected.emit(index);
   }
 

@@ -1,10 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from "../../auth/services/user.service";
 import {Subscription} from "rxjs";
-import {TokenData} from "../../classes/web/TokenResponse";
 import {DialogManagerService} from "../../services/dialog-manager.service";
-import { HomeService } from '../../services/home.service';
-import { UserResponse } from '../../classes/UserResponse';
 
 @Component({
   selector: 'app-home',
@@ -17,8 +13,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialog: DialogManagerService,
-    private userService: UserService,
-    private homeService : HomeService
   ) { }
 
   ngOnInit(): void {

@@ -53,7 +53,6 @@ export class GameService {
    */
   checkRound(words: string[], gameTime: number): Observable<GameRoundResponse> {
     const headers = this.base.TokenHeader;
-
-    return this.http.put<GameRoundResponse>(this.base.apiUrl('game', 'round'), {words : words, gameTime:gameTime}, {headers});
+    return this.http.put<GameRoundResponse>(this.base.apiUrl('game', 'round'), { words : words, gameTime: gameTime }, {headers});
   }
 }

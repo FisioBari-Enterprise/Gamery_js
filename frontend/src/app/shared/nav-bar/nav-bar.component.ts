@@ -5,6 +5,11 @@ import {DialogManagerService} from "../../services/dialog-manager.service";
 import {TokenData} from "../../classes/web/TokenResponse";
 import {Subscription} from "rxjs";
 
+// TODO: Bottone di pausa e gestione
+// TODO: Bottone di login se non ha un account registrato attivo e mostra la view dedicata
+// TODO: Bottone di logout e gestione
+
+
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -134,7 +139,6 @@ export class NavBarComponent implements OnInit, OnDestroy {
           this.dialog.closeDialog();
         },
         err => {
-          console.log(err);
           this.dialog.closeDialog();
         }
       )
