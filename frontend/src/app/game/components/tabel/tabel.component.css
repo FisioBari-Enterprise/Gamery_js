@@ -4,7 +4,7 @@
 }
 
 .main-container{
-    background-color: #08273F;
+    background: linear-gradient(#0A2740, #292555);
     border-radius: 20px;
     padding: 20px;
     width: 100%;
@@ -14,7 +14,7 @@
 .title {
     color: white;
     font-weight: bold;
-    font-family: "Exo2";
+    font-family: "Exo2", serif;
     text-align: center;
 }
 
@@ -31,13 +31,13 @@
 
 .word {
     color: black;
-    font-family: "Exo2";
+    font-family: "Exo2", serif;
     text-align: center;
     margin: 5px;
 }
 
 .no-margin{
-    margin: 0px;
+    margin: 0;
 }
 
 .scroll-div{

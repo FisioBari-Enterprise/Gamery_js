@@ -4,7 +4,7 @@
   <!--Pagina principale-->
   <div class="main-container">
     <!--Dati sul livello-->
-    <div class="row justify-content-center" style="padding-top: 15px">
+    <div class="row justify-content-center" style="padding-top: 15px;">
       <!--Tempo-->
       <div class="col-3" align="center">
         <app-board [boardType]="0" [onChange]="timeSubject"></app-board>
@@ -16,6 +16,25 @@
       <!--Livello-->
       <div class="col-3" align="center">
         <app-board [boardType]="2"></app-board>
+      </div>
+    </div>
+    <!--Inserimento di nuove parole-->
+    <div class="row justify-content-center" style="padding-top: 30px;">
+      <div class="col-6 col-md-5 insert-word-container">
+        <div class="row">
+          <div class="col">
+            <h1 class="insert-word-title">INSERT WORD:</h1>
+          </div>
+          <div class="col">
+            <input type="text" class="form-control">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Contenitore di visualizzazione delle parole-->
+    <div class="row justify-content-center" style="padding-top: 30px; height: calc(100vh - 70px - 250px)">
+      <div class="col-10">
+        <app-tabel></app-tabel>
       </div>
     </div>
   </div>

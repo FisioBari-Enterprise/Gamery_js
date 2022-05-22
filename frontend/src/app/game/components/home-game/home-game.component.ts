@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {BoardType} from "../../enum/boardType";
 import {Subject} from "rxjs";
 import {OnChangeBoard} from "../../classes/onChangeBoard";
 

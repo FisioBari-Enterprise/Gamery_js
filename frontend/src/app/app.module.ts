@@ -12,33 +12,32 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { TabelComponent } from './components/tabel/tabel.component';
+import { TabelComponent } from './game/components/tabel/tabel.component';
 import {GameModule} from "./game/game.module";
 import {SharedModule} from "./shared/shared.module";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LoginComponent,
-    RegisterComponent,
-    TabelComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    DialogModule,
-    GameModule,
-    SharedModule,
-    MatDialogModule,
-    BrowserAnimationsModule,
-    CommonModule,
-    FormsModule
-  ],
-  providers: [
-    CookieService
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        LoginComponent,
+        RegisterComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        DialogModule,
+        GameModule,
+        SharedModule,
+        MatDialogModule,
+        BrowserAnimationsModule,
+        CommonModule,
+        FormsModule
+    ],
+    providers: [
+        CookieService
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

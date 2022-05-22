@@ -1,7 +1,27 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
 .page-container {
   height: 100vh;
 }
 .main-container {
   height: calc(100vh - 70px);
   background: #167379;
+  flex-direction: column;
+}
+.insert-word-container {
+  background: linear-gradient(#0A2740, #292555);
+  border-radius: 10px;
+}
+.insert-word-container h1 {
+  font-family: "Exo2", serif;
+  text-align: center;
+  margin-top: 20px;
+  color: #fff;
+}
+.insert-word-container input {
+  margin-top: 16px;
+  font-family: "Exo2", serif;
 }
