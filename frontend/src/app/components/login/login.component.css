@@ -1,11 +1,11 @@
 @font-face {
     font-family: "Exo2";
-    src: local("Exo2"), url(../../assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+    src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
 }
 
 @font-face{
     font-family: "Lobster";
-    src: local("Lobster"), url(../../assets/fonts/Lobster/Lobster-Regular.ttf) format("truetype");
+    src: local("Lobster"), url(src/assets/fonts/Lobster/Lobster-Regular.ttf) format("truetype");
   }
 
 .main-container{

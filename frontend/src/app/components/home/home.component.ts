@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserService} from "../auth/services/user.service";
+import {UserService} from "../../auth/services/user.service";
 import {Subscription} from "rxjs";
-import {TokenData} from "../classes/web/TokenResponse";
-import {DialogManagerService} from "../services/dialog-manager.service";
-import { HomeService } from '../services/home.service';
-import { User } from '../classes/User';
+import {TokenData} from "../../classes/web/TokenResponse";
+import {DialogManagerService} from "../../services/dialog-manager.service";
+import { HomeService } from '../../services/home.service';
+import { User } from '../../classes/User';
 
 @Component({
   selector: 'app-home',
