@@ -4,6 +4,7 @@ import { ErrorComponent } from './error/error.component';
 import { LoadingComponent } from './loading/loading.component';
 import { PauseComponent } from './pause/pause.component';
 import { CompleteLevelComponent } from './complete-level/complete-level.component';
+import { LoseComponent } from './lose/lose.component';
 
 
 
@@ -12,7 +13,8 @@ import { CompleteLevelComponent } from './complete-level/complete-level.componen
     ErrorComponent,
     LoadingComponent,
     PauseComponent,
-    CompleteLevelComponent
+    CompleteLevelComponent,
+    LoseComponent
   ],
   imports: [
     CommonModule

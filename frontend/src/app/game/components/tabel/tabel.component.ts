@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-tabel',
@@ -12,12 +12,13 @@ export class TabelComponent implements OnInit {
   /** Lista parole inserite dall'utente */
   @Input() userWords : String[]
 
+  @Output() indexSelected : EventEmitter<number>
+
   /** Titolo indicante la fase in corso */
   title : String = "MEMORIZATION PHASE"
   /** Indica se si è in fase di inserimento o di memorizzazione */ 
   isInsert : Boolean = true
   
-
   /**Mostra le parole all'interno dell'area. */
   showWord : Boolean = true;
 
@@ -30,6 +31,10 @@ export class TabelComponent implements OnInit {
 
   addWord(word : String){
     this.userWords.push(word)
+  }
+
+  selectedBox(index : number){
+    this.indexSelected.emit(index);
   }
 
 }

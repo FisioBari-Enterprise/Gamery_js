@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-complete-level',
@@ -17,7 +18,12 @@ export class CompleteLevelComponent implements OnInit {
   /** Tempo rimasto prima dell'inizio di un nuovo livello */
   timeLeft : number = 15;
 
-  constructor() { }
+  constructor(
+    public dialogRef: MatDialogRef<CompleteLevelComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    
+  }
 
   ngOnInit(): void {
     this.setUpTimer();
@@ -35,7 +41,7 @@ export class CompleteLevelComponent implements OnInit {
   }
 
   startNewLevel(){
-    console.log("ciao")
+    this.dialogRef.close()
   }
 
 }
