@@ -38,7 +38,7 @@ const user = require("./routes/client.js");
 const game = require("./routes/game.js");
 
 //Migliora la sicurezza
-app.use(helmet());
+//app.use(helmet());
 //Fa il log di tutte le richieste
 app.use(morgan('combined'))
 //Configurazione per il body

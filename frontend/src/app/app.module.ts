@@ -32,9 +32,6 @@ import {AuthModule} from "./auth/auth.module";
         CommonModule,
         FormsModule
     ],
-    providers: [
-        CookieService
-    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
