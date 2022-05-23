@@ -2,7 +2,6 @@ let express = require("express");
 const StaticFunctions = require("../static");
 const { saveWords } = require('../classes/game/words');
 const Token = require("../classes/token");
-const SingleGameDB = require('../database/game/singleGame');
 const SingleGame = require("../classes/game/singleGame");
 let router = express.Router();
 

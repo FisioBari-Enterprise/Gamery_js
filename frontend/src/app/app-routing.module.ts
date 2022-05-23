@@ -28,10 +28,6 @@ const routes: Routes = [
     // canActivate: [UserGuard]
   },
   {
-    path : 'complete',
-    component : CompleteLevelComponent
-  },
-  {
     path:'**',redirectTo : 'home'
   }
 

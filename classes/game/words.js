@@ -122,7 +122,7 @@ async function generateNewRound(game) {
     await GameRound.insertMany(newRounds);
     // Aggiorna il campo round della partita
     game.max_round += 1;
-    game.memorize_time_for_round = timeForRound(allWords, true);
+    game.memorize_time_for_round = timeForRound(allWords, false);
     game.writing_time_for_round = timeForRound(allWords);
     await game.save();
 }
@@ -139,7 +139,7 @@ function timeForRound(words, insert=true) {
         if (word.en_length == null) {
             throw "Length not found for word " + word.en;
         }
-        const base = insert ? 5 : 3;
+        const base = insert ? 4 : 3;
         const molt = Math.trunc(word.en_length / 5) + 1;
         tot += base * molt;
     }

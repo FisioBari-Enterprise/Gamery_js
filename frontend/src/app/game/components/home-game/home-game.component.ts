@@ -26,16 +26,13 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   /**Modifiche allo score*/
   scoreSubject: Subject<OnChangeBoard> = new Subject<OnChangeBoard>();
   /**Modifiche al livello*/
-  livelloSubject: Subject<OnChangeBoard> = new Subject<OnChangeBoard>();
+  levelSubject: Subject<OnChangeBoard> = new Subject<OnChangeBoard>();
 
   /**Partita in corso*/
   game: GameRound | null = null;
 
   /**Indica se si è in fase di memorizzazione o di inserimento */
   isMemorization : boolean = true
-
-  /** Timer del round*/
-  timeLeft : number = 0;
 
   /** Array delle parole inserite dall'utente */
   userWords : string[] = []
@@ -147,12 +144,21 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     },1000)
   }
 
+  /**
+   * Evento d'inizio round
+   */
   startRound(){
-    this.userWords = []
-    this.isMemorization = true
+    this.userWords = [];
+    this.isMemorization = true;
+    // Aggiorna i dati di score e level
+    this.scoreSubject.next(new OnChangeBoard(this.game === null ? 0 : this.game.game.points, false, true));
+    this.levelSubject.next(new OnChangeBoard(this.game === null ? 0 : this.game.game.max_round, false, true));
     this.setUpTimer();
   }
 
+  /**
+   * Controllo di fine round
+   */
   checkRoundEnd(){
     this.allSubscriptions.push(this.gameService.checkRound(this.userWords, this.game!.game.writing_time_for_round).subscribe(res => {
       if(res.data.game.complete){

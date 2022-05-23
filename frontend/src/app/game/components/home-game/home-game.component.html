@@ -11,11 +11,11 @@
       </div>
       <!--Punteggio-->
       <div class="col-3" align="center">
-        <app-board [boardType]="1"></app-board>
+        <app-board [boardType]="1" [onChange]="scoreSubject"></app-board>
       </div>
       <!--Livello-->
       <div class="col-3" align="center">
-        <app-board [boardType]="2"></app-board>
+        <app-board [boardType]="2" [onChange]="levelSubject"></app-board>
       </div>
     </div>
     <!--Inserimento di nuove parole-->

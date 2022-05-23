@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {ColorButtons} from "../../shared/enum/colorButtons";
 
 @Component({
   selector: 'app-complete-level',
@@ -16,18 +17,21 @@ export class CompleteLevelComponent implements OnInit {
   /** Tempo rimasto prima dell'inizio di un nuovo livello */
   timeLeft : number = 15;
 
+  /**Colore del bottone*/
+  colorButton = ColorButtons.Green;
+
   constructor(
-    //public dialogRef: MatDialogRef<CompleteLevelComponent>,
-    //@Inject(MAT_DIALOG_DATA) public data: {
-      //score : number,
-    //}
+    public dialogRef: MatDialogRef<CompleteLevelComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      score : number,
+    }
   ) {
 
   }
 
   ngOnInit(): void {
     this.setUpTimer();
-    //this.score = this.data.score;
+    this.score = this.data.score;
   }
 
   /**Timer per inizio del nuovo livello */
@@ -42,7 +46,7 @@ export class CompleteLevelComponent implements OnInit {
   }
 
   startNewLevel(){
-    //this.dialogRef.close()
+    this.dialogRef.close()
   }
 
 }
