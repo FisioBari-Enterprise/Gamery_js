@@ -65,7 +65,7 @@ app.use(function (req, res, next) {
 });
 
 //FRONTEND di produzione
-app.use("/", express.static("www"));
+app.use("/", express.static("client"));
 //BACKEND
 app.use("/api", index);
 app.use("/api/client", user);

@@ -190,7 +190,7 @@ class User {
         }
         const oldUser = await UserModel.findOne({uuid: uuid, valid: true}).exec();
         if (oldUser == null) {
-            throw "generic: uuid invalid";
+            throw "generic: no user found with the uuid passed";
         }
         const oldUserCredentials = await CredentialsModel.findOne({user: new ObjectId(oldUser._id)}).exec();
         if (oldUserCredentials !== null) {

@@ -27,7 +27,7 @@
     color: white;
     top: 5%;
     left: 50%;
-    position: absolute;
+    position: relative;
     transform: translate(-50%);
     box-sizing: border-box;
     font-weight: bold;

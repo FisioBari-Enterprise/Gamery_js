@@ -7,6 +7,7 @@ import {Subscription} from "rxjs";
 import {NavBarType} from "../enum/navBarType";
 import { PauseComponent } from 'src/app/dialogs/pause/pause.component';
 import {Router} from "@angular/router";
+import {ColorButtons} from "../enum/colorButtons";
 
 // TODO: Bottone di pausa e gestione
 // TODO: Bottone di login se non ha un account registrato attivo e mostra la view dedicata
@@ -27,9 +28,11 @@ export class NavBarComponent implements OnInit, OnDestroy {
   /**Prima lettera del username*/
   firstCharUsername: string | null = null;
 
-  /**Tipo di navbar da visualizzare in base agli input*/
-  currentType: number = NavBarType.NoLogged;
+  /**Colore del bottone di home*/
+  colorSchemaHome = ColorButtons.Blue;
 
+  /**Tipo di navbar da visualizzare in base agli input*/
+  @Input() currentType: number = NavBarType.NoLogged;
   /**Indica se si trova in una partita*/
   @Input() gameMode: Boolean = false;
   /**Indica che non ci sono più pause disponibili all'utente*/
@@ -47,20 +50,28 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Cancella tutti i dati presenti nel local storage
-    // localStorage.clear();
+    //localStorage.clear();
 
     // Carica il tipo
     if (this.gameMode) {
       this.currentType = NavBarType.Game;
     }
-
+    if (this.currentType === NavBarType.ShowHome) {
+      return;
+    }
     // Controllo sul uuid dell'utente temporaneo
     this.dialog.showLoading("Checking data...");
     const uuid = localStorage.getItem('uuid');
-    if (uuid === null) {
-      this.newTemporaryUser();
+    const uuidUser = localStorage.getItem('uuidUser');
+    // Controlla il login da fare
+    if (uuidUser != null) {
+      this.login();
     } else {
-      this.checkToken();
+      if (uuid === null) {
+        this.newTemporaryUser();
+      } else {
+        this.checkToken();
+      }
     }
   }
 
@@ -96,6 +107,35 @@ export class NavBarComponent implements OnInit, OnDestroy {
       }, error => {
         this.dialog.closeDialog();
         this.dialog.showError(error.message, (res) => this.newTemporaryUser());
+      })
+    );
+  }
+
+  /**
+   * Effettua il login con le credenziali salvate
+   * @private
+   */
+  private login() {
+    const usernameEmail = localStorage.getItem('usernameEmail');
+    const password = localStorage.getItem('password')
+    if (usernameEmail == null || password == null) {
+      this.dialog.closeDialog();
+      this.dialog.showError('No save credentials found', () => {});
+      return
+    }
+    this.allSubscriptions.push(
+      this.userService.login(usernameEmail, password).subscribe(res => {
+        this.currentType = NavBarType.Logged;
+        // Salva il token
+        sessionStorage.setItem('auth_token', res.data.access)
+        this.getUserInfo();
+      }, error => {
+        this.dialog.closeDialog();
+        let err = error.error.error;
+        if (err != null) {
+          err = err.split(':')[1];
+        }
+        this.dialog.showError(err, () => {});
       })
     );
   }
@@ -144,7 +184,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         res => {
           // Si prende i dati trovati
           this.userInfo = res.data;
-          this.firstCharUsername = this.userInfo.username.charAt(0);
+          this.firstCharUsername = this.userInfo.username.charAt(0).toUpperCase();
           this.dialog.closeDialog();
         },
         err => {
@@ -171,6 +211,39 @@ export class NavBarComponent implements OnInit, OnDestroy {
    */
   onLoginClick() {
     this.router.navigateByUrl('login');
+  }
+
+  /**
+   * Torna alla home
+   */
+  backHome() {
+    this.router.navigateByUrl('home');
+  }
+
+  /**
+   * Effettua il logout
+   */
+  onLogoutClick() {
+    this.dialog.showLoading('Logging out...');
+    this.allSubscriptions.push(
+      this.userService.logout().subscribe(res => {
+        this.dialog.closeDialog();
+        // Resetta i dati
+        const uuid = localStorage.getItem('uuid');
+        localStorage.removeItem('uuidUser');
+        const isLogin = localStorage.getItem('isLogin') === 'true';
+        this.currentType = NavBarType.NoLogged;
+        // In base ai dati crea o meno un nuovo utente temporaneo
+        if (!isLogin) {
+          this.newTemporaryUser();
+        } else {
+          this.loginUserTemporary(uuid!);
+        }
+      }, error => {
+        this.dialog.closeDialog();
+        this.dialog.showError(error.error, () => {});
+      })
+    );
   }
 
 }

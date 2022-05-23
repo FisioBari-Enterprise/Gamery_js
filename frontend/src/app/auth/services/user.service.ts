@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {BaseService} from "../../services/base.service";
 import {Observable} from "rxjs";
 import {BaseDataResponse} from "../../classes/web/BaseResponse";
-import {TokenDataResponse} from "../../classes/web/TokenResponse";
+import {TokenData, TokenDataResponse} from "../../classes/web/TokenResponse";
 import {UserResponse} from "../../classes/UserResponse";
 
 @Injectable({
@@ -22,6 +22,19 @@ export class UserService {
   validToken(): Observable<BaseDataResponse> {
     const headers = this.base.TokenHeader;
     return this.http.get<BaseDataResponse>(this.base.apiUrl('client', 'check'), {headers});
+  }
+
+  /**
+   * Effettua il login
+   * @param usernameEmail
+   * @param password
+   */
+  login(usernameEmail: string, password: string): Observable<TokenDataResponse> {
+    const headers = this.base.CommonHeader;
+    return this.http.post<TokenDataResponse>(this.base.apiUrl('client', 'login'), {
+      usernameEmail: usernameEmail,
+      password: password
+    }, {headers})
   }
 
   /**
@@ -47,7 +60,7 @@ export class UserService {
    * @param email email inserita dall'utente
    * @param password password inserito dalla password
    * @param uuid uuid relativo all'utente temporaneo che è stato creato in precedenza
-   * @returns token e nuovo uuid legato al nuovo profilo. 
+   * @returns token e nuovo uuid legato al nuovo profilo.
    */
   registerNewUser(username : string, email : String, password : string, uuid : string) : Observable<TokenDataResponse>{
     let headers = this.base.CommonHeader;
@@ -67,5 +80,28 @@ export class UserService {
   getUserInfo():Observable<UserResponse>{
     let headers = this.base.TokenHeader;
     return this.http.get<UserResponse>(this.base.apiUrl("client"),{headers});
+  }
+
+  /**
+   * Effettua il logout
+   */
+  logout(): Observable<BaseDataResponse>{
+    let headers = this.base.TokenHeader;
+    return this.http.get<BaseDataResponse>(this.base.apiUrl('client', 'logout'), {headers});
+  }
+
+  /**
+   * Salva le credenziali per fare il login dalla navbar
+   * @param usernameEmail
+   * @param password
+   * @param data
+   * @param isLogin
+   */
+  saveCredentials(usernameEmail: string, password: string, data: TokenData, isLogin: boolean = true) {
+    localStorage.setItem('auth_token',data.access);
+    localStorage.setItem('uuidUser', data.uuid!);
+    localStorage.setItem('usernameEmail', usernameEmail);
+    localStorage.setItem('password', password);
+    localStorage.setItem('isLogin', isLogin.toString());
   }
 }

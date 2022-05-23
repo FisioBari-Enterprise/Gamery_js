@@ -23,7 +23,7 @@ router.post("/login", async function (req, res) {
             if(err !== null) {
                 StaticFunctions.sendError(res, err.message);
             } else {
-                StaticFunctions.sendSuccess(res, {access: token});
+                StaticFunctions.sendSuccess(res, {access: token, uuid: user.uuid});
             }
         });
     } catch (error) {

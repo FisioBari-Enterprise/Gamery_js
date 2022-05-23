@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
   email: AuthField = new AuthField();
   /**password data*/
   password: AuthField = new AuthField();
-  
+
 
   constructor(
     private userService : UserService,
@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.resetField();
   }
 
   ngOnDestroy(): void {
@@ -43,33 +43,44 @@ export class RegisterComponent implements OnInit {
   }
 
   /**
+   * Reset degli input utente
+   */
+  resetField() {
+    this.username = new AuthField();
+    this.email = new AuthField();
+    this.password = new AuthField();
+  }
+
+  /**
    * Azione di registrazione
    */
   register(){
     this.username.error = "";
     this.email.error = "";
     this.password.error = "";
-    this.subscription = 
+    this.dialogService.showLoading('Checking credentials...');
+    this.subscription =
       this.userService.registerNewUser(this.username.value, this.email.value, this.password.value,localStorage.getItem("uuid")!).subscribe( res => {
-        //aggiorno il token e lo uuid salvandoli nel localStorage
-        localStorage.setItem('auth_token',res.data.access);
-        localStorage.setItem('uuidUser',res.data.uuid!);
+        this.dialogService.closeDialog();
+        // Salva le credenziali e fa il redirect
+        this.userService.saveCredentials(this.username.value, this.password.value, res.data, false);
         this.router.navigateByUrl("home");
       }, err =>  {
+        this.dialogService.closeDialog();
         let errore = err.error.error
-        console.log(errore)
-        //gestisco l'errore capendo prima il campo di riferimento e poi settando il relativo errore nella sezione corretta
-        let field = errore.split(':')[0];
-        let error = errore.split(':')[1];
+        if (errore != null) {
+          //gestisco l'errore capendo prima il campo di riferimento e poi settando il relativo errore nella sezione corretta
+          let field = errore.split(':')[0];
+          let error = errore.split(':')[1];
 
-        console.log(error)
-        switch(field){
-          case 'username' : this.username.error = error; break;
-          case 'email' : this.email.error = error; break;
-          case 'password' : this.password.error = error; break;
-          default : {
-            this.dialogService.showError(error, () => {})
+          switch(field){
+            case 'username' : this.username.error = error; break;
+            case 'email' : this.email.error = error; break;
+            case 'password' : this.password.error = error; break;
+            default: this.dialogService.showError(error, () => {})
           }
+        } else {
+          this.dialogService.showError(err.error, () => {})
         }
       })
   }
@@ -78,6 +89,7 @@ export class RegisterComponent implements OnInit {
    * Ritorno al login
    */
   cancel(){
+    this.resetField();
     this.isLoginChange.emit(true);
   }
 
