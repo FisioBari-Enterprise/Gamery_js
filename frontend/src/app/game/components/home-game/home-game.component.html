@@ -26,13 +26,16 @@
             <h1 class="insert-word-title">INSERT WORD:</h1>
           </div>
           <div class="col">
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" [attr.disabled]="isMemorization ? '' : null" [(ngModel)]="word">
           </div>
+        </div>
+        <div class="confirm-text">
+          <h4>Press enter to confirm the word</h4>
         </div>
       </div>
     </div>
     <!--Contenitore di visualizzazione delle parole-->
-    <div class="row justify-content-center" style="padding-top: 30px; height: calc(100vh - 70px - 250px)">
+    <div class="row justify-content-center" style="padding-top: 30px; height: calc(100vh - 70px - 250px);">
       <div class="col-10">
         <app-tabel [userWords]="userWords" [isMemorization]="isMemorization" [words]="game === null || game!.words == null ? [] : game!.words"></app-tabel>
       </div>

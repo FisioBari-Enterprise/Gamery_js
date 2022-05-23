@@ -25,3 +25,13 @@
   margin-top: 16px;
   font-family: "Exo2", serif;
 }
+
+.confirm-text {
+  text-align: center;
+  color: white;
+  font-family: "Exo2";
+}
+
+.disable {
+  pointer-events:none;
+}

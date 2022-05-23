@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import {Subject, Subscription, timer} from "rxjs";
 import { CompleteLevelComponent } from 'src/app/dialogs/complete-level/complete-level.component';
@@ -38,7 +38,10 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   timeLeft : number = 0;
 
   /** Array delle parole inserite dall'utente */
-  userWords : string[]
+  userWords : string[] = []
+  
+  /**Parola del input */
+  word : string = ""
 
   constructor(
     private dialogManager: DialogManagerService,
@@ -66,6 +69,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
       this.gameService.lastGame().subscribe(res => {
         this.game = new GameRound();
         this.game.game = res.data;
+        console.log(this.game)
         // Se il gioco è completato ne crea un altro
         if (this.game.game.complete) {
           this.newGame();
@@ -146,6 +150,8 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   }
 
   startRound(){
+    this.userWords = []
+    this.isMemorization = true
     this.setUpTimer();
   }
 
@@ -157,7 +163,10 @@ export class HomeGameComponent implements OnInit, OnDestroy {
         },{});
       }
       else{
-        this.dialogManager.showDialog(CompleteLevelComponent, this.startRound, {});
+        this.game = res.data
+        this.dialogManager.showDialog(CompleteLevelComponent, () => {
+          this.startRound()
+        }, {});
       }
     }, err => {
       console.log(err);
@@ -171,4 +180,18 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   onPause(event: any) {
     console.log(`Pausa ricevuta: ${event.toString()}`);
   }
+  
+   /**
+  * Evento di keypress in ascolto per ottenere il barcode
+  * @param event Evento del KeyPress
+  */
+    @HostListener('window:keypress', ['$event'])
+    beforeunloadHandler(event: KeyboardEvent) {
+      if(event.key.includes('Enter')){
+        if(this.word != ''){
+          this.userWords.push(this.word);
+          this.word = "";
+        }
+      }
+    }
 }

@@ -4,6 +4,7 @@ import { HomeGameComponent } from './components/home-game/home-game.component';
 import {SharedModule} from "../shared/shared.module";
 import { BoardComponent } from './components/board/board.component';
 import {TabelComponent} from "./components/tabel/tabel.component";
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {TabelComponent} from "./components/tabel/tabel.component";
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class GameModule { }
