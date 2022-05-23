@@ -59,6 +59,16 @@ router.post('/register', async function (req, res) {
 router.get("/check", Token.autenticateUser, function (req, res) {
     StaticFunctions.sendSuccess(res,true);
 });
+// Effettua il logout
+router.get('/logout', Token.autenticateUser, async function (req, res) {
+    let user = new User(req.user._id);
+    try {
+        await user.logout(req.headers['authorization'].split(' ')[1])
+        StaticFunctions.sendSuccess(res, true);
+    } catch (error) {
+        StaticFunctions.sendError(res, error);
+    }
+})
 
 router.get("", Token.autenticateUser, async function(req,res){
 

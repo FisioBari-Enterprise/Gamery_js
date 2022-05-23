@@ -1,6 +1,7 @@
 const Token = require('../token');
 const UserModel = require('../../database/users/user');
 const CredentialsModel = require('../../database/users/credentials');
+const SessionModel = require('../../database/users/session');
 const {cryptPassword, comparePassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
 let ObjectId = require("mongoose").Types.ObjectId;
@@ -246,6 +247,19 @@ class User {
                 }
             });
         });
+    }
+
+    /**
+     * Effettua il logout dell'utente costruito
+     * @param {string} token Token connesso all'utente
+     * @returns {Promise<void>}
+     */
+    async logout(token) {
+        if (this.user == null) {
+            await this.buildUser();
+        }
+        // Rende invalide la sessione
+        await SessionModel.updateMany({token: token}, {valid: false}).exec();
     }
 }
 
