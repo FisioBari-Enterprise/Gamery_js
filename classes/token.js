@@ -56,6 +56,7 @@ class Token {
         //Controlla il token
         jwt.verify(token, TokenSecret, {}, async function (err, userId) {
             if(err) {
+                console.log(err);
                 //Rende la sessione non valida se la trova nel DB
                 await SessionModel.updateMany({token: token}, {valid: false}).exec();
                 return StaticFunctions.sendError(res, 'Token not valid', 403);

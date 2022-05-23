@@ -75,6 +75,10 @@ export class HomeGameComponent implements OnInit, OnDestroy {
           this.getLastRound();
         }
       }, error => {
+        if (error.error.error === 'No game found for this user') {
+          this.newGame();
+          return
+        }
         this.dialogManager.showError(error.message, () => this.checkLastGame());
       })
     );
@@ -135,8 +139,8 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     // Gestione timer
     let timerId = setInterval(() => {
       //Blocco il timer nel caso in cui il gioco entri in pausa
-      if(!this.isPause){  
-        //Faccio l'update del timer 
+      if(!this.isPause){
+        //Faccio l'update del timer
         timeBoard.updateValue();
         this.timeSubject.next(timeBoard);
         //Se raggiungo lo zero entro in modalità inserimento o controllo le parole inserite
@@ -191,7 +195,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
    * Evento di pausa
    * @param event
    */
-  onPause(event: any) { 
+  onPause(event: any) {
     this.isPause = event as boolean
   }
 
