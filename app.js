@@ -23,7 +23,7 @@ const swaggerOptions = {
         swagger: "2.0",
         info: {
             title: 'Gamery js',
-            version: '1.0.0',
+            version: '0.1',
         },
     },
     apis: ['./routes/*.js'],
