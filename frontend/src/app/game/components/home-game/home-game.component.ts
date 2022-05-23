@@ -117,7 +117,6 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     this.allSubscriptions.push(
       this.gameService.lastRound().subscribe(res => {
         this.game = res.data;
-        console.log(this.game);
         // Richiama le funzioni di aggiornamento
         this.startRound();
       }, error => {
@@ -128,12 +127,12 @@ export class HomeGameComponent implements OnInit, OnDestroy {
 
   setUpTimer(){
     let time = this.isMemorization ? this.game!.game.memorize_time_for_round : this.game!.game.writing_time_for_round;
-    let timeBoard = new OnChangeBoard(time, false, true)
+    let timeBoard = new OnChangeBoard(time, false, true, true)
     this.timeSubject.next(timeBoard);
     // Gestione timer
     let timerId = setInterval(() => {
-      if(!this.isPause){
-        timeBoard.value--;
+      if(!this.isPause){  
+        timeBoard.updateValue();
         this.timeSubject.next(timeBoard);
         if (timeBoard.value === 0) {
           clearInterval(timerId);
