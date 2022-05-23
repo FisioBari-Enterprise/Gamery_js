@@ -21,7 +21,7 @@ export class TabelComponent implements OnInit {
   title : String = "MEMORIZATION PHASE"
 
   /**Mostra le parole all'interno dell'area. */
-  showWord : Boolean = true;
+  @Input() showWord : Boolean = true;
 
   constructor() {
 

@@ -9,15 +9,12 @@ import {ColorButtons} from "../../shared/enum/colorButtons";
 })
 export class LoseComponent implements OnInit {
 
-  /**Score da mostrare*/
-  @Input() score : number = 0;
-
   /**Colore del bottone*/
   colorButton = ColorButtons.Blue;
 
   constructor(
     public dialogRef: MatDialogRef<LoseComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: number,
   ) { }
 
   ngOnInit(): void {

@@ -9,9 +9,6 @@ import {ColorButtons} from "../../shared/enum/colorButtons";
 })
 export class CompleteLevelComponent implements OnInit {
 
-  /** Punteggio totale della partita */
-  score : Number = 0;
-
   /** Id del timer */
   timerId : any;
   /** Tempo rimasto prima dell'inizio di un nuovo livello */
@@ -22,16 +19,13 @@ export class CompleteLevelComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CompleteLevelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {
-      score : number,
-    }
+    @Inject(MAT_DIALOG_DATA) public data : number
   ) {
 
   }
 
   ngOnInit(): void {
     this.setUpTimer();
-    this.score = this.data.score;
   }
 
   /**Timer per inizio del nuovo livello */

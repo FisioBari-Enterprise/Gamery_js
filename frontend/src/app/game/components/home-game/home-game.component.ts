@@ -33,6 +33,8 @@ export class HomeGameComponent implements OnInit, OnDestroy {
 
   /**Indica se si è in fase di memorizzazione o di inserimento */
   isMemorization : boolean = true
+  /** Indica se il gioco è in pausa */
+  isPause : boolean = false;
 
   /** Array delle parole inserite dall'utente */
   userWords : string[] = []
@@ -130,15 +132,17 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     this.timeSubject.next(timeBoard);
     // Gestione timer
     let timerId = setInterval(() => {
-      timeBoard.value--;
-      this.timeSubject.next(timeBoard);
-      if (timeBoard.value === 0) {
-        clearInterval(timerId);
-        if(this.isMemorization){
-          this.isMemorization = !this.isMemorization;
-          this.setUpTimer();
-        } else {
-          this.checkRoundEnd();
+      if(!this.isPause){
+        timeBoard.value--;
+        this.timeSubject.next(timeBoard);
+        if (timeBoard.value === 0) {
+          clearInterval(timerId);
+          if(this.isMemorization){
+            this.isMemorization = !this.isMemorization;
+            this.setUpTimer();
+          } else {
+            this.checkRoundEnd();
+          }
         }
       }
     },1000)
@@ -161,16 +165,17 @@ export class HomeGameComponent implements OnInit, OnDestroy {
    */
   checkRoundEnd(){
     this.allSubscriptions.push(this.gameService.checkRound(this.userWords, this.game!.game.writing_time_for_round).subscribe(res => {
+      this.game = res.data
       if(res.data.game.complete){
+        
         this.dialogManager.showDialog(LoseComponent,() => {
           this.router.navigateByUrl('home');
-        }, {score : this.game?.game.points});
+        }, {data : this.game.game.points});
       }
       else{
-        this.game = res.data
         this.dialogManager.showDialog(CompleteLevelComponent, () => {
           this.startRound()
-        }, {score : this.game.game.points});
+        }, {data : this.game.game.points});
       }
     }, err => {
       console.log(err);
@@ -181,7 +186,8 @@ export class HomeGameComponent implements OnInit, OnDestroy {
    * Evento di pausa
    * @param event
    */
-  onPause(event: any) {
+  onPause(event: any) { 
+    this.isPause = event as boolean
     console.log(`Pausa ricevuta: ${event.toString()}`);
   }
 
@@ -192,9 +198,10 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     @HostListener('window:keypress', ['$event'])
     beforeunloadHandler(event: KeyboardEvent) {
       if(event.key.includes('Enter')){
+        this.word = this.word.replace(/^\s+|\s+$/g, '');
         if(this.word != ''){
           this.userWords.push(this.word);
-          this.word = "";
+          this.word = '';
         }
       }
     }
