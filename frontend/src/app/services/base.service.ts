@@ -12,11 +12,11 @@ export class BaseService {
   /**Header di base per le richieste*/
   private readonly _jsonHeader: HttpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
   /**Tipo di host che si vuole usare per l'applicazione*/
-  private readonly hostType: 'local' | 'production' = 'local';
+  private readonly hostType: 'local' | 'production' = 'production';
   /**Host per lo sviluppo locale*/
   private readonly localHost: string = 'http://localhost:3000';
   /**Host per la produzione*/
-  private readonly productionHost: string = '';
+  private readonly productionHost: string = 'https://web-gamery.herokuapp.com';
 
   //ENDPOINT
   private readonly _base = 'api';
