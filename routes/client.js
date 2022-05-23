@@ -20,7 +20,7 @@ router.post("/login", async function (req, res) {
     //Controlla se ha inviato un uuid
     if(req.body.uuid !== undefined){
         let user = new Client();
-        await user.login(req.socket.remoteAddress, null, null, null, req.body.uuid, true, function (err, token, user) {
+        await user.login(req.socket.remoteAddress, null, req.body.usernameEmail, req.body.password, req.body.uuid, true, function (err, token, user) {
             if(err !== null) {
                 StaticFunctions.sendError(res, err.message);
             } else {
@@ -46,11 +46,11 @@ router.get("/register/temporary", function (req, res) {
 router.post('/register', async function (req, res) {
     let user = new User();
     try {
-        await user.register(req.body.username, req.body.email, req.body.password, (err) => {
+        await user.register(req.socket.remoteAddress, req.body.uuid, req.body.username, req.body.email, req.body.password, (err, token) => {
             if (err !== null) {
                 return StaticFunctions.sendError(res, err);
             }
-            StaticFunctions.sendSuccess(res, user.user);
+            StaticFunctions.sendSuccess(res, {access: token});
         });
     } catch (error) {
         return StaticFunctions.sendError(res, error);

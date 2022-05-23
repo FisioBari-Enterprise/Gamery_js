@@ -82,13 +82,13 @@ class User {
      * Cerca l'utente in base ai dati passati
      * @param { String | null } ipAddress Indirizzo ip della richiesta necessario per la generazione del toke
      * @param { String | null | undefined } id Id assegnato all'utente
-     * @param { String | null | undefined } email Email inserita dall'utente
+     * @param { String | null | undefined } usernameEmail Email o username inserita dall'utente
      * @param { String | null | undefined } password Password
      * @param { String | null | undefined } uuid UUID v4 generato in fase di creazione
      * @param { boolean } getToken Nella funziona ritorna il token
      * @param { Login } callback Azione da richiamare al completamento delle operazioni
      */
-    async login(ipAddress=null,id=null, email=null, password=null, uuid=null, getToken=true, callback) {
+    async login(ipAddress=null,id=null, usernameEmail=null, password=null, uuid=null, getToken=true, callback) {
         let userJson = null;
         //Ricerca per UUID
         if (uuid !== null) {
@@ -116,13 +116,27 @@ class User {
 
     /**
      * Tenta di registrare un nuovo utente
+     * @param {string} ipAddress Ip address della richiesta
+     * @param {string} uuid Uuid connesso all'utente temporaneo
      * @param {string} username username inserito dall'utente
      * @param {string} email email inserita dall'utente
      * @param {string} password password inserita dall'utente
      * @param callback funzione di callback
      * @returns {Promise<void>}
      */
-    async register(username, email, password, callback) {
+    async register(ipAddress, uuid, username, email, password, callback) {
+        // Controlli sul uuid
+        if (uuid == null) {
+            throw "generic: uuid not passed"
+        }
+        const oldUser = await UserModel.findOne({uuid: uuid, valid: true}).exec();
+        if (oldUser == null) {
+            throw "generic: uuid invalid";
+        }
+        const oldUserCredentials = await CredentialsModel.findOne({user: new ObjectId(oldUser._id)}).exec();
+        if (oldUserCredentials !== null) {
+            throw "generic: this user already has credentials"
+        }
         // Controllo non vuoti
         if (username == null || username === "") {
             throw "username: cannot be empty";
@@ -157,13 +171,19 @@ class User {
            if (err != null) {
                callback("generic: error password encryption");
            }
-            const newUser = new UserModel({username: username, uuid: null});
-            await newUser.save();
-            const credentials = new CredentialsModel({email: email, password: hash, user: newUser._id});
+            oldUser.username = username
+            await oldUser.save();
+            const credentials = new CredentialsModel({email: email, password: hash, user: oldUser._id});
             await credentials.save();
-            this.id = newUser.id;
-            this.user = newUser;
-            callback(null);
+            this.id = oldUser.id;
+            this.user = oldUser;
+            Token.createToken(oldUser._id.toString(), ipAddress,function (err, token) {
+                if(err) {
+                    callback(err, null);
+                } else {
+                    callback(null, token);
+                }
+            });
         });
     }
 }
