@@ -5,4 +5,4 @@ const credentials = new Schema({
     password: String
 }, { timestamps: true })
 
-module.exports = model("users", credentials);
+module.exports = model("credentials", credentials);
