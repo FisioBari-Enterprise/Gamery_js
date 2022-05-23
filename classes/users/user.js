@@ -1,5 +1,6 @@
 const Token = require('../token');
 const UserModel = require('../../database/users/user');
+const CredentialsModel = require('../../database/users/credentials');
 const {cryptPassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
 let ObjectId = require("mongoose").Types.ObjectId;
@@ -34,6 +35,10 @@ class User {
         this.user = null;
     }
 
+    /**
+     * Costruisce
+     * @returns {Promise<void>}
+     */
     async buildUser(){
 
         let doc = await UserModel.findOne({_id : new ObjectId(this.id)}).exec();
@@ -99,7 +104,7 @@ class User {
             if (!getToken) {
                 return callback(null, null, userJson);
             }
-            Token.createToken(userJson, ipAddress,function (err, token) {
+            Token.createToken(userJson._id.toString(), ipAddress,function (err, token) {
                 if(err) {
                     callback(err, null, null);
                 } else {
@@ -108,6 +113,67 @@ class User {
             });
         }
     }
+
+    /**
+     * Tenta di registrare un nuovo utente
+     * @param {string} username username inserito dall'utente
+     * @param {string} email email inserita dall'utente
+     * @param {string} password password inserita dall'utente
+     * @param callback funzione di callback
+     * @returns {Promise<void>}
+     */
+    async register(username, email, password, callback) {
+        // Controllo non vuoti
+        if (username == null || username === "") {
+            throw "username: cannot be empty";
+        }
+        if (email == null || email === "") {
+            throw "email: cannot be empty";
+        }
+        if (password == null || password === "") {
+            throw "password: cannot be empty";
+        }
+        // Controllo formattazione
+        if (username.includes(' ')) {
+            throw "username: cannot contain spaces"
+        }
+        if (validateEmail(email) === null) {
+            throw "email: email not valid"
+        }
+        if (password.length < 8 || password.length > 30) {
+            throw "password: password must be 8 - 30 long";
+        }
+        // Controllo esistenza username ed email
+        const usernameSaved = await UserModel.findOne({username: username}).exec();
+        if (usernameSaved !== null) {
+            throw "username: username already used";
+        }
+        const emailSaved = await CredentialsModel.findOne({email: email}).exec();
+        if (emailSaved !== null) {
+            throw "email: email already used";
+        }
+        // Salva il nuovo utente
+        cryptPassword(password, async (err, hash) => {
+           if (err != null) {
+               callback("generic: error password encryption");
+           }
+            const newUser = new UserModel({username: username, uuid: null});
+            await newUser.save();
+            const credentials = new CredentialsModel({email: email, password: hash, user: newUser._id});
+            await credentials.save();
+            this.id = newUser.id;
+            this.user = newUser;
+            callback(null);
+        });
+    }
 }
+
+const validateEmail = (email) => {
+    return String(email)
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+};
 
 module.exports = User

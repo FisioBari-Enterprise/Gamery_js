@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -7,18 +7,27 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
+  /**Cambiamento del campo login*/
   @Output() isLoginChange = new EventEmitter<Boolean>();
 
-  constructor() { }
+  constructor(
+
+  ) { }
 
   ngOnInit(): void {
 
   }
 
+  /**
+   * Azione di registrazione
+   */
   register(){
 
   }
 
+  /**
+   * Ritorno al login
+   */
   cancel(){
     this.isLoginChange.emit(true);
   }

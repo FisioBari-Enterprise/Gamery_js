@@ -42,7 +42,20 @@ router.get("/register/temporary", function (req, res) {
        }
     });
 });
-
+//Registra un nuovo utente
+router.post('/register', async function (req, res) {
+    let user = new User();
+    try {
+        await user.register(req.body.username, req.body.email, req.body.password, (err) => {
+            if (err !== null) {
+                return StaticFunctions.sendError(res, err);
+            }
+            StaticFunctions.sendSuccess(res, user.user);
+        });
+    } catch (error) {
+        return StaticFunctions.sendError(res, error);
+    }
+});
 //Controlla che il token ricevuto sia valido
 router.get("/check", Token.autenticateUser, function (req, res) {
     StaticFunctions.sendSuccess(res,true);
@@ -54,9 +67,7 @@ router.get("", Token.autenticateUser, async function(req,res){
     try{
          await user.buildUser();
     } catch (error) {
-        console.log(error)
         return StaticFunctions.sendError(res, error);
-
     }
     StaticFunctions.sendSuccess(res, user.user);
 });

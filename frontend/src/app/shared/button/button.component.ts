@@ -9,7 +9,7 @@ import {ColorButtons} from "../enum/colorButtons";
 export class ButtonComponent implements OnInit {
 
   /**Immagine da mostrare*/
-  @Input() image: string = "pause-button";
+  @Input() image: string | null = "pause-button";
   /**Testo da mostrare*/
   @Input() title: string = "TITLE";
   /**Schema del colore da mostrare*/

@@ -10,6 +10,12 @@
   </div>
   <div class="col-2">
     <div class="row button-area">
+      <!--No Logged-->
+      <ng-container *ngIf="currentType === 0">
+        <div class="button" (click)="onLoginClick()">
+          <img class="small-image" src="./assets/navbar/logout.png" alt = "image not found">
+        </div>
+      </ng-container>
       <!--Game mode-->
       <ng-container *ngIf="currentType === 2">
         <app-button [title]="'PAUSE'" (onClick)="onPause()"></app-button>

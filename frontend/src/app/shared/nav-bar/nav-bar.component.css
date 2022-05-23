@@ -74,6 +74,7 @@
 
 .button {
   position: relative;
+  cursor: pointer;
   width: 50px;
   height: 50px;
   background-color: #2F5173;

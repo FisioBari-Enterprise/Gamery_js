@@ -15,6 +15,12 @@
     width: 100%;
 }
 
+.login-container {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .title{
     width: 500px;
     height: 100px;
@@ -27,10 +33,10 @@
     font-weight: bold;
     font-size: 75px;
     text-align: center;
-    font-family: "Lobster";
+    font-family: "Lobster", serif;
 }
 
-.loginbox{
+.login-box{
     width: 350px;
     height: 480px;
     background-color: white;
@@ -43,27 +49,27 @@
     border-radius: 20px;
 }
 
-.mytext{
+.my-text{
     color: black;
-    font-family: "Exo2";
+    font-family: "Exo2", serif;
 }
 
-.myinput{
+.my-input{
     background-color: #F8F8F8;
     color: #333333;
 }
 
-.errormsg{
+.error-msg{
     text-align: center;
     color: red;
-    font-family: "Exo2";
-    visibility: hidden;
+    font-family: "Exo2", serif;
+    visibility: visible;
 }
 
-.pwforgotten{
+.pw-forgotten{
     text-align: right;
     color: blue;
-    font-family: "Exo2";
+    font-family: "Exo2", serif;
     text-decoration: underline;
     cursor: pointer;
 }
@@ -81,27 +87,14 @@
 }
 
 .login-text{
-    font-family: "Exo2";
+    font-family: "Exo2", serif;
     color: black;
     padding-top: 3px;
     font-weight: bold;
 }
 
-.register-button{
-    text-align: center;
-    background-color: #DB4B1F;
-    width: 120px;
-    height: 30px;
-    border-radius: 8px;
-    position: absolute;
-    left: 50%;
-    top: 80px;
-    transform: translate(-50%);
-    cursor: pointer;
-}
-
 .register-text{
-    font-family: "Exo2";
+    font-family: "Exo2", serif;
     color: white;
     padding-top: 3px;
     font-weight: bold;

@@ -6,6 +6,7 @@ import {TokenData} from "../../classes/web/TokenResponse";
 import {Subscription} from "rxjs";
 import {NavBarType} from "../enum/navBarType";
 import { PauseComponent } from 'src/app/dialogs/pause/pause.component';
+import {Router} from "@angular/router";
 
 // TODO: Bottone di pausa e gestione
 // TODO: Bottone di login se non ha un account registrato attivo e mostra la view dedicata
@@ -41,6 +42,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private dialog: DialogManagerService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -162,6 +164,13 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }, { 'border-radius': '20px' });
     // Mando l'evento di pausa
     this.pauseSet.emit(true);
+  }
+
+  /**
+   * Pressione del bottone di login
+   */
+  onLoginClick() {
+    this.router.navigateByUrl('login');
   }
 
 }
