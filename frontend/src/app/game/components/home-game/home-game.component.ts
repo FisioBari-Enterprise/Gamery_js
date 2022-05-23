@@ -160,13 +160,13 @@ export class HomeGameComponent implements OnInit, OnDestroy {
       if(res.data.game.complete){
         this.dialogManager.showDialog(LoseComponent,() => {
           this.router.navigateByUrl('home');
-        },{});
+        }, {score : this.game?.game.points});
       }
       else{
         this.game = res.data
         this.dialogManager.showDialog(CompleteLevelComponent, () => {
           this.startRound()
-        }, {});
+        }, {score : this.game.game.points});
       }
     }, err => {
       console.log(err);
@@ -180,7 +180,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   onPause(event: any) {
     console.log(`Pausa ricevuta: ${event.toString()}`);
   }
-  
+
    /**
   * Evento di keypress in ascolto per ottenere il barcode
   * @param event Evento del KeyPress

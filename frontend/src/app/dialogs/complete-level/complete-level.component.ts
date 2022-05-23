@@ -8,10 +8,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class CompleteLevelComponent implements OnInit {
 
-  /** Punteggio ottenuto nel livello */
-  levelScore : Number = 0;
   /** Punteggio totale della partita */
-  totalScore : Number = 0;
+  score : Number = 0;
 
   /** Id del timer */
   timerId : any;
@@ -20,17 +18,20 @@ export class CompleteLevelComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CompleteLevelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: {
+      score : number,
+    }
   ) {
     
   }
 
   ngOnInit(): void {
     this.setUpTimer();
+    this.score = this.data.score;
   }
 
+  /**Timer per inizio del nuovo livello */
   setUpTimer(){
-    
     this.timerId = setInterval(() => {
       this.timeLeft--;
       if(this.timeLeft == 0){

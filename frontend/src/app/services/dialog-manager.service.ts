@@ -23,7 +23,7 @@ export class DialogManagerService {
    * @param config Configurazione da passare al dialog.open
    */
   showDialog(component: ComponentType<unknown>, afterClose, config: any = {height: '400px', width: '600px'}) {
-    this.dialogRef = this.dialog.open(component, config);
+    this.dialogRef = this.dialog.open(component,config);
     this.dialogRef.afterClosed().subscribe(res => afterClose(res));
   }
 
