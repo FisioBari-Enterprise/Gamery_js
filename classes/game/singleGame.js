@@ -62,7 +62,7 @@ module.exports = class SingleGame {
             throw "Already exists a game instance"
         }
         //Controllo che non ci sia già una partita attiva
-        let game = await SingleGameDB.findOne({complete: false}).exec();
+        let game = await SingleGameDB.findOne({ complete: false, user: new ObjectId(this.user._id)}).exec();
         if (game !== null) {
             throw "You have to complete your last game before creation of another game"
         }

@@ -5,6 +5,8 @@ import { LoginComponent } from './components/login/login.component';
 import {HomeGameComponent} from "./game/components/home-game/home-game.component";
 import {UserGuard} from "./auth/guards/user.guard";
 import {ButtonComponent} from "./shared/button/button.component";
+import {LoseComponent} from "./dialogs/lose/lose.component";
+import {CompleteLevelComponent} from "./dialogs/complete-level/complete-level.component";
 
 const routes: Routes = [
   {
@@ -26,8 +28,8 @@ const routes: Routes = [
     // canActivate: [UserGuard]
   },
   {
-    path : 'button',
-    component : ButtonComponent
+    path : 'complete',
+    component : CompleteLevelComponent
   },
   {
     path:'**',redirectTo : 'home'

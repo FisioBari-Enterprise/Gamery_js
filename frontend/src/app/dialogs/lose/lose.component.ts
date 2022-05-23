@@ -1,5 +1,6 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {ColorButtons} from "../../shared/enum/colorButtons";
 
 @Component({
   selector: 'app-lose',
@@ -8,7 +9,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class LoseComponent implements OnInit {
 
-  @Input() score : number = 0
+  /**Score da mostrare*/
+  @Input() score : number = 0;
+
+  /**Colore del bottone*/
+  colorButton = ColorButtons.Blue;
 
   constructor(
     public dialogRef: MatDialogRef<LoseComponent>,
@@ -18,6 +23,9 @@ export class LoseComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Andiamo alla
+   */
   goToHome(){
     this.dialogRef.close()
   }

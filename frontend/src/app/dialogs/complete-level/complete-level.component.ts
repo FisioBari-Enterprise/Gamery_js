@@ -17,17 +17,17 @@ export class CompleteLevelComponent implements OnInit {
   timeLeft : number = 15;
 
   constructor(
-    public dialogRef: MatDialogRef<CompleteLevelComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {
-      score : number,
-    }
+    //public dialogRef: MatDialogRef<CompleteLevelComponent>,
+    //@Inject(MAT_DIALOG_DATA) public data: {
+      //score : number,
+    //}
   ) {
-    
+
   }
 
   ngOnInit(): void {
     this.setUpTimer();
-    this.score = this.data.score;
+    //this.score = this.data.score;
   }
 
   /**Timer per inizio del nuovo livello */
@@ -42,7 +42,7 @@ export class CompleteLevelComponent implements OnInit {
   }
 
   startNewLevel(){
-    this.dialogRef.close()
+    //this.dialogRef.close()
   }
 
 }
