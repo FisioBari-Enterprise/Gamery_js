@@ -1,17 +1,17 @@
 <div>
     <label for="username" class="form-label mytext" >Username</label>
         <div class="input-group">
-            <input type="text" class="form-control myinput" id="username" aria-describedby="basic-addon3">
+            <input type="text" class="form-control myinput" id="username" aria-describedby="basic-addon3" [(ngModel)]="username.value">
         </div>
-        <p class="errormsg" id="usernameError">Incorrect username</p>
+        <p class="errormsg">{{username.error === null ? "" : username.error}}</p>
 </div>
 
 <div>
     <label for="email" class="form-label mytext" >Email</label>
         <div class="input-group">
-            <input type="text" class="form-control myinput" id="email" aria-describedby="basic-addon3">
+            <input type="text" class="form-control myinput" id="email" aria-describedby="basic-addon3" [(ngModel)]="email.value">
         </div>
-        <p class="errormsg" id="usernameError">Incorrect username</p>
+        <p class="errormsg">{{email.error === null ? ""  : email.error}}</p>
 </div>
 
 <div>
@@ -19,9 +19,9 @@
         <label for="password" class="form-label mytext col-4" >Password</label>
     </div>
     <div class="input-group">
-        <input type="password" class="form-control myinput" id="password" aria-describedby="basic-addon3">
+        <input type="password" class="form-control myinput" id="password" aria-describedby="basic-addon3" [(ngModel)]="password.value">
     </div>
-    <p class="errormsg" id="passwordError">Incorrect password</p>
+    <p class="errormsg" >{{password.error === null ? "" : password.error}}</p>
 </div>  
 <div style="position:relative; padding-top: 30px;">
     <div class="login-button" (click)="register()">

@@ -31,6 +31,7 @@ export class TabelComponent implements OnInit {
   }
 
   selectedBox(index : number){
+    //ritorno la parola selezionata
     if (this.isMemorization) {
       return;
     }

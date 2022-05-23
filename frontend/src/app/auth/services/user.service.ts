@@ -41,6 +41,17 @@ export class UserService {
     return this.http.get<TokenDataResponse>(this.base.apiUrl('client', 'register/temporary'), {headers})
   }
 
+  registerNewUser(username : string, email : String, password : string, uuid : string) : Observable<TokenDataResponse>{
+    let headers = this.base.CommonHeader;
+
+    return this.http.post<TokenDataResponse>(this.base.apiUrl('client',"register"),{
+      "username" : username,
+      "email" : email,
+      "password" :  password,
+      "uuid" : uuid
+    },{headers})
+  }
+
   /**
    * Ottengo i dati dell'utente attivo
    * @returns Dati dell'utente che sta giocando

@@ -125,15 +125,21 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Inizializzo il timer della partita
+   */
   setUpTimer(){
     let time = this.isMemorization ? this.game!.game.memorize_time_for_round : this.game!.game.writing_time_for_round;
     let timeBoard = new OnChangeBoard(time, false, true, true)
     this.timeSubject.next(timeBoard);
     // Gestione timer
     let timerId = setInterval(() => {
+      //Blocco il timer nel caso in cui il gioco entri in pausa
       if(!this.isPause){  
+        //Faccio l'update del timer 
         timeBoard.updateValue();
         this.timeSubject.next(timeBoard);
+        //Se raggiungo lo zero entro in modalità inserimento o controllo le parole inserite
         if (timeBoard.value === 0) {
           clearInterval(timerId);
           if(this.isMemorization){
@@ -160,13 +166,13 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Controllo di fine round
+   * Controllo per la fine del round
    */
   checkRoundEnd(){
     this.allSubscriptions.push(this.gameService.checkRound(this.userWords, this.game!.game.writing_time_for_round).subscribe(res => {
       this.game = res.data
+      //controllo se la partita è terminata o meno (se complete è a true vuol dire che non ho passato il livello)
       if(res.data.game.complete){
-        
         this.dialogManager.showDialog(LoseComponent,() => {
           this.router.navigateByUrl('home');
         }, {data : this.game.game.points});
@@ -187,7 +193,6 @@ export class HomeGameComponent implements OnInit, OnDestroy {
    */
   onPause(event: any) { 
     this.isPause = event as boolean
-    console.log(`Pausa ricevuta: ${event.toString()}`);
   }
 
    /**
@@ -197,6 +202,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     @HostListener('window:keypress', ['$event'])
     beforeunloadHandler(event: KeyboardEvent) {
       if(event.key.includes('Enter')){
+        //rimuovo lo spazio iniziale e finale dalle parole
         this.word = this.word.replace(/^\s+|\s+$/g, '');
         if(this.word != ''){
           this.userWords.push(this.word);
