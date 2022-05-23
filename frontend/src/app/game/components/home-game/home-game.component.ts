@@ -39,7 +39,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
 
   /** Array delle parole inserite dall'utente */
   userWords : string[] = []
-  
+
   /**Parola del input */
   word : string = ""
 
@@ -67,9 +67,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   checkLastGame() {
     this.allSubscriptions.push(
       this.gameService.lastGame().subscribe(res => {
-        this.game = new GameRound();
-        this.game.game = res.data;
-        console.log(this.game)
+        this.game = res.data;
         // Se il gioco è completato ne crea un altro
         if (this.game.game.complete) {
           this.newGame();

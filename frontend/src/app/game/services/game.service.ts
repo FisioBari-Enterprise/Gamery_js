@@ -17,9 +17,9 @@ export class GameService {
   /**
    * Ottiene l'ultima partita giocata
    */
-  lastGame(): Observable<GameResponse> {
+  lastGame(): Observable<GameRoundResponse> {
     const headers = this.base.TokenHeader;
-    return this.http.get<GameResponse>(this.base.apiUrl('game'), {headers});
+    return this.http.get<GameRoundResponse>(this.base.apiUrl('game'), {headers});
   }
 
   /**

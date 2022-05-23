@@ -109,7 +109,7 @@ module.exports = class SingleGame {
 
     /**
      * Controllo se ho passato il round in base alle parole inserite dall'utente
-     * @param {String[]} words parole inserite dall'utente 
+     * @param {String[]} words parole inserite dall'utente
      * @param {number} gameTime tempo impiegato nel round in secondi
      * @returns {Promise<void>}
      */
@@ -133,11 +133,13 @@ module.exports = class SingleGame {
         for(let i = 0; i < words.length; i++){
             words[i] = words[i].replace(/^\s+|\s+$/g, '').replace(/ +(?= )/g, ' ');
         }
+        console.log(`Dopo i controlli: ${words}`);
         //Controllo delle parole inserite
         let roundData  = await GameRound.find({game: new ObjectId(this.id), round: this.game.max_round}).populate('word').exec();
         if(roundData.length === 0){
             throw "Round information not found"
         }
+        console.log(roundData);
         //Ciclo per tutte le parole del round in modo da vedere quali sono state inserite corretamente
         for(let i = 0; i < roundData.length; i++){
             for(let j = 0; j < words.length; j++){
@@ -148,7 +150,7 @@ module.exports = class SingleGame {
                     roundData[i].word_insert = words[j];
                     await roundData[i].save();
                     break;
-                } 
+                }
             }
         }
         this.game.game_time += gameTime;

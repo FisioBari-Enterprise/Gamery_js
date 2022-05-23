@@ -1,9 +1,9 @@
-<div class="main-button" (click)="onClickButton()">
+<div class="main-button" [ngStyle]="setCenter ? {'left': '50%', 'transform': 'translateX(-50%)'} : {}" (click)="onClickButton()">
   <div class="shadow-button" [style.background]="colorSchema.shadow"></div>
   <div class="container-button">
-    <div class="title-button-container" [style.background]="colorSchema.base">
-      <h2 class="title-button">{{title}}</h2>
+    <div class="title-button-container" [style.background]=" colorSchema.base">
+      <h2 class="title-button" [style.color]="colorSchema.base == '#FFE62A' ? '#000' : '#fff'">{{title}}</h2>
     </div>
   </div>
-  <img src="{{image}}" alt="No image found" width="45px" height="45px"/>
+  <img src="{{'./assets/buttons/' + image + '.png'}}" alt="No image found" width="45px" height="45px"/>
 </div>

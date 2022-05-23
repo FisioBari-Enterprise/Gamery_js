@@ -219,7 +219,7 @@ router.put('/round', Token.autenticateUser, async function (req, res) {
         await game.build(true);
         await game.checkRound(req.body.words, req.body.gameTime);
         // Invia la risposta
-        if(game.game.complet) {
+        if(game.game.complete) {
             return StaticFunctions.sendSuccess(res, {game: game.game});
         }
         const newRound = await game.getRound(game.game.max_round, true);

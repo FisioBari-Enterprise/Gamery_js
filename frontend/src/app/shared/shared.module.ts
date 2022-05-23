@@ -11,7 +11,8 @@ import { ButtonComponent } from './button/button.component';
         ButtonComponent
     ],
     exports: [
-        NavBarComponent
+        NavBarComponent,
+        ButtonComponent
     ],
     imports: [
         CommonModule

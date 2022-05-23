@@ -159,7 +159,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     // Apro il dialog di pausa
     this.dialog.showDialog(PauseComponent, () => {
       this.pauseSet.emit(false);
-    }, {});
+    }, { 'border-radius': '20px' });
     // Mando l'evento di pausa
     this.pauseSet.emit(true);
   }

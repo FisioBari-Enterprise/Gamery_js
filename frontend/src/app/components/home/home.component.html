@@ -10,9 +10,7 @@
             <div class="home-box col-4">
                 <h1 class="mText">New Game</h1>
                 <div class="container-play">
-                    <div class="play-button">
-                        <h2 class="play-text">PLAY</h2>
-                    </div>
+                  <app-button [setCenter]="true" [title]="'PLAY'" [colorSchema]="colorButton" [image]="'play-button'" (onClick)="onPlayClick()"></app-button>
                 </div>
             </div>
         </div>

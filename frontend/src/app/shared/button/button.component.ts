@@ -9,11 +9,13 @@ import {ColorButtons} from "../enum/colorButtons";
 export class ButtonComponent implements OnInit {
 
   /**Immagine da mostrare*/
-  @Input() image: string = "./assets/buttons/pause-button.png";
+  @Input() image: string = "pause-button";
   /**Testo da mostrare*/
   @Input() title: string = "TITLE";
   /**Schema del colore da mostrare*/
   @Input() colorSchema: any = ColorButtons.Red;
+  /**Imposta il left al 50% per metterlo al centro*/
+  @Input() setCenter: boolean = false;
   /**Evento di onClick*/
   @Output() onClick: EventEmitter<any> = new EventEmitter();
 

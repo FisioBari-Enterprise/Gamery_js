@@ -5,6 +5,7 @@ import { LoadingComponent } from './loading/loading.component';
 import { PauseComponent } from './pause/pause.component';
 import { CompleteLevelComponent } from './complete-level/complete-level.component';
 import { LoseComponent } from './lose/lose.component';
+import {SharedModule} from "../shared/shared.module";
 
 
 
@@ -16,8 +17,9 @@ import { LoseComponent } from './lose/lose.component';
     CompleteLevelComponent,
     LoseComponent
   ],
-  imports: [
-    CommonModule
-  ]
+    imports: [
+        CommonModule,
+        SharedModule
+    ]
 })
 export class DialogModule { }

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {ColorButtons} from "../../shared/enum/colorButtons";
 
 @Component({
   selector: 'app-pause',
@@ -7,6 +8,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./pause.component.css']
 })
 export class PauseComponent implements OnInit {
+
+  /**Colore del bottone di pausa*/
+  colorSchema = ColorButtons.Yellow
 
   constructor(
     public dialogRef: MatDialogRef<PauseComponent>,
@@ -16,6 +20,9 @@ export class PauseComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Pressione del bottone di resume
+   */
   resume(){
     this.dialogRef.close()
   }

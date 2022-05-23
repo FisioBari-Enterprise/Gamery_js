@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {DialogManagerService} from "../../services/dialog-manager.service";
+import {Router} from "@angular/router";
+import {ColorButtons} from "../../shared/enum/colorButtons";
 
 @Component({
   selector: 'app-home',
@@ -8,11 +10,12 @@ import {DialogManagerService} from "../../services/dialog-manager.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  /**Sottoscrizioni delle richieste web*/
-  allSubscriptions: Subscription[] = [];
+
+  /**Colore del bottone play*/
+  colorButton = ColorButtons.Yellow;
 
   constructor(
-    private dialog: DialogManagerService,
+    private route: Router
   ) { }
 
   ngOnInit(): void {
@@ -20,7 +23,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.allSubscriptions.forEach(item => item.unsubscribe());
+
+  }
+
+  /**
+   * Evento del bottone di play
+   */
+  onPlayClick() {
+    this.route.navigateByUrl('game');
   }
 
 }
