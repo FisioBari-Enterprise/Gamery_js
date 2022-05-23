@@ -28,7 +28,6 @@ class Token {
                 callback(err, null);
             } else {
                 // Controlla se il token non è già stato usato
-                console.log('Sono qui');
                 const alreadyExist = await SessionModel.findOne({token: token, valid: true}).exec();
                 if (alreadyExist === null) {
                     const newSession = new SessionModel({token: token, valid: true, ipAddress: ipAddress, user: userId});

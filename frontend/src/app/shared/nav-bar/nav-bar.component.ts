@@ -4,6 +4,8 @@ import {UserService} from "../../auth/services/user.service";
 import {DialogManagerService} from "../../services/dialog-manager.service";
 import {TokenData} from "../../classes/web/TokenResponse";
 import {Subscription} from "rxjs";
+import {NavBarType} from "../enum/navBarType";
+import { PauseComponent } from 'src/app/dialogs/pause/pause.component';
 
 // TODO: Bottone di pausa e gestione
 // TODO: Bottone di login se non ha un account registrato attivo e mostra la view dedicata
@@ -24,6 +26,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
   /**Prima lettera del username*/
   firstCharUsername: string | null = null;
 
+  /**Tipo di navbar da visualizzare in base agli input*/
+  currentType: number = NavBarType.NoLogged;
+
   /**Indica se si trova in una partita*/
   @Input() gameMode: Boolean = false;
   /**Indica che non ci sono più pause disponibili all'utente*/
@@ -42,10 +47,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
     // Cancella tutti i dati presenti nel local storage
     // localStorage.clear();
 
-    if(this.skipLogin) {
-      return;
+    // Carica il tipo
+    if (this.gameMode) {
+      this.currentType = NavBarType.Game;
     }
-    //Controllo sul uuid dell'utente temporaneo
+
+    // Controllo sul uuid dell'utente temporaneo
     this.dialog.showLoading("Checking data...");
     const uuid = localStorage.getItem('uuid');
     if (uuid === null) {
@@ -143,6 +150,18 @@ export class NavBarComponent implements OnInit, OnDestroy {
         }
       )
     )
+  }
+
+  /**
+   * Evento di pausa
+   */
+  onPause() {
+    // Apro il dialog di pausa
+    this.dialog.showDialog(PauseComponent, () => {
+      this.pauseSet.emit(false);
+    }, {});
+    // Mando l'evento di pausa
+    this.pauseSet.emit(true);
   }
 
 }

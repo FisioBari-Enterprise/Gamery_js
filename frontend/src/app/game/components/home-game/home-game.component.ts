@@ -163,4 +163,12 @@ export class HomeGameComponent implements OnInit, OnDestroy {
       console.log(err);
     }))
   }
+
+  /**
+   * Evento di pausa
+   * @param event
+   */
+  onPause(event: any) {
+    console.log(`Pausa ricevuta: ${event.toString()}`);
+  }
 }

@@ -54,11 +54,13 @@ router.post('/word', function (req, res, next) {
  *              description: Sessione o token non validi
  */
 router.get('', Token.autenticateUser, async function (req, res) {
-   const doc = await SingleGameDB.findOne().sort('-createdAt').lean().exec();
-   if (doc === null) {
-       return StaticFunctions.sendError(res, 'No game found');
-   }
-   StaticFunctions.sendSuccess(res, doc);
+    let game = new SingleGame(req.user);
+    try {
+        await game.build(true);
+    } catch (error) {
+        return StaticFunctions.sendError(res, error);
+    }
+   StaticFunctions.sendSuccess(res, {game: game.game});
 });
 
 /**

@@ -78,8 +78,7 @@
   height: 50px;
   background-color: #2F5173;
   border-radius: 8px;
-  border: #222222;
-  border-width: 1px;
+  border: 1px #222222;
   margin-right: 10px;
 }
 

@@ -1,0 +1,38 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.main-button {
+  position: relative;
+  height: 45px;
+  width: 175px;
+  cursor: pointer;
+}
+.main-button img {
+  position: absolute;
+}
+.container-button {
+  position: absolute;
+  padding-top: 7px;
+  padding-left: 15px;
+}
+.title-button-container {
+  border-radius: 8px;
+  width: 145px;
+  height: 30px;
+}
+.title-button {
+  font-family: "Exo2", serif;
+  color: #fff;
+  text-align: center;
+  padding-left: 15px;
+}
+.shadow-button {
+  position: absolute;
+  height: 20px;
+  width: 145px;
+  border-radius: 8px;
+  top: 22px;
+  left: 15px;
+}

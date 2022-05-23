@@ -2,11 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-import { PauseComponent } from './dialogs/pause/pause.component';
 import {HomeGameComponent} from "./game/components/home-game/home-game.component";
 import {UserGuard} from "./auth/guards/user.guard";
-import {BoardComponent} from "./game/components/board/board.component";
-import {CompleteLevelComponent} from "./dialogs/complete-level/complete-level.component";
+import {ButtonComponent} from "./shared/button/button.component";
 
 const routes: Routes = [
   {
@@ -28,12 +26,8 @@ const routes: Routes = [
     // canActivate: [UserGuard]
   },
   {
-    path : 'pause',
-    component : PauseComponent
-  },
-  {
-    path : 'level',
-    component : CompleteLevelComponent
+    path : 'button',
+    component : ButtonComponent
   },
   {
     path:'**',redirectTo : 'home'

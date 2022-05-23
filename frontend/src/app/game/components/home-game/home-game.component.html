@@ -1,6 +1,6 @@
 <div class="page-container">
   <!--Nav bar utente-->
-  <app-nav-bar [gameMode]="true"></app-nav-bar>
+  <app-nav-bar [gameMode]="true" (pauseSet)="onPause($event)"></app-nav-bar>
   <!--Pagina principale-->
   <div class="main-container">
     <!--Dati sul livello-->
