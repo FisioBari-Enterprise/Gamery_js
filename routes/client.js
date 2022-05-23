@@ -17,18 +17,17 @@ let router = express.Router();
  *              description: Login effettuato con successo
  */
 router.post("/login", async function (req, res) {
-    //Controlla se ha inviato un uuid
-    if(req.body.uuid !== undefined){
-        let user = new Client();
-        await user.login(req.socket.remoteAddress, null, req.body.usernameEmail, req.body.password, req.body.uuid, true, function (err, token, user) {
+    let user = new Client();
+    try {
+        await user.login(req.socket.remoteAddress, req.body.usernameEmail, req.body.password, req.body.uuid, true, function (err, token, user) {
             if(err !== null) {
                 StaticFunctions.sendError(res, err.message);
             } else {
                 StaticFunctions.sendSuccess(res, {access: token});
             }
         });
-    } else {
-        StaticFunctions.sendError(res, 'No params found');
+    } catch (error) {
+        StaticFunctions.sendError(res, error);
     }
 });
 //Registra un utente temporaneo
@@ -38,7 +37,7 @@ router.get("/register/temporary", function (req, res) {
        if(err != null || token === undefined) {
            StaticFunctions.sendError(res, token === undefined ? 'Error during creation token' : err.message);
        } else {
-           StaticFunctions.sendSuccess(res, {'access': token, 'uuid': uuid});
+           StaticFunctions.sendSuccess(res, {'access': token, uuid: uuid});
        }
     });
 });
@@ -50,7 +49,7 @@ router.post('/register', async function (req, res) {
             if (err !== null) {
                 return StaticFunctions.sendError(res, err);
             }
-            StaticFunctions.sendSuccess(res, {access: token});
+            StaticFunctions.sendSuccess(res, {access: token, uuid: user.user.uuid});
         });
     } catch (error) {
         return StaticFunctions.sendError(res, error);

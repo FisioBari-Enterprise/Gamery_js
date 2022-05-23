@@ -1,7 +1,7 @@
 const Token = require('../token');
 const UserModel = require('../../database/users/user');
 const CredentialsModel = require('../../database/users/credentials');
-const {cryptPassword} = require("../../security");
+const {cryptPassword, comparePassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
 let ObjectId = require("mongoose").Types.ObjectId;
 
@@ -81,37 +81,95 @@ class User {
     /**
      * Cerca l'utente in base ai dati passati
      * @param { String | null } ipAddress Indirizzo ip della richiesta necessario per la generazione del toke
-     * @param { String | null | undefined } id Id assegnato all'utente
      * @param { String | null | undefined } usernameEmail Email o username inserita dall'utente
      * @param { String | null | undefined } password Password
      * @param { String | null | undefined } uuid UUID v4 generato in fase di creazione
      * @param { boolean } getToken Nella funziona ritorna il token
      * @param { Login } callback Azione da richiamare al completamento delle operazioni
      */
-    async login(ipAddress=null,id=null, usernameEmail=null, password=null, uuid=null, getToken=true, callback) {
-        let userJson = null;
+    async login(ipAddress=null, usernameEmail=null, password=null, uuid=null, getToken=true, callback) {
+        let user = null;
+        let credentials = null;
         //Ricerca per UUID
-        if (uuid !== null) {
-            if (uuid === undefined) {
-                return callback(new Error('UUID not found'), null, null);
+        if (uuid != null) {
+            user = await UserModel.findOne({uuid: uuid, valid: true}).exec();
+            if (user === null) {
+                throw "uuid not valid";
             }
-            userJson = await UserModel.findOne({uuid: uuid}).lean().exec();
-        }
-        //Controllo se ha trovato i dati
-        if (userJson == null) {
-            callback(new Error('No user found'), null, null);
-        } else {
+            // Controllo che l'utente non contenga delle credenziali
+            credentials = await CredentialsModel.findOne({user: new ObjectId(user._id)}).exec();
+            if (credentials !== null) {
+                throw "Credentials alredy exist for this user. You cannot login with uuid";
+            }
             if (!getToken) {
-                return callback(null, null, userJson);
+                return callback(null, null, user);
             }
-            Token.createToken(userJson._id.toString(), ipAddress,function (err, token) {
+            Token.createToken(user._id.toString(), ipAddress,function (err, token) {
                 if(err) {
                     callback(err, null, null);
                 } else {
-                    callback(null, token, userJson);
+                    callback(null, token, user);
                 }
             });
+            return
         }
+        // Ricerca per credenziali
+        // Controllo input utente
+        if (usernameEmail == null || usernameEmail === "") {
+            throw "usernameEmail: cannot be empty"
+        }
+        if (password == null) {
+            throw "password: cannot be empty"
+        }
+        if (usernameEmail.includes(' ')) {
+            throw "usernameEmail: cannot contain spaces"
+        }
+        if (password.includes(' ')) {
+            throw "password: cannot contain spaces"
+        }
+        if (password.length < 8 || password.length > 30) {
+            throw "password: password must be 8 - 30 long";
+        }
+        // Ricerca per username
+        user = await UserModel.findOne({username: usernameEmail, valid: true}).exec();
+        if (user == null) {
+            // Ricerca per email
+            credentials = await CredentialsModel.findOne({email: usernameEmail}).exec();
+            if (credentials == null) {
+                throw "usernameEmail: username or email not valid";
+            }
+            user = await UserModel.findOne({_id: new ObjectId(credentials.user), valid: true}).exec();
+            if (user == null) {
+                throw "usernameEmail: user not active or not available"
+            }
+        }
+        // Ottiene le credenziali se ha trovato l'utente
+        if (credentials == null) {
+            credentials = await CredentialsModel.findOne({user: new ObjectId(user._id)}).exec();
+            if (credentials == null) {
+                throw "usernameEmail: no credentials found for this user";
+            }
+        }
+        // Controllo della password
+        comparePassword(password, credentials.password, (err, match) => {
+            if (err) {
+                callback(err, null, null);
+            }
+            if (!match) {
+                callback(new Error("password: password not correct"), null, null);
+            }
+            // Ottiene accesso
+            if (!getToken) {
+                return callback(null, null, user);
+            }
+            Token.createToken(user._id.toString(), ipAddress,function (err, token) {
+                if(err) {
+                    callback(err, null, null);
+                } else {
+                    callback(null, token, user);
+                }
+            });
+        });
     }
 
     /**
@@ -153,6 +211,9 @@ class User {
         }
         if (validateEmail(email) === null) {
             throw "email: email not valid"
+        }
+        if (password.includes(' ')) {
+            throw "password: cannot contain spaces"
         }
         if (password.length < 8 || password.length > 30) {
             throw "password: password must be 8 - 30 long";
