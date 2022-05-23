@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(../../../assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.main-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+h2 {
+  width: 450px;
+  word-wrap: break-word;      /* IE 5.5-7 */
+  white-space: -moz-pre-wrap; /* Firefox 1.0-2.0 */
+  white-space: pre-wrap;      /* current browsers */
+  margin-top: 10px;
+  font-family: "Exo2", serif;
+}
+
+button {
+  margin-top: 10px;
+  width: 100px;
+  font-family: "Exo2", serif;
+}

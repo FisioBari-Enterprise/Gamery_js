@@ -1,31 +1,81 @@
-const PORT = process.env.PORT || 3000;
 let express = require('express');
 let app = express();
 const mongoose = require("mongoose");
-const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
-
-//Configura le env variables
-dotenv.config();
+const helmet = require("helmet");
+const morgan = require('morgan');
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require('swagger-jsdoc');
+const {MongoDBUser, MongoDBPassword, Port} = require('./config');
+const StaticFunctions = require("./static");
 
 //Connessione a MongoDB
 mongoose.connect(
-    `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@freecluster.xj48j.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+    `mongodb+srv://${MongoDBUser}:${MongoDBPassword}@freecluster.xj48j.mongodb.net/Gamery?retryWrites=true&w=majority`,
     function (error) {
-        console.log(error != null ? `DB connection error: ${error.message}` : 'Connected to the MongoDB');
-    });
+        console.log(error != null ? `DB connection error: ${error.message}` : 'Connected to MongoDB');
+    }
+);
+
+// Opzioni della documentazione
+const swaggerOptions = {
+    definition: {
+        swagger: "2.0",
+        info: {
+            title: 'Gamery js',
+            version: '1.0.0',
+        },
+    },
+    apis: ['./routes/*.js'],
+};
+//End point per la documentazione
+const swaggerDocument = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 //ROUTING
 const index = require("./routes/index.js");
+const user = require("./routes/client.js");
+const game = require("./routes/game.js");
 
-app.use(express.json()); //Used to parse JSON bodies
+//Migliora la sicurezza
+app.use(helmet());
+//Fa il log di tutte le richieste
+app.use(morgan('combined'))
+//Configurazione per il body
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// Add headers before the routes are defined
+app.use(function (req, res, next) {
 
-//FRONTEND
-app.use("/", express.static("www"));
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    //res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
+//FRONTEND di produzione
+app.use("/", express.static("client"));
 //BACKEND
 app.use("/api", index);
+app.use("/api/client", user);
+app.use("/api/game", game);
+//Errore se non trova endpoint validi
+app.use(function(req, res, next) {
+    StaticFunctions.sendError(res, 'Url or method not valid');
+});
 
-app.listen(PORT, function() {
+app.listen(Port || 3000, function() {
     console.log('Server running on port ', 3000);
+
 });

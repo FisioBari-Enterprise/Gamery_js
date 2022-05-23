@@ -1,0 +1,101 @@
+@font-face {
+    font-family: "Exo2";
+    src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+@font-face{
+    font-family: "Lobster";
+    src: local("Lobster"), url(src/assets/fonts/Lobster/Lobster-Regular.ttf) format("truetype");
+  }
+
+.main-container{
+    background-color: #167379;
+    color: white;
+    height: 100vh;
+    width: 100%;
+}
+
+.login-container {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.title{
+    width: 500px;
+    height: 100px;
+    color: white;
+    top: 5%;
+    left: 50%;
+    position: relative;
+    transform: translate(-50%);
+    box-sizing: border-box;
+    font-weight: bold;
+    font-size: 75px;
+    text-align: center;
+    font-family: "Lobster", serif;
+}
+
+.login-box{
+    width: 350px;
+    height: 480px;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    padding: 50px 30px;
+    border-radius: 20px;
+}
+
+.my-text{
+    color: black;
+    font-family: "Exo2", serif;
+}
+
+.my-input{
+    background-color: #F8F8F8;
+    color: #333333;
+}
+
+.error-msg{
+    text-align: center;
+    color: red;
+    font-family: "Exo2", serif;
+    visibility: visible;
+}
+
+.pw-forgotten{
+    text-align: right;
+    color: blue;
+    font-family: "Exo2", serif;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.login-button{
+    text-align: center;
+    background-color: #33AAFF;
+    width: 120px;
+    height: 30px;
+    border-radius: 8px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    cursor: pointer;
+}
+
+.login-text{
+    font-family: "Exo2", serif;
+    color: black;
+    padding-top: 3px;
+    font-weight: bold;
+}
+
+.register-text{
+    font-family: "Exo2", serif;
+    color: white;
+    padding-top: 3px;
+    font-weight: bold;
+}

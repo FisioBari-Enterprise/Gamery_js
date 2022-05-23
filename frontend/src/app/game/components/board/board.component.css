@@ -1,0 +1,13 @@
+.board-container {
+  width: 172px;
+  height: 67px;
+  background-size: cover;
+  position: relative;
+}
+.number-container {
+  width: 22px;
+  height: 34px;
+  position: absolute;
+  top: 27px;
+  background-size: cover !important;
+}

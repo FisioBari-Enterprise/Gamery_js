@@ -1,0 +1,44 @@
+<div class="page-container">
+  <!--Nav bar utente-->
+  <app-nav-bar [gameMode]="true" (pauseSet)="onPause($event)"></app-nav-bar>
+  <!--Pagina principale-->
+  <div class="main-container">
+    <!--Dati sul livello-->
+    <div class="row justify-content-center" style="padding-top: 15px;">
+      <!--Tempo-->
+      <div class="col-3" align="center">
+        <app-board [boardType]="0" [onChange]="timeSubject"></app-board>
+      </div>
+      <!--Punteggio-->
+      <div class="col-3" align="center">
+        <app-board [boardType]="1" [onChange]="scoreSubject"></app-board>
+      </div>
+      <!--Livello-->
+      <div class="col-3" align="center">
+        <app-board [boardType]="2" [onChange]="levelSubject"></app-board>
+      </div>
+    </div>
+    <!--Inserimento di nuove parole-->
+    <div class="row justify-content-center" style="padding-top: 30px;">
+      <div class="col-6 col-md-5 insert-word-container">
+        <div class="row">
+          <div class="col">
+            <h1 class="insert-word-title">INSERT WORD:</h1>
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" [attr.disabled]="isMemorization ? '' : null" [(ngModel)]="word">
+          </div>
+        </div>
+        <div class="confirm-text">
+          <h4>Press enter to confirm the word</h4>
+        </div>
+      </div>
+    </div>
+    <!--Contenitore di visualizzazione delle parole-->
+    <div class="row justify-content-center" style="padding-top: 30px; height: calc(100vh - 70px - 250px);">
+      <div class="col-10">
+        <app-tabel [userWords]="userWords" [isMemorization]="isMemorization" [showWord]="isPause" [words]="game === null || game!.words == null ? [] : game!.words"></app-tabel>
+      </div>
+    </div>
+  </div>
+</div>

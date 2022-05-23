@@ -1,0 +1,59 @@
+@font-face {
+    font-family: "Exo2";
+    src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.mytext{
+    color: black;
+    font-family: "Exo2";
+}
+
+.myinput{
+    background-color: #F8F8F8;
+    color: #333333;
+}
+
+.errormsg{
+    text-align: center;
+    color: red;
+    font-family: "Exo2";
+}
+
+.login-button{
+    text-align: center;
+    background-color: #33AAFF;
+    width: 120px;
+    height: 30px;
+    border-radius: 8px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    cursor: pointer;
+}
+
+.login-text{
+    font-family: "Exo2";
+    color: black;
+    padding-top: 3px;
+    font-weight: bold;
+}
+
+.register-button{
+    text-align: center;
+    background-color: #DB4B1F;
+    width: 120px;
+    height: 30px;
+    border-radius: 8px;
+    position: absolute;
+    left: 50%;
+    top: 80px;
+    transform: translate(-50%);
+    cursor: pointer;
+}
+
+.register-text{
+    font-family: "Exo2";
+    color: white;
+    padding-top: 3px;
+    font-weight: bold;
+}

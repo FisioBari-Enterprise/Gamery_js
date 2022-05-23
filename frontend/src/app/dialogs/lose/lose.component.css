@@ -1,0 +1,55 @@
+@font-face {
+    font-family: "Exo2";
+    src: local("Exo2"), url(../../../assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.main-container{
+    position: relative;
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.title {
+    margin-top: 20px;
+    text-align: center;
+    color: black;
+    font-family: "Exo2";
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.image {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.custom-image{
+    height: 100px;
+    width: 100px;
+}
+
+.score-area{
+    margin-top: 50px;
+    text-align: center;
+    color: black;
+    font-family: "Exo2";
+    margin-bottom: 0px;
+}
+
+.home-button{
+    margin-top: 50px !important;
+    width: 120px;
+    height: 30px;
+    border-radius: 8px;
+    background-color: #32AAFF;
+    margin: auto;
+}
+
+.button-text {
+    text-align: center;
+    font-family: "Exo2";
+    font-weight: bold;
+}

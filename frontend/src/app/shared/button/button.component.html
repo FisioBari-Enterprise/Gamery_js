@@ -1,0 +1,14 @@
+<div class="main-button" [ngStyle]="setCenter ? {'left': '50%', 'transform': 'translateX(-50%)'} : {}" (click)="onClickButton()">
+  <div class="shadow-button" [style.background]="colorSchema.shadow"></div>
+  <div class="container-button">
+    <div class="title-button-container" [style.background]=" colorSchema.base">
+      <h2 class="title-button"
+          [style.color]="colorSchema.base == '#FFE62A' || colorSchema.base == '#94FAAB' ? '#000' : '#fff'"
+          [style.padding-left]="image !== null ? '20px' : '0'"
+      >{{title}}</h2>
+    </div>
+  </div>
+  <ng-container *ngIf="image !== null">
+    <img src="{{'./assets/buttons/' + image + '.png'}}" alt="No image found" width="45px" height="45px"/>
+  </ng-container>
+</div>

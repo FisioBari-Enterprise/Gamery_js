@@ -1,0 +1,15 @@
+<div class="main-container">
+    <h1 class="title text40">Well done</h1>
+    <div class="image">
+        <img class="custom-image" src="./assets/game/level_up.png" alt="image not found"/>
+    </div>
+    <div class="score-area">
+        <h2>Total score<br>{{data}}</h2>
+    </div>
+    <div class="next-level-area">
+        <h2>The next level start in</h2>
+        <h1 class="text40">{{timeLeft}}</h1>
+    </div>
+    <app-button [setCenter]="true" [colorSchema]="colorButton" [title]="'SKIP'" [image]="'next-button'" (onClick)="startNewLevel()"></app-button>
+    <h6 class="text-center">SKIP WAITING TIME</h6>
+</div>

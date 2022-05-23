@@ -1,0 +1,99 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.top-container{
+  background-color: #08273F;
+  height: 70px;
+  padding: 10px;
+  margin: 0px;
+}
+
+.main-container{
+  background-color: #167379;
+  height: calc(100% - 70px);
+  margin: 0;
+  position: relative;
+}
+
+.custom-image{
+  position:absolute;
+  width: 46px;
+  height: 46px;
+}
+
+.label-name{
+  position: absolute;
+  min-width: 100px;
+  top: 10px;
+  left: 30px;
+  margin: 0;
+  padding: 5px 5px 5px 20px;
+  background-color: white;
+  color: black;
+  font-size: 16px;
+
+  border-radius: 8px;
+}
+
+.container-username {
+  position: fixed;
+  height: 49px;
+}
+
+.username {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 300px;
+  height: 35px;
+  background: #fff;
+  border-radius: 10px;
+  margin-left: 25px;
+  padding: 8px 20px 0 30px;
+  font-family: "Exo2", serif;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.background-letter {
+  position: fixed;
+  width: 46px;
+  height: 46px;
+}
+
+.letter-name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-family: "Exo2", serif;
+}
+
+.button {
+  position: relative;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  background-color: #2F5173;
+  border-radius: 8px;
+  border: 1px #222222;
+  margin-right: 10px;
+}
+
+.button-area {
+  position: absolute;
+  right: 10px;
+  margin: 0px;
+}
+
+.small-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 35px;
+  height: 35px;
+}
