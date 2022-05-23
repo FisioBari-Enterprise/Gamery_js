@@ -41,6 +41,14 @@ export class UserService {
     return this.http.get<TokenDataResponse>(this.base.apiUrl('client', 'register/temporary'), {headers})
   }
 
+  /**
+   * Richiesta per la registrazione dell'utente
+   * @param username username inserito dall'utente
+   * @param email email inserita dall'utente
+   * @param password password inserito dalla password
+   * @param uuid uuid relativo all'utente temporaneo che è stato creato in precedenza
+   * @returns token e nuovo uuid legato al nuovo profilo. 
+   */
   registerNewUser(username : string, email : String, password : string, uuid : string) : Observable<TokenDataResponse>{
     let headers = this.base.CommonHeader;
 

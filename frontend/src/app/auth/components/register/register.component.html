@@ -3,7 +3,7 @@
         <div class="input-group">
             <input type="text" class="form-control myinput" id="username" aria-describedby="basic-addon3" [(ngModel)]="username.value">
         </div>
-        <p class="errormsg">{{username.error === null ? "" : username.error}}</p>
+        <p class="errormsg">{{username.error}}</p>
 </div>
 
 <div>
@@ -11,7 +11,7 @@
         <div class="input-group">
             <input type="text" class="form-control myinput" id="email" aria-describedby="basic-addon3" [(ngModel)]="email.value">
         </div>
-        <p class="errormsg">{{email.error === null ? ""  : email.error}}</p>
+        <p class="errormsg">{{email.error}}</p>
 </div>
 
 <div>
@@ -21,7 +21,7 @@
     <div class="input-group">
         <input type="password" class="form-control myinput" id="password" aria-describedby="basic-addon3" [(ngModel)]="password.value">
     </div>
-    <p class="errormsg" >{{password.error === null ? "" : password.error}}</p>
+    <p class="errormsg" >{{password.error}}</p>
 </div>  
 <div style="position:relative; padding-top: 30px;">
     <div class="login-button" (click)="register()">
