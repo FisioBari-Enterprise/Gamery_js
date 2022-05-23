@@ -30,7 +30,20 @@ router.post("/login", async function (req, res) {
         StaticFunctions.sendError(res, error);
     }
 });
-//Registra un utente temporaneo
+/**
+ * @swagger
+ * \api\client\register\temporary:
+ *  post:
+ *      description: Registra un nuovo utente temporaneo
+ *      tags: [Users]
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Token di accesso e uuid assegnato
+ *          400:
+ *              description: Errore riscontrato in fase di creazione
+ */
 router.get("/register/temporary", function (req, res) {
     const newUser = new Client();
     newUser.createTemporary(req.socket.remoteAddress, (err, token, uuid) => {
@@ -41,7 +54,20 @@ router.get("/register/temporary", function (req, res) {
        }
     });
 });
-//Registra un nuovo utente
+/**
+ * @swagger
+ * \api\client\register:
+ *  post:
+ *      description: Registra un nuovo utente
+ *      tags: [Users]
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Token di accesso e uuid assegnato
+ *          400:
+ *              description: Errore riscontrato in fase di creazione
+ */
 router.post('/register', async function (req, res) {
     let user = new User();
     try {
@@ -55,11 +81,39 @@ router.post('/register', async function (req, res) {
         return StaticFunctions.sendError(res, error);
     }
 });
-//Controlla che il token ricevuto sia valido
+/**
+ * @swagger
+ * \api\client\check:
+ *  post:
+ *      description: Controllo che il token passato sia valido
+ *      tags: [Users]
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Token di accesso e uuid assegnato
+ *          403:
+ *              description: Accesso non consentito
+ */
 router.get("/check", Token.autenticateUser, function (req, res) {
     StaticFunctions.sendSuccess(res,true);
 });
-// Effettua il logout
+/**
+ * @swagger
+ * \api\client\logout:
+ *  get:
+ *      description: Effettua ol logout
+ *      tags: [Users]
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Risposta di base
+ *          400:
+ *              description: Errore durante l'esecuzione dell'azione
+ *          403:
+ *              description: Accesso non consentito
+ */
 router.get('/logout', Token.autenticateUser, async function (req, res) {
     let user = new User(req.user._id);
     try {
@@ -69,7 +123,22 @@ router.get('/logout', Token.autenticateUser, async function (req, res) {
         StaticFunctions.sendError(res, error);
     }
 })
-
+/**
+ * @swagger
+ * \api\client:
+ *  get:
+ *      description: Informazioni dell'utente
+ *      tags: [Users]
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Dati dell'utente
+ *          400:
+ *              description: Errore durante l'esecuzione dell'azione
+ *          403:
+ *              description: Accesso non consentito
+ */
 router.get("", Token.autenticateUser, async function(req,res){
 
     let user = new User(req.user._id)
