@@ -5,7 +5,7 @@ const Token = require("../classes/token");
 const User = require("../classes/users/user");
 let router = express.Router();
 /**
- * @swagger
+ * @openapi
  * \api\client\login:
  *  post:
  *      description: Effettua il login
@@ -31,7 +31,7 @@ router.post("/login", async function (req, res) {
     }
 });
 /**
- * @swagger
+ * @openapi
  * \api\client\register\temporary:
  *  post:
  *      description: Registra un nuovo utente temporaneo
@@ -55,7 +55,7 @@ router.get("/register/temporary", function (req, res) {
     });
 });
 /**
- * @swagger
+ * @openapi
  * \api\client\register:
  *  post:
  *      description: Registra un nuovo utente
@@ -82,7 +82,7 @@ router.post('/register', async function (req, res) {
     }
 });
 /**
- * @swagger
+ * @openapi
  * \api\client\check:
  *  post:
  *      description: Controllo che il token passato sia valido
@@ -99,7 +99,7 @@ router.get("/check", Token.autenticateUser, function (req, res) {
     StaticFunctions.sendSuccess(res,true);
 });
 /**
- * @swagger
+ * @openapi
  * \api\client\logout:
  *  get:
  *      description: Effettua ol logout
@@ -124,7 +124,7 @@ router.get('/logout', Token.autenticateUser, async function (req, res) {
     }
 })
 /**
- * @swagger
+ * @openapi
  * \api\client:
  *  get:
  *      description: Informazioni dell'utente

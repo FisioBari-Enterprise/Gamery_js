@@ -6,7 +6,7 @@ const SingleGame = require("../classes/game/singleGame");
 let router = express.Router();
 
 /**
- * @swagger
+ * @openapi
  * \api\game\word\:
  *  post:
  *      description: Aggiunge le parole al DB (solo LOCALHOST)
@@ -35,7 +35,7 @@ router.post('/word', function (req, res, next) {
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\:
  *  get:
  *      description: Ottiene l'ultima partita creata
@@ -63,7 +63,7 @@ router.get('', Token.autenticateUser, async function (req, res) {
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\:
  *  post:
  *      description: Genera una nuova partita
@@ -91,7 +91,7 @@ router.post('', Token.autenticateUser, async function (req, res) {
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\round:
  *  post:
  *      description: Lista dell'ultimo round dell'ultima partita generata
@@ -121,7 +121,7 @@ router.get('/round', Token.autenticateUser, async function (req, res) {
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\round:
  *  post:
  *      description: Genera un nuovo round per l'ultima partita generata dall'utente
@@ -153,7 +153,7 @@ router.post('/round', Token.autenticateUser, async function (req, res) {
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\round:
  *  get:
  *      description: informazioni di un terminato round
@@ -182,7 +182,7 @@ router.get('/round/:id', Token.autenticateUser, async function (req, res) {
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\round:
  *  put:
  *      description: Controllo su parole inserite al termine del round

@@ -3,7 +3,7 @@ let router = express.Router();
 const words = require('../database/game/word');
 const StaticFunctions = require("../static");
 /**
- * @swagger
+ * @openapi
  * \api\:
  *  get:
  *      description: End point di prova

@@ -105,7 +105,6 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     this.allSubscriptions.push(
       this.gameService.newRound().subscribe(res => {
         this.game = res.data;
-        console.log(this.game);
         // Richiama le funzioni di aggiornamento
         this.startRound();
       }, error => {

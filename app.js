@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const morgan = require('morgan');
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require('swagger-jsdoc');
-const {MongoDBUser, MongoDBPassword, Port} = require('./config');
+const {MongoDBUser, MongoDBPassword} = require('./config');
 const StaticFunctions = require("./static");
 
 //Connessione a MongoDB
@@ -20,7 +20,7 @@ mongoose.connect(
 // Opzioni della documentazione
 const swaggerOptions = {
     definition: {
-        swagger: "2.0",
+        openapi: '3.0.0',
         info: {
             title: 'Gamery js',
             version: '0.1',
@@ -75,7 +75,4 @@ app.use(function(req, res, next) {
     StaticFunctions.sendError(res, 'Url or method not valid');
 });
 
-app.listen(Port || 3000, function() {
-    console.log('Server running on port ', 3000);
-
-});
+module.exports = app;
