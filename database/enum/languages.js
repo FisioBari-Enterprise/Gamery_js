@@ -14,4 +14,16 @@ module.exports = class Languages {
             default: throw new Error("Language type not supported");
         }
     }
+
+    /**
+     * Converte in stringa il tipo
+     * @param {Number} type Tipo scelto
+     */
+    static typeString(type) {
+        switch (type) {
+            case Languages.IT: return 'IT';
+            case Languages.EN: return 'EN';
+            default: throw new Error("Language type not supported");
+        }
+    }
 }

@@ -71,6 +71,8 @@ class User {
                 }
                 //Genera il nuovo utente
                 const newUser = new UserModel({username: `Player${newNumber}`, uuid: uuid});
+                // Crea i colori di base per l'icona
+                newUser.preferences.colors_icon = ['#2AF39A', '#00A1F9']
                 await newUser.save();
                 Token.createToken(newUser._id.toString(), ipAddress, (err, token) => {
                     callback(err, token, uuid);

@@ -78,7 +78,7 @@ router.post('/register', async function (req, res) {
             StaticFunctions.sendSuccess(res, {access: token, uuid: user.user.uuid});
         });
     } catch (error) {
-        return StaticFunctions.sendError(res, error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
 });
 /**
@@ -145,7 +145,7 @@ router.get("", Token.autenticateUser, async function(req,res){
     try{
          await user.buildUser();
     } catch (error) {
-        return StaticFunctions.sendError(res, error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
     StaticFunctions.sendSuccess(res, user.user);
 });

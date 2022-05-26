@@ -95,18 +95,19 @@ module.exports = class SingleGame {
         if (round < 1 || round > this.game.max_round) {
             throw "Number of round not valid";
         }
-        const roundData = await GameRound.find({game: new ObjectId(this.id), round: round}).populate('words.word').lean().exec();
-        console.log(roundData)
+        const roundData = await GameRound.findOne({game: new ObjectId(this.id), round: round}).populate('words.word').lean().exec();
+        if (roundData == null) {
+            throw "Number of round not valid";
+        }
         if (!serialize) {
             return roundData
         }
-
-        const allWords = roundData.map(item => item.word);
-        return {
-            'game': this.game,
-            'round': typeof round === 'string' ? parseInt(round) : round,
-            'words': complete ? allWords : allWords.map(word => word.en)
-        }
+        const wordFields = Languages.getWordFields(this.game.language);
+        roundData.words = roundData.words.map(item => {
+            item.word = item.word[wordFields[0]]
+            return item
+        })
+        return roundData
     }
 
     /**
@@ -116,7 +117,6 @@ module.exports = class SingleGame {
      * @returns {Promise<void>}
      */
     async checkRound(words, gameTime){
-        console.log(words);
         //Controllo dati partita
         if (!this.checkData()) {
             throw "Game instance not found";
@@ -136,31 +136,55 @@ module.exports = class SingleGame {
             words[i] = words[i].replace(/ +(?= )/g, ' ');
         }
 
-        console.log(`Dopo i controlli: ${words}`);
         //Controllo delle parole inserite
-        let roundData  = await GameRound.find({game: new ObjectId(this.id), round: this.game.max_round}).populate('word').exec();
-        if(roundData.length === 0){
+        let roundData  = await GameRound.findOne({game: new ObjectId(this.id), round: this.game.max_round}).populate('words.word').exec();
+        if(roundData == null){
             throw "Round information not found"
         }
-        console.log(roundData);
         //Ciclo per tutte le parole del round in modo da vedere quali sono state inserite correttamente
-        const fields = Languages.getWordFields(this.game.language)
-        for(let i = 0; i < roundData.words; i++){
-            for(let j = 0; j < words.length; j++){
-                if(roundData === words[j]){
-                    this.game.points += roundData[i].word.en_length;
-                    roundData[i].points = roundData[i].word.en_length;
-                    roundData[i].correct = true;
-                    roundData[i].word_insert = words[j];
-                    await roundData[i].save();
-                    break;
+        const wordFields = Languages.getWordFields(this.game.language)
+        let wrongWords = [];
+        for(let j = 0; j < words.length; j++){
+            let found = false;
+            // Loop su tutte le parole del round per cercare una corrispondenza
+            for(let i = 0; i < roundData.words.length && !found; i++){
+                const wordRound = roundData.words[i].word[wordFields[0]];
+                const wordRoundLength = roundData.words[i].word[wordFields[1]];
+                if(wordRound === words[j]){
+                    // Parola corretta
+                    this.game.points += wordRoundLength;
+                    roundData.points += wordRoundLength;
+                    roundData.words[i].points = wordRoundLength;
+                    roundData.words[i].correct = true;
+                    roundData.words[i].word_insert = words[j];
+                    found = true;
                 }
             }
+            // Se non ha trovato la parola la aggiunge come errore
+            if (!found) {
+                wrongWords.push(words[j]);
+            }
         }
+        // Salva le parole sbagliate
+        for(const wrong of wrongWords) {
+            roundData.words.push({
+                word: null,
+                word_insert: wrong,
+                correct: false,
+                points: -1
+            })
+            // Toglie un punto per parola sbagliata
+            this.game.points -= 1;
+            roundData.points -= 1;
+        }
+        roundData.complete = true;
+        // Salva i cambiamenti
+        await roundData.save();
+
         this.game.game_time += gameTime;
         await this.game.save();
         // Controllo passaggio del round
-        if (roundData.some(item => !item.correct)) {
+        if (roundData.words.some(item => !item.correct && item.word != null)) {
             //Caso round non passato
             await elaborateLose(this.game);
         } else {
@@ -196,8 +220,8 @@ async function generateNewRound(game) {
         throw "Game already completed";
     }
     // Controllo del non completamento dell'ultimo round
-    const rounds = await GameRound.find({game: new ObjectId(game._id), word_insert: { $eq: null }, round: game.max_round}).exec();
-    if (rounds.length > 0) {
+    const rounds = await GameRound.findOne({game: new ObjectId(game._id), round: game.max_round, complete: true}).exec();
+    if (rounds === null) {
         throw "You haven't completed last round"
     }
 
@@ -217,13 +241,10 @@ async function generateNewRound(game) {
     let round = new GameRound({
         game: game._id,
         round: game.max_round + 1,
-        words: []
-    })
-    for(const word of words){
-        round.words.push({
-            word: word._id
+        words: words.map((item) => {
+            return {word: item._id};
         })
-    }
+    })
 
     await round.save();
 

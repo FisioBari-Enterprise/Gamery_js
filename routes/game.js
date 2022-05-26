@@ -57,7 +57,7 @@ router.get('', Token.autenticateUser, async function (req, res) {
     try {
         await game.build(true);
     } catch (error) {
-        return StaticFunctions.sendError(res, error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
    StaticFunctions.sendSuccess(res, {game: game.game});
 });
@@ -84,10 +84,12 @@ router.post('', Token.autenticateUser, async function (req, res) {
    let newGame = new SingleGame(req.user);
    try {
        await newGame.createNewGame();
+       await newGame.generateNewRound();
+       let response = await newGame.getRound(newGame.game.max_round, true);
+       return StaticFunctions.sendSuccess(res, response);
    } catch (error) {
-       return StaticFunctions.sendError(res, error);
+       return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
    }
-   return StaticFunctions.sendSuccess(res, newGame.game, 201);
 });
 
 /**
@@ -110,14 +112,14 @@ router.post('', Token.autenticateUser, async function (req, res) {
  */
 router.get('/round', Token.autenticateUser, async function (req, res) {
    let game = new SingleGame(req.user);
-   let response = null;
    try {
        await game.build(true);
-       response = await game.getRound(game.game.max_round, true);
+       let response = await game.getRound(game.game.max_round, true);
+       return StaticFunctions.sendSuccess(res, response);
    } catch (error) {
-       return StaticFunctions.sendError(res, error);
+       console.log(error);
+       return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
    }
-   return StaticFunctions.sendSuccess(res, response);
 });
 
 /**
@@ -147,7 +149,7 @@ router.post('/round', Token.autenticateUser, async function (req, res) {
        response = await game.getRound(game.game.max_round, true);
    } catch (error) {
        console.log(error);
-       return StaticFunctions.sendError(res, error);
+       return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
    }
    return StaticFunctions.sendSuccess(res, response, 201);
 });
@@ -177,7 +179,7 @@ router.get('/round/:id', Token.autenticateUser, async function (req, res) {
         const response = await game.getRound(req.params.id, true);
         return StaticFunctions.sendSuccess(res, response);
     } catch (error) {
-        return StaticFunctions.sendError(res, error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
 });
 
@@ -226,7 +228,7 @@ router.put('/round', Token.autenticateUser, async function (req, res) {
     }
     catch (error) {
         console.log(error);
-        return StaticFunctions.sendError(res, error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
 })
 

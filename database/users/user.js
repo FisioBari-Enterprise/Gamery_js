@@ -16,7 +16,7 @@ const user = new Schema({
     // Preferenze utente
     preferences: {
         language: {type: Number, default: Languages.EN},
-        colors_icon: [{type: String, default: ['#2AF39A', '#00A1F9']}],
+        colors_icon: [{type: String}],
         orientation_icon: {type: Number, default: 0}
     },
     // Impostazioni utente
