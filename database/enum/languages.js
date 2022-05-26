@@ -1,4 +1,4 @@
-export enum Languages {
-    IT = 0,
-    EN = 1
+module.exports = class Languages {
+    static IT = 0
+    static EN = 1
 }

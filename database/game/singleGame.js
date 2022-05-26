@@ -3,7 +3,7 @@ const Languages = require('../enum/languages');
 
 const singleGames = new Schema({
     user: { type: Types.ObjectId, ref: 'users' },
-    language: { type: Number, default: Languages.Languages.EN },
+    language: { type: Number, default: Languages.EN },
     game_time: { type: Number, default: 0 },
     points: { type: Number, default: 0 },
     record: { type: Boolean, default: false },
