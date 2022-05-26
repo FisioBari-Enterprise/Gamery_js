@@ -72,58 +72,37 @@ async function generateNewRound(game) {
     if (rounds.length > 0) {
         throw "You haven't completed last round"
     }
-    // Genera il nuovo round
-    let maxUsage = await GameRound.findOne({game: new ObjectId(game._id)}).sort('-word_usage').exec();
-    maxUsage = maxUsage === null ? 1 : maxUsage.word_usage;
-    const wordsLastUsage = await GameRound.find({game: new ObjectId(game._id), word_usage: maxUsage})
-        .distinct('word')
-        .populate('word')
-        .exec();
-    let allWords = wordsLastUsage.map(item => item.it);
-    // Calcolo lunghezza e numero massimo di parole
-    let nWords = (Math.trunc(game.max_round / 3) + 1) * 4;
-    if (nWords > MaxWordForRound) {
-        nWords = MaxWordForRound;
-    }
-    const maxLength = Math.trunc(nWords / 4) * 6;
-    // Prende le nuove parole
-    let newWords = await Words.aggregate([
+    
+    //Ottengo le n parole da inserire all'interno del round
+    const nWord = Math.trunc(((game.max_round / 3) + 1) * 4)
+    const maxLength = Math.trunc(nWord / 4) * 6;
+    let words = await Words.aggregate([
         {
             $match: {
-                en_length: { $lte: maxLength },
-                en: { $nin: allWords }
+                en_length: { $lte: maxLength }
             }
         },
-        { $sample: { size: nWords }}
+        { $sample: { size: nWord }}
     ]).exec();
-    let toAdd = [{words: newWords, word_usage: maxUsage}]
-    // Se non ha raggiunto il numero di parole ne aggiunge
-    if (nWords.length < MaxWordForRound) {
-        newWords = await Words.aggregate([
-            { $match: { en_length: { $lte: maxLength } } },
-            { $sample: { size: MaxWordForRound - nWords }}
-        ]).exec();
-        toAdd.push({words: newWords, word_usage: maxUsage + 1});
-    }
-    // Carica le nuove parole nel prossimo round
-    let newRounds = [];
-    allWords = [];
-    for (const add of toAdd) {
-        for (const word of add.words) {
-            newRounds.push({
-                word: word._id,
-                word_usage: add.word_usage,
-                game: game._id,
-                round: game.max_round + 1
-            });
-            allWords.push(word);
-        }
-    }
-    await GameRound.insertMany(newRounds);
+
+    //Creazione round
+    let round = new GameRound({
+        game: game._id,
+        round: game.max_round + 1,
+        words: []
+    })
+    for(const word of words){
+        round.words.push({
+            word: word._id
+        })
+    } 
+
+    await round.save();
+
     // Aggiorna il campo round della partita
     game.max_round += 1;
-    game.memorize_time_for_round = timeForRound(allWords, false);
-    game.writing_time_for_round = timeForRound(allWords);
+    game.memorize_time_for_round = timeForRound(words, false);
+    game.writing_time_for_round = timeForRound(words);
     await game.save();
 }
 
