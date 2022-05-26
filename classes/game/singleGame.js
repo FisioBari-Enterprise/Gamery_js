@@ -95,7 +95,7 @@ module.exports = class SingleGame {
         if (round < 1 || round > this.game.max_round) {
             throw "Number of round not valid";
         }
-        const roundData = await GameRound.findOne({game: new ObjectId(this.id), round: round}).populate('words.word').lean().exec();
+        const roundData = await GameRound.findOne({game: new ObjectId(this.id), round: round}).populate('game').populate('words.word').lean().exec();
         if (roundData == null) {
             throw "Number of round not valid";
         }
@@ -104,7 +104,9 @@ module.exports = class SingleGame {
         }
         const wordFields = Languages.getWordFields(this.game.language);
         roundData.words = roundData.words.map(item => {
-            item.word = item.word[wordFields[0]]
+            if (item.word !== null) {
+                item.word = item.word[wordFields[0]]
+            }
             return item
         })
         return roundData

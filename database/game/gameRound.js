@@ -1,7 +1,7 @@
 const {Schema, model, Types} = require("mongoose");
 
 const gameRound = new Schema({
-    game: { type: Types.ObjectId, ref: 'singlegames' },
+    game: { type: Types.ObjectId, ref: 'singleGames' },
     round: { type: Number, default: 0},
     points: { type: Number, default: 0 },
     complete: { type: Boolean, default: false },
