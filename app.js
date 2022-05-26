@@ -6,12 +6,12 @@ const helmet = require("helmet");
 const morgan = require('morgan');
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require('swagger-jsdoc');
-const {MongoDBUser, MongoDBPassword} = require('./config');
+const {MongoDBUser, MongoDBPassword, Database} = require('./config');
 const StaticFunctions = require("./static");
 
 //Connessione a MongoDB
 mongoose.connect(
-    `mongodb+srv://${MongoDBUser}:${MongoDBPassword}@freecluster.xj48j.mongodb.net/Gamery?retryWrites=true&w=majority`,
+    `mongodb+srv://${MongoDBUser}:${MongoDBPassword}@freecluster.xj48j.mongodb.net/${Database}?retryWrites=true&w=majority`,
     function (error) {
         console.log(error != null ? `DB connection error: ${error.message}` : 'Connected to MongoDB');
     }

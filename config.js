@@ -8,5 +8,6 @@ module.exports = {
     MongoDBPassword: process.env.MONGODB_PASSWORD,
     Port: process.env.PORT,
     TokenSecret: process.env.TOKEN_SECRET,
-    MaxWordForRound: parseInt(process.env.MAX_WORD_FOR_ROUND)
+    MaxWordForRound: parseInt(process.env.MAX_WORD_FOR_ROUND),
+    Database: process.env.DATABASE
 };
