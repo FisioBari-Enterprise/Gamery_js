@@ -67,7 +67,7 @@ module.exports = class SingleGame {
             throw "You have to complete your last game before creation of another game"
         }
         //Genera la nuova partita
-        this.game = new SingleGameDB({ user: this.user._id });
+        this.game = new SingleGameDB({ user: this.user._id, language: this.user.preferences.language });
         await this.game.save();
         this.id = this.game._id;
     }
@@ -228,11 +228,14 @@ async function generateNewRound(game) {
     //Ottengo le n parole da inserire all'interno del round
     const nWord = Math.trunc(((game.max_round / 3) + 1) * 4)
     const maxLength = Math.trunc(nWord / 4) * 6;
+    // Imposta la query
+    const wordFields = Languages.getWordFields(game.language);
+    let query = {};
+    query[wordFields[1]] = {$lte: maxLength};
+    // Esegue la query
     let words = await Words.aggregate([
         {
-            $match: {
-                en_length: { $lte: maxLength }
-            }
+            $match: query
         },
         { $sample: { size: nWord }}
     ]).exec();
