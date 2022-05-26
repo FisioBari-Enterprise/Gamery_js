@@ -219,10 +219,12 @@ async function generateNewRound(game) {
     if (game.complete ) {
         throw "Game already completed";
     }
-    // Controllo del non completamento dell'ultimo round
-    const rounds = await GameRound.findOne({game: new ObjectId(game._id), round: game.max_round, complete: true}).exec();
-    if (rounds === null) {
-        throw "You haven't completed last round"
+    // Controllo del non completamento dell'ultimo round. Se il round è a 0 non c'è il controllo
+    if (game.max_round > 0){
+        const rounds = await GameRound.findOne({game: new ObjectId(game._id), round: game.max_round, complete: true}).lean().exec();
+        if (rounds === null) {
+            throw "You haven't completed last round"
+        }
     }
 
     //Ottengo le n parole da inserire all'interno del round
