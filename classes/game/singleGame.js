@@ -3,6 +3,7 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const GameRound = require("../../database/game/gameRound");
 const SingleGameDB = require("../../database/game/singleGame");
 const Words = require("../../database/game/word");
+const Languages = require("../../database/enum/languages")
 
 /**
  * Classe per la gestione di una partita in singolo
@@ -95,10 +96,12 @@ module.exports = class SingleGame {
         if (round < 1 || round > this.game.max_round) {
             throw "Number of round not valid";
         }
-        const roundData = await GameRound.find({game: new ObjectId(this.id), round: round}).populate('word').lean().exec();
+        const roundData = await GameRound.find({game: new ObjectId(this.id), round: round}).populate('words.word').lean().exec();
+        console.log(roundData)
         if (!serialize) {
             return roundData
         }
+
         const allWords = roundData.map(item => item.word);
         return {
             'game': this.game,
@@ -129,10 +132,11 @@ module.exports = class SingleGame {
         if(Object.prototype.toString.call(words) !== '[object Array]' || typeof gameTime !== 'number') {
             throw "Variable type not valid";
         }
-        //rimuovo spazi multipli all'inizio e alla fine della parole e inserisco spazio unico tra le parole
+        // inserisco spazio unico tra le parole
         for(let i = 0; i < words.length; i++){
-            words[i] = words[i].replace(/^\s+|\s+$/g, '').replace(/ +(?= )/g, ' ');
+            words[i] = words[i].replace(/ +(?= )/g, ' ');
         }
+
         console.log(`Dopo i controlli: ${words}`);
         //Controllo delle parole inserite
         let roundData  = await GameRound.find({game: new ObjectId(this.id), round: this.game.max_round}).populate('word').exec();
@@ -140,10 +144,11 @@ module.exports = class SingleGame {
             throw "Round information not found"
         }
         console.log(roundData);
-        //Ciclo per tutte le parole del round in modo da vedere quali sono state inserite corretamente
-        for(let i = 0; i < roundData.length; i++){
+        //Ciclo per tutte le parole del round in modo da vedere quali sono state inserite correttamente
+        const fields = Languages.getWordFields(this.game.language)
+        for(let i = 0; i < roundData.words; i++){
             for(let j = 0; j < words.length; j++){
-                if(roundData[i].word.en === words[j]){
+                if(roundData === words[j]){
                     this.game.points += roundData[i].word.en_length;
                     roundData[i].points = roundData[i].word.en_length;
                     roundData[i].correct = true;

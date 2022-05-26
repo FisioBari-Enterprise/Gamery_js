@@ -1,3 +1,5 @@
+import {RoundWord} from "./word";
+
 export class GameResponse {
   data: Game
 }
@@ -9,7 +11,7 @@ export class GameRoundResponse {
 export class GameRound {
   game: Game;
   round: number;
-  words: string[];
+  words: RoundWord[];
 }
 
 export class Game {
@@ -23,7 +25,13 @@ export class Game {
   memorize_time_for_round: number;
   writing_time_for_round:  number;
   complete:                boolean;
+  language:                number;
   createdAt:               Date;
   updatedAt:               Date;
   __v:                     number;
+}
+
+export enum Languages{
+  IT = 0,
+  EN = 1
 }

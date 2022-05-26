@@ -37,7 +37,7 @@
     <!--Contenitore di visualizzazione delle parole-->
     <div class="row justify-content-center" style="padding-top: 30px; height: calc(100vh - 70px - 250px);">
       <div class="col-10">
-        <app-tabel [userWords]="userWords" [isMemorization]="isMemorization" [showWord]="isPause" [words]="game === null || game!.words == null ? [] : game!.words"></app-tabel>
+        <app-tabel [userWords]="userWords" [words]="words" [isMemorization]="isMemorization" [showWord]="isPause" ></app-tabel>
       </div>
     </div>
   </div>

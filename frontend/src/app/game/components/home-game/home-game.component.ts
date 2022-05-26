@@ -6,11 +6,8 @@ import { LoseComponent } from 'src/app/dialogs/lose/lose.component';
 import { DialogManagerService } from 'src/app/services/dialog-manager.service';
 import {OnChangeBoard} from "../../classes/onChangeBoard";
 import { GameService } from '../../services/game.service';
-import {Game, GameRound} from "../../classes/game";
-
-// TODO: Gestione inserimento delle parole da parte dell'utente. Per ora in modo infinito
-// TODO: Visualizzazione livello e score
-// TODO: Gestione della pausa
+import {Game, GameRound, Languages} from "../../classes/game";
+import {RoundWord} from "../../classes/word";
 
 @Component({
   selector: 'app-home-game',
@@ -36,8 +33,11 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   /** Indica se il gioco è in pausa */
   isPause : boolean = false;
 
+  /** Array di parole da inserire */
+  words : string[] = []
   /** Array delle parole inserite dall'utente */
   userWords : string[] = []
+
 
   /**Parola del input */
   word : string = ""
@@ -128,6 +128,16 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     );
   }
 
+  getWords(){
+    this.words = [];
+    for(let word of this.game!.words){
+      switch (this.game!.game.language){
+        case Languages.EN : this.words.push(word.word.en); break;
+        case Languages.IT : this.words.push(word.word.it); break;
+      }
+    }
+  }
+
   /**
    * Inizializzo il timer della partita
    */
@@ -161,6 +171,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
    */
   startRound(){
     this.userWords = [];
+    this.getWords();
     this.isMemorization = true;
     // Aggiorna i dati di score e level
     this.scoreSubject.next(new OnChangeBoard(this.game === null ? 0 : this.game.game.points, false, true));
@@ -189,6 +200,8 @@ export class HomeGameComponent implements OnInit, OnDestroy {
       console.log(err);
     }))
   }
+
+
 
   /**
    * Evento di pausa
