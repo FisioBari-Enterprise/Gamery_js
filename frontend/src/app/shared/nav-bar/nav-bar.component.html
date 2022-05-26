@@ -26,7 +26,12 @@
       </ng-container>
       <!--Game mode-->
       <ng-container *ngIf="currentType === 2">
-        <app-button [title]="'PAUSE'" (onClick)="onPause()"></app-button>
+        <div class="col">
+          <app-button [title]="'SKIP TIME'" (onClick)="skipTime()" [image]="'next-button'" [colorSchema]="colorSchemaSkip"></app-button>
+        </div>
+        <div class="col">
+          <app-button [title]="'PAUSE'" (onClick)="onPause()"></app-button>
+        </div>
       </ng-container>
       <!--Login page-->
       <ng-container *ngIf="currentType === 3">

@@ -30,6 +30,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   /**Colore del bottone di home*/
   colorSchemaHome = ColorButtons.Blue;
+  /**Colore del bottone di home*/
+  colorSchemaSkip = ColorButtons.Green;
 
   /**Tipo di navbar da visualizzare in base agli input*/
   @Input() currentType: number = NavBarType.NoLogged;
@@ -70,7 +72,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
       if (uuid === null) {
         this.newTemporaryUser();
       } else {
-        this.checkToken();
+        //this.checkToken();
       }
     }
   }
@@ -204,6 +206,13 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }, { 'border-radius': '20px' });
     // Mando l'evento di pausa
     this.pauseSet.emit(true);
+  }
+
+  /**
+   * Pressione del bottone Skip time
+   */
+  skipTime() {
+
   }
 
   /**
