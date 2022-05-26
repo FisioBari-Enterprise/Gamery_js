@@ -11,6 +11,8 @@ export class GameRoundResponse {
 export class GameRound {
   game: Game;
   round: number;
+  points: number;
+  correct: boolean;
   words: RoundWord[];
 }
 

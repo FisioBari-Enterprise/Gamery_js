@@ -91,7 +91,6 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     this.allSubscriptions.push(
       this.gameService.newGame().subscribe(res => {
         // Dopo la generazione della partita carico un nuovo round
-        this.newRound();
       }, error => {
         this.dialogManager.showError(error.message, () => this.dialogManager.closeDialog());
       })
@@ -127,17 +126,6 @@ export class HomeGameComponent implements OnInit, OnDestroy {
       })
     );
   }
-
-  getWords(){
-    this.words = [];
-    for(let word of this.game!.words){
-      switch (this.game!.game.language){
-        case Languages.EN : this.words.push(word.word.en); break;
-        case Languages.IT : this.words.push(word.word.it); break;
-      }
-    }
-  }
-
   /**
    * Inizializzo il timer della partita
    */
@@ -171,7 +159,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
    */
   startRound(){
     this.userWords = [];
-    this.getWords();
+    this.words = this.game!.words.map(item => item.word);
     this.isMemorization = true;
     // Aggiorna i dati di score e level
     this.scoreSubject.next(new OnChangeBoard(this.game === null ? 0 : this.game.game.points, false, true));

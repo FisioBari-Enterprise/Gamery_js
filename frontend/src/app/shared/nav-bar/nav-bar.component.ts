@@ -72,7 +72,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
       if (uuid === null) {
         this.newTemporaryUser();
       } else {
-        //this.checkToken();
+        this.checkToken();
       }
     }
   }
