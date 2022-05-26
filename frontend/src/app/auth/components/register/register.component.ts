@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { DialogManagerService } from 'src/app/services/dialog-manager.service';
 import { AuthField } from '../../classes/authField';
 import { UserService } from '../../services/user.service';
+import {ColorButtons} from "../../../shared/enum/colorButtons";
 
 @Component({
   selector: 'app-register',
@@ -24,6 +25,8 @@ export class RegisterComponent implements OnInit {
   email: AuthField = new AuthField();
   /**password data*/
   password: AuthField = new AuthField();
+  /**Colore del bottone cancel*/
+  colorCancel = ColorButtons.Blue;
 
 
   constructor(

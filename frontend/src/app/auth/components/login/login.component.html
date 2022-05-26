@@ -2,7 +2,7 @@
     <!--Nav bar-->
     <app-nav-bar [currentType]="3" ></app-nav-bar>
     <p class="title">Gamery</p>
-
+    <div style="position: relative;">
     <div class="login-box">
         <div *ngIf="isLogin" class="login-container">
             <div>
@@ -31,5 +31,6 @@
         <div *ngIf="!isLogin">
             <app-register (isLoginChange)="isLogin=$event"></app-register>
         </div>
+    </div>
     </div>
 </div>
