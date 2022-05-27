@@ -6,8 +6,7 @@ import { LoseComponent } from 'src/app/dialogs/lose/lose.component';
 import { DialogManagerService } from 'src/app/services/dialog-manager.service';
 import {OnChangeBoard} from "../../classes/onChangeBoard";
 import { GameService } from '../../services/game.service';
-import {Game, GameRound, Languages} from "../../classes/game";
-import {RoundWord} from "../../classes/word";
+import {GameRound} from "../../classes/game";
 
 @Component({
   selector: 'app-home-game',
@@ -27,6 +26,9 @@ export class HomeGameComponent implements OnInit, OnDestroy {
 
   /**Partita in corso*/
   game: GameRound | null = null;
+
+  /** Id del timer */
+  timerId : any
 
   /**Indica se si è in fase di memorizzazione o di inserimento */
   isMemorization : boolean = true
@@ -58,6 +60,9 @@ export class HomeGameComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.allSubscriptions.forEach(item => item.unsubscribe());
+    if(this.timerId !== null){
+      clearInterval(this.timerId);
+    }
   }
 
   /**
@@ -134,7 +139,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     let timeBoard = new OnChangeBoard(time, false, true, true)
     this.timeSubject.next(timeBoard);
     // Gestione timer
-    let timerId = setInterval(() => {
+    this.timerId = setInterval(() => {
       //Blocco il timer nel caso in cui il gioco entri in pausa
       if(!this.isPause){
         //Faccio l'update del timer
@@ -142,7 +147,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
         this.timeSubject.next(timeBoard);
         //Se raggiungo lo zero entro in modalità inserimento o controllo le parole inserite
         if (timeBoard.value === 0) {
-          clearInterval(timerId);
+          clearInterval(this.timerId);
           if(this.isMemorization){
             this.isMemorization = !this.isMemorization;
             this.setUpTimer();

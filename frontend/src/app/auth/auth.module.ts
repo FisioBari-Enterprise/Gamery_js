@@ -4,13 +4,15 @@ import {LoginComponent} from "./components/login/login.component";
 import {RegisterComponent} from "./components/register/register.component";
 import {SharedModule} from "../shared/shared.module";
 import {FormsModule} from "@angular/forms";
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ChangePasswordComponent
   ],
     imports: [
         CommonModule,

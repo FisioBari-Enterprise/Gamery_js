@@ -150,4 +150,16 @@ router.get("", Token.autenticateUser, async function(req,res){
     StaticFunctions.sendSuccess(res, user.user);
 });
 
+router.put("/changePassword", Token.autenticateUser, async function(req,res){
+    let user = new User(req.user._id);
+    let password = req.body.password;
+    let passwordConfirm = req.body.passwordConfirm;
+    try{
+        await user.changePassword(password,passwordConfirm);
+    } catch (error){
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+    return StaticFunctions.sendSuccess(res, true);
+});
+
 module.exports = router
