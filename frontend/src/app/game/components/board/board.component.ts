@@ -13,6 +13,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   maxValue: number = 0;
   /**Valore di ogni numero*/
   valueNumbers: number[] = [];
+  /**Numero da mostrare*/
+  valueNumbersString: string = "";
 
   /**Subscription dell'evento di cambiamento*/
   private onChangeSubscription: Subscription;
@@ -25,7 +27,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit(): void {
-    this.loadMaxValue();
+    this.loadMaxValueAndFont();
     this.resetValueNumbers();
     // Evento per l'aggiornamento
     if (this.onChange != null) {
@@ -43,11 +45,17 @@ export class BoardComponent implements OnInit, OnDestroy {
   /**
    * Imposta il valore massimo
    */
-  loadMaxValue() {
+  loadMaxValueAndFont() {
     switch(this.boardType) {
-      case BoardType.Time: this.maxValue = BoardTypeMaxValue.Time; break;
-      case BoardType.Score: this.maxValue = BoardTypeMaxValue.Score; break;
-      case BoardType.Level: this.maxValue = BoardTypeMaxValue.Level; break;
+      case BoardType.Time:
+        this.maxValue = BoardTypeMaxValue.Time;
+        break;
+      case BoardType.Score:
+        this.maxValue = BoardTypeMaxValue.Score;
+        break;
+      case BoardType.Level:
+        this.maxValue = BoardTypeMaxValue.Level;
+        break;
     }
   }
 
@@ -71,8 +79,7 @@ export class BoardComponent implements OnInit, OnDestroy {
    */
   updateValueNumbers(data: OnChangeBoard) {
     // Numero corrente
-    const valueNumbersString = this.valueNumbers.map(item => item > -1 ? item.toString() : "");
-    let currentNumber = parseInt(valueNumbersString.join(''));
+    let currentNumber = parseInt(this.valueNumbersToString(false));
     // Modifica i dati
     if(!data.reset && !data.resetWithValue) {
       currentNumber += data.value;
@@ -98,8 +105,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     } else {
       this.resetValueNumbers();
     }
+    // Aggiorna il numero da mostrare
+    this.valueNumbersString = this.valueNumbersToString();
   }
-  
+
 
   /**
    * Resetta valueNumbers
@@ -108,30 +117,24 @@ export class BoardComponent implements OnInit, OnDestroy {
     for(let i = 0; i < 6; i++) {
       this.valueNumbers.push(this.boardType === BoardType.Time && (i === 0 || i === 5) ? -1 : 0);
     }
+    this.valueNumbersString = this.valueNumbersToString();
   }
 
   /**
-   * Ottiene la posizione in base all'indice dell'array
-   * @param index
+   * Converte in stringa il numero rappresentato nel array
    */
-  getXPosition(index: number): string {
-    const increment = index > 2 ? (this.boardType !== BoardType.Level ? 6 : 2) : 0;
-    const startPoint = this.boardType === BoardType.Level ? 14 : 12;
-    const eachRowIncrement = this.boardType === BoardType.Level ? 24 : 24
-    const newPosition = startPoint + (eachRowIncrement * index) + increment;
-    return `${newPosition}px`;
-  }
-
-  /**
-   * Ottiene il valore da assegnare al background del number-container
-   * @param index Indice all'interno dell'array
-   */
-  getBackground(index: number): string {
-    if (this.valueNumbers[index] < 0) {
-      return '#FEDE7D';
-    } else {
-      return `url(../assets/game/numbers/${this.valueNumbers[index]}.png)`
+  valueNumbersToString(addSignature: boolean = true): string {
+    let newValue = this.valueNumbers.map(item => item > -1 ? item.toString() : "").join('');
+    if (addSignature) {
+      if (this.boardType == BoardType.Time) {
+        newValue = `${newValue.slice(0, 2)} : ${newValue.slice(2, 4)}`
+      } else if (this.boardType == BoardType.Score) {
+        newValue = `${newValue.slice(0, 3)}.${newValue.slice(3, 6)}`
+      } else if (this.boardType == BoardType.Level) {
+        newValue = parseInt(newValue).toString();
+      }
     }
+    return newValue;
   }
 
 }
