@@ -5,6 +5,7 @@ import {RegisterComponent} from "./components/register/register.component";
 import {SharedModule} from "../shared/shared.module";
 import {FormsModule} from "@angular/forms";
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { SendEmailComponent } from './components/send-email/send-email.component';
 
 
 
@@ -12,7 +13,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
   declarations: [
     LoginComponent,
     RegisterComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    SendEmailComponent
   ],
     imports: [
         CommonModule,
