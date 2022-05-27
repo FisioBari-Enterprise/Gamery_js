@@ -1,6 +1,5 @@
 let express = require("express");
 let router = express.Router();
-const words = require('../database/game/word');
 const StaticFunctions = require("../static");
 /**
  * @openapi
