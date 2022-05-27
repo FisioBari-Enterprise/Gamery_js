@@ -1,4 +1,4 @@
-const { TokenSecret } = require('../config');
+const { TokenSecret, TokenEmail } = require('../config');
 const jwt = require("jsonwebtoken");
 const StaticFunctions = require('../static');
 const SessionModel = require('../database/users/session');
@@ -76,6 +76,15 @@ class Token {
             req.user = session.user;
             next()
         });
+    }
+
+    /**
+     * Genera un token effettuare cambiamenti nell'utente
+     * @param {String} userId L'utente a cui assegnare il token da generare
+     * @param {CreateToken} callback Funzione con due parametri: error e token
+     */
+    static createTokenEmail(userId, callback) {
+
     }
 }
 

@@ -4,6 +4,7 @@ const CredentialsModel = require('../../database/users/credentials');
 const SessionModel = require('../../database/users/session');
 const {cryptPassword, comparePassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
+const {EmailManager} = require("../email");
 let ObjectId = require("mongoose").Types.ObjectId;
 
 /**
@@ -241,13 +242,21 @@ class User {
             await credentials.save();
             this.id = oldUser.id;
             this.user = oldUser;
-            Token.createToken(oldUser._id.toString(), ipAddress,function (err, token) {
-                if(err) {
+            // Invio email per il reset della password
+            const emailManager = new EmailManager();
+            await emailManager.sendConfirmEmail(email, (err) => {
+                if (err != null) {
                     callback(err, null);
-                } else {
-                    callback(null, token);
                 }
-            });
+                // Generazione del token per l'accesso
+                Token.createToken(oldUser._id.toString(), ipAddress,function (err, token) {
+                    if(err) {
+                        callback(err, null);
+                    } else {
+                        callback(null, token);
+                    }
+                });
+            })
         });
     }
 
@@ -264,7 +273,7 @@ class User {
         await SessionModel.updateMany({token: token}, {valid: false}).exec();
     }
 
-    async changePassword(password : string, passwordConfirm : string) {
+    async changePassword(password, passwordConfirm) {
         if(password == null || password === ''){
             throw "password:cannot be empty"
         }

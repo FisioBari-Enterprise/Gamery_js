@@ -1,6 +1,11 @@
 const nodemailer = require("nodemailer");
-const {IdEmail, PasswordEMail} = require("../config");
+const {IdEmail, PasswordEMail, Host, TokenEmail} = require("../config");
 const EmailDB = require("../database/users/email");
+const Credentials = require("../database/users/credentials");
+const path = require("path");
+const EmailType = require("../database/enum/emailType");
+const Token = require("./token");
+const fs = require('fs').promises;
 
 /**
  * Gestione delle email
@@ -18,17 +23,34 @@ class EmailManager {
 
     /**
      * Invia l'email per la conferma della password
-     * @param user
+     * @param {String} email Email alla quale inviare la conferma
+     * @param callback Con il risultato dell'invio dell'email
      */
-    sendConfirmEmail(user){
-
+    async sendConfirmEmail(email, callback){
+        // Controlli sulla conferma
+        /*const credentials = await Credentials.findOne({email: email}).exec();
+        if (credentials == null) {
+            throw "Email not valid";
+        }
+        if (!credentials.confirm) {
+            throw "Credentials already confirmed";
+        }*/
+        // Genera il token ed il link per il reset
+        //const credentials = {user: {_id: '1'}}
+        //`${Host}api/password/reset`
+        // Invia l'email
+        const filePath = path.join(__dirname, "../static/confirmUserEmail.txt");
+        let data = await fs.readFile(filePath, "utf-8");
+        data = data.replace('$username', 'TestUser').replace('$link', ``);
+        const mailOptions = new MailOptions('leonardolazzarin14@gmail.com', 'Gamery password reset', data);
+        this.sendEmail('', EmailType.CONFIRM_EMAIL, mailOptions, (err) => callback(err));
     }
 
     /**
      * Invia l'email per il reset della password
-     * @param user
+     * @param {String} email Email alla quale inviare la conferma
      */
-    sendPasswordReset(user){
+    sendPasswordReset(email){
 
     }
 
@@ -46,8 +68,8 @@ class EmailManager {
                 callback(err);
             }
             // Salva il fatto di aver inviato un'email
-            const newEmailDB = new EmailDB({user: user._id, apiId: info.messageId, type: emailType});
-            await newEmailDB.save();
+            //const newEmailDB = new EmailDB({user: user._id, apiId: info.messageId, type: emailType});
+            //await newEmailDB.save();
             callback(null);
         })
     }
@@ -57,13 +79,12 @@ class MailOptions {
 
     /**
      * Costruisce l'elemento
-     * @param {String} from
      * @param {String} to
      * @param {String} subject
      * @param {String} text
      */
-    constructor(from, to, subject, text) {
-        this.from = from;
+    constructor(to, subject, text) {
+        this.from = IdEmail;
         this.to = to;
         this.subject = subject;
         this.text = text;
