@@ -266,16 +266,16 @@ class User {
 
     async changePassword(password : string, passwordConfirm : string) {
         if(password == null || password === ''){
-            throw "password: cannot be empty"
+            throw "password:cannot be empty"
         }
         if(passwordConfirm == null || passwordConfirm === ''){
-            throw "passwordConfirm: cannot be empty"
+            throw "passwordConfirm:cannot be empty"
         }
         if(password !== passwordConfirm){
-            throw "passwordConfirm: passwords do not match"
+            throw "passwordConfirm:passwords do not match"
         }
         if (password.length < 8 || password.length > 30) {
-            throw "password: password must be 8 - 30 long";
+            throw "password:password must be 8 - 30 long";
         }
         //TODO: Aggiornare password nel DB
     }

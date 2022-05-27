@@ -104,4 +104,15 @@ export class UserService {
     localStorage.setItem('password', password);
     localStorage.setItem('isLogin', isLogin.toString());
   }
+
+  /**
+   * Effettuo il cambio della password
+   */
+  changePassword(password: string, passwordConfirm : string) : Observable<boolean>{
+    let headers = this.base.TokenHeader;
+    return this.http.put<boolean>(this.base.apiUrl('client','changePassword'),{
+      password : password,
+      passwordConfirm : passwordConfirm
+    }, {headers})
+  }
 }
