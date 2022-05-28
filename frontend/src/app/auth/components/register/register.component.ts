@@ -14,7 +14,7 @@ import {ColorButtons} from "../../../shared/enum/colorButtons";
 export class RegisterComponent implements OnInit {
 
   /** Subscription dell'utente */
-  subscription : Subscription
+  subscriptions : Subscription[]
 
   /**Cambiamento del campo login*/
   @Output() isLoginChange = new EventEmitter<Boolean>();
@@ -37,12 +37,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetField();
+    this.subscriptions = []
   }
 
   ngOnDestroy(): void {
-    if(this.subscription != null){
-      this.subscription.unsubscribe();
-    }
+    this.subscriptions.forEach(item => item.unsubscribe())
   }
 
   /**
@@ -62,7 +61,7 @@ export class RegisterComponent implements OnInit {
     this.email.error = "";
     this.password.error = "";
     this.dialogService.showLoading('Checking credentials...');
-    this.subscription =
+    this.subscriptions.push(
       this.userService.registerNewUser(this.username.value, this.email.value, this.password.value,localStorage.getItem("uuid")!).subscribe( res => {
         this.dialogService.closeDialog();
         // Salva le credenziali e fa il redirect
@@ -85,7 +84,7 @@ export class RegisterComponent implements OnInit {
         } else {
           this.dialogService.showError(err.error, () => {})
         }
-      })
+      }));
   }
 
   /**

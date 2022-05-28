@@ -231,19 +231,19 @@ class User {
         // Salva il nuovo utente
         cryptPassword(password, async (err, hash) => {
            if (err != null) {
-               callback("generic: error password encryption");
+               return callback("generic: error password encryption");
            }
-            oldUser.username = username
-            await oldUser.save();
-            const credentials = new CredentialsModel({email: email, password: hash, user: oldUser._id});
-            await credentials.save();
-            this.id = oldUser.id;
-            this.user = oldUser;
             // Invio email per il reset della password
-            await emailManager.sendConfirmEmail(email, (err) => {
+            await emailManager.sendConfirmEmail(email, async(err) => {
                 if (err != null) {
-                    callback(err, null);
+                    return callback(err, null);
                 }
+                oldUser.username = username
+                await oldUser.save();
+                const credentials = new CredentialsModel({email: email, password: hash, user: oldUser._id});
+                await credentials.save();
+                this.id = oldUser.id;
+                this.user = oldUser;
                 // Generazione del token per l'accesso
                 Token.createToken(oldUser._id.toString(), ipAddress,function (err, token) {
                     if(err) {
