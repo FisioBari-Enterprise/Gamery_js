@@ -8,6 +8,7 @@ import {NavBarType} from "../enum/navBarType";
 import { PauseComponent } from 'src/app/dialogs/pause/pause.component';
 import {Router} from "@angular/router";
 import {ColorButtons} from "../enum/colorButtons";
+import {MainUserComponent} from "../../user/components/main-user/main-user.component";
 
 // TODO: Bottone di pausa e gestione
 // TODO: Bottone di login se non ha un account registrato attivo e mostra la view dedicata
@@ -32,6 +33,11 @@ export class NavBarComponent implements OnInit, OnDestroy {
   colorSchemaHome = ColorButtons.Blue;
   /**Colore del bottone di home*/
   colorSchemaSkip = ColorButtons.Green;
+  /**Colore del bottone di login*/
+  colorSchemaLogin = ColorButtons.Blue;
+  /**Colore del bottone di logout*/
+  colorSchemaLogout = ColorButtons.Red;
+
 
   /**Tipo di navbar da visualizzare in base agli input*/
   @Input() currentType: number = NavBarType.NoLogged;
@@ -140,6 +146,14 @@ export class NavBarComponent implements OnInit, OnDestroy {
         this.dialog.showError(err, () => {});
       })
     );
+  }
+
+  /**
+   * Apre la visualizzazione della schermata dello user
+   */
+  openUser(){
+
+    this.dialog.showDialog(MainUserComponent,() => {})
   }
 
   /**

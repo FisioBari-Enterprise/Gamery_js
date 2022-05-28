@@ -28,7 +28,7 @@ router.post("/login", async function (req, res) {
             }
         });
     } catch (error) {
-        StaticFunctions.sendError(res, error);
+        return StaticFunctions.sendError(res, error);
     }
 });
 /**

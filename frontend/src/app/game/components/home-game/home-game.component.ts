@@ -194,8 +194,6 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     }))
   }
 
-
-
   /**
    * Evento di pausa
    * @param event
