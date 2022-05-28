@@ -5,6 +5,7 @@ import { DialogManagerService } from 'src/app/services/dialog-manager.service';
 import { AuthField } from '../../classes/authField';
 import { UserService } from '../../services/user.service';
 import {ColorButtons} from "../../../shared/enum/colorButtons";
+import {SimpleTextComponent} from "../../../dialogs/simple-text/simple-text.component";
 
 @Component({
   selector: 'app-register',
@@ -66,7 +67,7 @@ export class RegisterComponent implements OnInit {
         this.dialogService.closeDialog();
         // Salva le credenziali e fa il redirect
         this.userService.saveCredentials(this.username.value, this.password.value, res.data, false);
-        this.router.navigateByUrl("home");
+        this.dialogService.showDialog(SimpleTextComponent,() => {}, {data : "Registration completed. A confirmation email is been sent, if you don't find one check the spam"})
       }, err =>  {
         this.dialogService.closeDialog();
         let errore = err.error.error

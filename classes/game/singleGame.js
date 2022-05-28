@@ -188,7 +188,7 @@ module.exports = class SingleGame {
         // Controllo passaggio del round
         if (roundData.words.some(item => !item.correct && item.word != null)) {
             //Caso round non passato
-            await elaborateLose(this.game);
+            await elaborateLose(this.game, this.user);
         } else {
             //se passo il round genero il round successivo
             await this.generateNewRound();
@@ -199,14 +199,20 @@ module.exports = class SingleGame {
 /**
  * Aggiorna i dati della partita in caso di sconfitta
  * @param {*} game Partita da aggiornare
+ * @param {*} user Utente a cui fa riferimento la partita
  */
-async function elaborateLose(game) {
+async function elaborateLose(game, user) {
     game.complete = true;
     // Controllo se ha raggiunto il punteggio massimo
     const currentRecord = await SingleGameDB.find({user: game.user}).sort({points: -1}).limit(1).lean().exec();
     if (currentRecord.length === 0 || currentRecord[0]._id === game._id) {
         game.record = true;
+        user.statistics.max_points = game.points;
     }
+    user.statistics.tot_games += 1;
+    user.statistics.tot_points += game.points;
+    user.statistics.game_time += game.game_time
+    await user.save();
     await game.save();
 }
 

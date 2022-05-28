@@ -38,7 +38,7 @@ export class SendEmailComponent implements OnInit, OnDestroy {
 
   sendEmail(){
     this.subscriptions.push(this.userService.sendEmail(this.email.value).subscribe(res => {
-      this.dialogManager.showDialog(SimpleTextComponent,() => {}, "Email sent successfully")
+      this.dialogManager.showDialog(SimpleTextComponent,() => {},{data: "Email sent successfully"})
     }, err => {
       this.email.error = err.error
     }))
