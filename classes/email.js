@@ -76,8 +76,8 @@ class EmailManager {
                 callback(err);
             }
             // Salva il fatto di aver inviato un'email
-            //const newEmailDB = new EmailDB({user: user._id, apiId: info.messageId, type: emailType});
-            //await newEmailDB.save();
+            const newEmailDB = new EmailDB({user: user._id, apiId: info.messageId, type: emailType});
+            await newEmailDB.save();
             callback(null);
         })
     }
