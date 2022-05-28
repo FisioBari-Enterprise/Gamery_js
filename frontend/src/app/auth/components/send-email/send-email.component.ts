@@ -4,6 +4,8 @@ import {ColorButtons} from "../../../shared/enum/colorButtons";
 import {Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {UserService} from "../../services/user.service";
+import {DialogManagerService} from "../../../services/dialog-manager.service";
+import {SimpleTextComponent} from "../../../dialogs/simple-text/simple-text.component";
 
 @Component({
   selector: 'app-send-email',
@@ -21,11 +23,13 @@ export class SendEmailComponent implements OnInit, OnDestroy {
 
   constructor(
     private router : Router,
-    private userService : UserService
+    private userService : UserService,
+    private dialogManager : DialogManagerService
   ) { }
 
   ngOnInit(): void {
     this.subscriptions = []
+
   }
 
   ngOnDestroy() {
@@ -34,7 +38,7 @@ export class SendEmailComponent implements OnInit, OnDestroy {
 
   sendEmail(){
     this.subscriptions.push(this.userService.sendEmail(this.email.value).subscribe(res => {
-      console.log("Invio email avvenuto con successo")
+      this.dialogManager.showDialog(SimpleTextComponent,() => {}, "Email sent successfully")
     }, err => {
       this.email.error = err.error
     }))

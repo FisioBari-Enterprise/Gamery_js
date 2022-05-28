@@ -3,34 +3,37 @@
     <app-nav-bar [currentType]="3" ></app-nav-bar>
     <p class="title">Gamery</p>
     <div style="position: relative;">
-    <div class="login-box">
-        <div *ngIf="isLogin" class="login-container">
-            <div>
-                <label for="username" class="form-label my-text" >Username/Email</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control my-input" id="username" aria-describedby="basic-addon3" [(ngModel)]="usernameEmail.value">
-                    </div>
-                    <p class="error-msg">{{usernameEmail.error === null ? "" : usernameEmail.error}}</p>
-            </div>
+      <div *ngIf="!forgotPassword" class="login-box">
+          <div *ngIf="isLogin" class="login-container">
+              <div>
+                  <label for="username" class="form-label my-text" >Username/Email</label>
+                      <div class="input-group">
+                          <input type="text" class="form-control my-input" id="username" aria-describedby="basic-addon3" [(ngModel)]="usernameEmail.value">
+                      </div>
+                      <p class="error-msg">{{usernameEmail.error === null ? "" : usernameEmail.error}}</p>
+              </div>
 
-            <div>
-                <div class="row">
-                    <label for="password" class="form-label my-text col-4" >Password</label>
-                    <p class="col-8 pw-forgotten" style="visibility: hidden" (click)="passwordForgotten()">Password forgotten?</p>
-                </div>
-                <div class="input-group">
-                    <input type="password" class="form-control my-input" id="password" aria-describedby="basic-addon3" [(ngModel)]="password.value">
-                </div>
-                <p class="error-msg">{{password.error === null ? "" : password.error}}</p>
-            </div>
-            <div style="padding-top: 20px;">
-                <app-button [setCenter]="true" [image]="null" [title]="'LOGIN'" (onClick)="login()"></app-button>
-                <app-button [setCenter]="true" [image]="null" [title]="'REGISTER'" [colorSchema]="colorRegister" (onClick)="register()"></app-button>
-            </div>
-        </div>
-        <div *ngIf="!isLogin">
-            <app-register (isLoginChange)="isLogin=$event"></app-register>
-        </div>
-    </div>
+              <div>
+                  <div class="row">
+                      <label for="password" class="form-label my-text col-4" >Password</label>
+                      <p class="col-8 pw-forgotten" style="visibility: hidden" (click)="passwordForgotten()">Password forgotten?</p>
+                  </div>
+                  <div class="input-group">
+                      <input type="password" class="form-control my-input" id="password" aria-describedby="basic-addon3" [(ngModel)]="password.value">
+                  </div>
+                  <p class="error-msg">{{password.error === null ? "" : password.error}}</p>
+              </div>
+              <div style="padding-top: 20px;">
+                  <app-button [setCenter]="true" [image]="null" [title]="'LOGIN'" (onClick)="login()"></app-button>
+                  <app-button [setCenter]="true" [image]="null" [title]="'REGISTER'" [colorSchema]="colorRegister" (onClick)="register()"></app-button>
+              </div>
+          </div>
+          <div *ngIf="!isLogin">
+              <app-register (isLoginChange)="isLogin=$event"></app-register>
+          </div>
+      </div>
+      <div *ngIf="forgotPassword">
+        <app-send-email></app-send-email>
+      </div>
     </div>
 </div>

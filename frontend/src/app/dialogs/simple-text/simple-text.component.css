@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.my-text{
+  text-align: center;
+  max-width: 200px;
+  font-family: "Exo2", serif;
+  margin-bottom: 30px;
+}
