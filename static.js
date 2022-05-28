@@ -25,10 +25,11 @@ class StaticFunctions {
     /**
      * Manda l'errore come HTML
      * @param {Response} res Risposta
-     * @param {String} error Errore
+     * @param {String} data Risultato da scrivere
+     * @param {Boolean} isError Indica se si tratta di un errore oppure no
      * @param {String | null} backLink Link per tornare alla pagina precedente se necessario
      */
-    static sendHTMLError(res, error, backLink=null) {
+    static sendResultHTML(res, data, isError=true, backLink=null) {
         return res.status(400).send(`
             <!DOCTYPE html>
             <html lang="en">
@@ -41,9 +42,9 @@ class StaticFunctions {
             <body>
             <!--Reset Password-->
                 <div class="container p-5">
-                  <h2 class="font-weight-bold mt-3" style="color: red">Error</h2>
+                  <h2 class="font-weight-bold mt-3" style="color: ${isError ? 'red' : 'forestgreen'}">${isError ? 'Error' : 'Success'}</h2>
                     <hr>
-                  <p>${error}</p>
+                  <p>${data}</p>
                   ${backLink != null ? `<a href="${backLink}">Go back</a>` : ''}
                   </div>
                 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"

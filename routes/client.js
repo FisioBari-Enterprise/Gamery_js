@@ -4,7 +4,6 @@ const StaticFunctions = require("../static");
 const Token = require("../classes/token");
 const User = require("../classes/users/user");
 const UserValidator = require("../classes/users/validator/userValidator");
-const path = require("path");
 let router = express.Router();
 /**
  * @openapi
@@ -173,9 +172,45 @@ router.get("", Token.autenticateUser, async function(req,res){
  *          403:
  *              description: Accesso non consentito. Token non valido
  */
-router.get("/confirm", UserValidator.checkConfirmEmail, async function(req,res){
-    const mainPath = path.join(__dirname, "../");
-    return res.sendFile('templates/views/accountConfirm.html', {root:  mainPath})
+router.get("/confirm", UserValidator.checkConfirmEmail, function(req,res){
+    return StaticFunctions.sendResultHTML(res, 'Account successfully confirmed', false);
+});
+/**
+ * @openapi
+ * \api\client\change\password:
+ *  post:
+ *      description: Richiede un reset della password. Il link viene inviato per email
+ *      tags: [Users]
+ *      parameters:
+ *          - name: email
+ *            description: Email al quale inviare il reset della password
+ *            in: formData
+ *            required: true
+ *            type: string
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Successo dell'azione
+ *          400:
+ *              description: Errore durante l'esecuzione dell'azione
+ *          403:
+ *              description: Accesso non consentito. Token non valido
+ */
+router.post("/change/password", Token.autenticateUser, async function(req,res) {
+    const user = new User(req.user._id);
+    const email = req.body.email;
+    try{
+        await user.sendResetPassword(email, (err) => {
+            if (err != null) {
+                return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+            } else {
+                return StaticFunctions.sendSuccess(res, true);
+            }
+        })
+    } catch (error) {
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
 });
 /**
  * @openapi
@@ -187,6 +222,16 @@ router.get("/confirm", UserValidator.checkConfirmEmail, async function(req,res){
  *          - name: token
  *            description: Token inviato per email
  *            in: query
+ *            required: true
+ *            type: string
+ *          - name: password
+ *            description: La nuova password
+ *            in: formData
+ *            required: true
+ *            type: string
+ *          - name: passwordConfirm
+ *            description: Il doppio inserimento della nuova password
+ *            in: formData
  *            required: true
  *            type: string
  *      produces:

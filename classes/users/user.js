@@ -273,6 +273,26 @@ class User {
     }
 
     /**
+     * Invia per email il link per il reset della password
+     * @param {String} email Email alla quale inviare il reset della password
+     * @param callback Callback che contiene un errore se lo trova
+     * @return {Promise<void>}
+     */
+    async sendResetPassword(email, callback) {
+        // Controllo che il campo email sia corretto
+        if (email == null || validateEmail(email) == null) {
+            throw 'Email not valid';
+        }
+        // Controllo che l'email sia registrata nel sistema
+        const credentials = await CredentialsModel.findOne({email: email, confirmed: true}).populate('user').exec();
+        if (credentials == null) {
+            throw 'Email not registered';
+        }
+        // Invia l'email
+        await emailManager.sendPasswordReset(email, credentials.user.username, (err) => callback(err));
+    }
+
+    /**
      * Effettua la modifica della password
      * @param {String} password Nuova password
      * @param {String} passwordConfirm Conferma della nuova password

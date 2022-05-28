@@ -11,11 +11,11 @@ module.exports = class UserValidator {
     static async checkConfirmEmail(req, res, next) {
         await UserValidator.checkTokenExists(req, res, EmailType.CONFIRM_EMAIL, async (err, credentials) => {
             if (err != null) {
-                return StaticFunctions.sendHTMLError(res, err.message);
+                return StaticFunctions.sendResultHTML(res, err.message);
             }
             // Conferma l'account
             if (credentials.confirm) {
-                return StaticFunctions.sendHTMLError(res, 'Account already activated');
+                return StaticFunctions.sendResultHTML(res, 'Account already activated');
             }
             credentials.confirm = true;
             credentials.token.active = false;
