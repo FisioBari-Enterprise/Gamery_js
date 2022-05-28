@@ -3,6 +3,8 @@ let Client = require('../classes/users/user');
 const StaticFunctions = require("../static");
 const Token = require("../classes/token");
 const User = require("../classes/users/user");
+const UserValidator = require("../classes/users/validator/userValidator");
+const path = require("path");
 let router = express.Router();
 /**
  * @openapi
@@ -149,8 +151,55 @@ router.get("", Token.autenticateUser, async function(req,res){
     }
     StaticFunctions.sendSuccess(res, user.user);
 });
-
-router.put("/changePassword", Token.autenticateUser, async function(req,res){
+/**
+ * @openapi
+ * \api\client\confirm:
+ *  get:
+ *      description: Conferma l'indirizzo email
+ *      tags: [Users]
+ *      parameters:
+ *          - name: token
+ *            description: Token inviato per email
+ *            in: query
+ *            required: true
+ *            type: string
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Risultato dell'operazione
+ *          400:
+ *              description: Errore durante l'esecuzione dell'azione
+ *          403:
+ *              description: Accesso non consentito. Token non valido
+ */
+router.get("/confirm", UserValidator.checkConfirmEmail, async function(req,res){
+    const mainPath = path.join(__dirname, "../");
+    return res.sendFile('templates/views/accountConfirm.html', {root:  mainPath})
+});
+/**
+ * @openapi
+ * \api\client\change\password:
+ *  get:
+ *      description: Resetta la password per l'utente
+ *      tags: [Users]
+ *      parameters:
+ *          - name: token
+ *            description: Token inviato per email
+ *            in: query
+ *            required: true
+ *            type: string
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Successo dell'azione
+ *          400:
+ *              description: Errore durante l'esecuzione dell'azione
+ *          403:
+ *              description: Accesso non consentito. Token non valido
+ */
+router.put("/change/password", Token.autenticateUser, async function(req,res){
     let user = new User(req.user._id);
     let password = req.body.password;
     let passwordConfirm = req.body.passwordConfirm;

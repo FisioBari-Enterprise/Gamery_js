@@ -4,7 +4,7 @@ const CredentialsModel = require('../../database/users/credentials');
 const SessionModel = require('../../database/users/session');
 const {cryptPassword, comparePassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
-const {EmailManager} = require("../email");
+const emailManager = require("../email");
 let ObjectId = require("mongoose").Types.ObjectId;
 
 /**
@@ -20,9 +20,6 @@ let ObjectId = require("mongoose").Types.ObjectId;
  * @param { String | null } token Token assegnato all'utente
  * @param { * } user Oggetto JS con i dati contenuti nell'utente
  */
-
-// const user = new User(req.user._id);
-// user.serialize();
 
 /**
  * Classe di gestione degli utenti
@@ -243,7 +240,6 @@ class User {
             this.id = oldUser.id;
             this.user = oldUser;
             // Invio email per il reset della password
-            const emailManager = new EmailManager();
             await emailManager.sendConfirmEmail(email, (err) => {
                 if (err != null) {
                     callback(err, null);
@@ -273,6 +269,12 @@ class User {
         await SessionModel.updateMany({token: token}, {valid: false}).exec();
     }
 
+    /**
+     * Effettua la modifica della password
+     * @param {String} password Nuova password
+     * @param {String} passwordConfirm Conferma della nuova password
+     * @return {Promise<void>}
+     */
     async changePassword(password, passwordConfirm) {
         if(password == null || password === ''){
             throw "password:cannot be empty"

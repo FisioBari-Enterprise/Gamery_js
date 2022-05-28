@@ -2,8 +2,6 @@ const { TokenSecret, TokenEmail } = require('../config');
 const jwt = require("jsonwebtoken");
 const StaticFunctions = require('../static');
 const SessionModel = require('../database/users/session');
-const UserModel = require('../database/users/user');
-const ObjectId = require('mongoose').Types.ObjectId;
 
 /**
  * @callback CreateToken
@@ -81,10 +79,15 @@ class Token {
     /**
      * Genera un token effettuare cambiamenti nell'utente
      * @param {String} userId L'utente a cui assegnare il token da generare
+     * @param {Number} type Tipo di token da creare
      * @param {CreateToken} callback Funzione con due parametri: error e token
      */
-    static createTokenEmail(userId, callback) {
-
+    static createTokenEmail(userId, type, callback) {
+        // Creazione del token da usare per le email
+        const info = {userId, type}
+        jwt.sign(info, TokenEmail, { expiresIn: '30m' }, (err, token) => {
+            callback(err, token);
+        });
     }
 }
 

@@ -16,8 +16,8 @@ const {EmailManager} = require('../classes/email');
  *              description: Risposta corretta
  */
 router.get("", async function (req, res, next) {
-    return StaticFunctions.sendSuccess(res, require('crypto').randomBytes(64).toString('hex'));
-    const email = new EmailManager();
+    //return StaticFunctions.sendSuccess(res, require('crypto').randomBytes(64).toString('hex'));
+    /* const email = new EmailManager();
     try {
         await email.sendConfirmEmail('leonardolazzarin14@gmail.com', (err) => {
             if (err != null) {
@@ -28,6 +28,8 @@ router.get("", async function (req, res, next) {
     } catch (e) {
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
+     */
+    return StaticFunctions.sendSuccess(res, true);
 });
 
 module.exports = router

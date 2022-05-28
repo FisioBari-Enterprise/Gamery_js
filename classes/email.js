@@ -28,22 +28,30 @@ class EmailManager {
      */
     async sendConfirmEmail(email, callback){
         // Controlli sulla conferma
-        /*const credentials = await Credentials.findOne({email: email}).exec();
+        const credentials = await Credentials.findOne({email: email}).populate('user').exec();
         if (credentials == null) {
             throw "Email not valid";
         }
         if (!credentials.confirm) {
             throw "Credentials already confirmed";
-        }*/
+        }
         // Genera il token ed il link per il reset
-        //const credentials = {user: {_id: '1'}}
-        //`${Host}api/password/reset`
-        // Invia l'email
-        const filePath = path.join(__dirname, "../static/confirmUserEmail.txt");
-        let data = await fs.readFile(filePath, "utf-8");
-        data = data.replace('$username', 'TestUser').replace('$link', ``);
-        const mailOptions = new MailOptions('leonardolazzarin14@gmail.com', 'Gamery password reset', data);
-        this.sendEmail('', EmailType.CONFIRM_EMAIL, mailOptions, (err) => callback(err));
+        Token.createTokenEmail(credentials.user._id.toString(), EmailType.CONFIRM_EMAIL, async (err, token) => {
+            if (err != null){
+                return callback(err)
+            }
+            const link = `${Host}api/client/confirm?token=${token}`
+            // Registra il token sulle credenziali
+            credentials.token.value = token
+            credentials.token.type = EmailType.CONFIRM_EMAIL
+            // await credentials.save()
+            // Invia l'email
+            const filePath = path.join(__dirname, "../templates/confirmUserEmail.txt");
+            let data = await fs.readFile(filePath, "utf-8");
+            data = data.replace('$username', credentials.user.username).replace('$link', link);
+            const mailOptions = new MailOptions('leonardolazzarin14@gmail.com', 'Gamery password reset', data);
+            this.sendEmail('', EmailType.CONFIRM_EMAIL, mailOptions, (err) => callback(err));
+        })
     }
 
     /**
@@ -102,8 +110,7 @@ class MailOptions {
         }
     }
 }
-
-module.exports = {
-    EmailManager,
-    MailOptions
-}
+// Istanza della classe
+const emailManager = new EmailManager();
+// Viene ritornata solo l'istanza in modo da creare una sola volta il componente
+module.exports = emailManager;
