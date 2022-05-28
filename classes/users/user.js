@@ -233,17 +233,20 @@ class User {
            if (err != null) {
                return callback("generic: error password encryption");
            }
+
+            const credentials = new CredentialsModel({email: email, password: hash, user: oldUser._id});
+            await credentials.save();
+            this.id = oldUser.id;
+            this.user = oldUser;
+
             // Invio email per il reset della password
-            await emailManager.sendConfirmEmail(email, async(err) => {
+            await emailManager.sendConfirmEmail(email, username, async (err) => {
                 if (err != null) {
                     return callback(err, null);
                 }
+                //aggiornamento username
                 oldUser.username = username
                 await oldUser.save();
-                const credentials = new CredentialsModel({email: email, password: hash, user: oldUser._id});
-                await credentials.save();
-                this.id = oldUser.id;
-                this.user = oldUser;
                 // Generazione del token per l'accesso
                 Token.createToken(oldUser._id.toString(), ipAddress,function (err, token) {
                     if(err) {
