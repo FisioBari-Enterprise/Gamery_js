@@ -1,5 +1,6 @@
 const StaticFunctions = require("../../../static");
 const EmailType = require("../../../database/enum/emailType");
+const Token = require("../../token");
 module.exports = class UserValidator {
     /**
      * Controlla che nella richiesta ci sia un token valido
@@ -8,11 +9,19 @@ module.exports = class UserValidator {
      * @param next
      */
     static async checkConfirmEmail(req, res, next) {
-        const error = await UserValidator.checkTokenExists(req, res, EmailType.CONFIRM_EMAIL);
-        if (error != null) {
-            return error;
-        }
-        next();
+        await UserValidator.checkTokenExists(req, res, EmailType.CONFIRM_EMAIL, async (err, credentials) => {
+            if (err != null) {
+                return StaticFunctions.sendHTMLError(res, err.message);
+            }
+            // Conferma l'account
+            if (credentials.confirm) {
+                return StaticFunctions.sendHTMLError(res, 'Account already activated');
+            }
+            credentials.confirm = true;
+            credentials.token.active = false;
+            await credentials.save();
+            next();
+        });
     }
 
     /**
@@ -20,13 +29,17 @@ module.exports = class UserValidator {
      * @param {Request} req Richiesta ricevuta
      * @param {Response} res Risposta da inviare
      * @param {Number} type Tipo di token
+     * @param callback Callback che contiene l'errore se esiste e le credenziali associate al token
      * @return {null | Response}
      */
-    static async checkTokenExists(req, res, type) {
+    static async checkTokenExists(req, res, type, callback) {
         const token = req.query.token;
         if (token == null) {
-            return StaticFunctions.sendHTMLError(res, 'No token found');
+            callback(new Error('No token found'), null);
         }
-        return null;
+        // Cerca di risolvere il token
+        await Token.checkTokenEmail(token, type, (err, credentials) => {
+            callback(err, credentials);
+        })
     }
 }

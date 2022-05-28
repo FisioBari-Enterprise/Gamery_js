@@ -2,6 +2,8 @@ const { TokenSecret, TokenEmail } = require('../config');
 const jwt = require("jsonwebtoken");
 const StaticFunctions = require('../static');
 const SessionModel = require('../database/users/session');
+const Credentials = require('../database/users/credentials');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 /**
  * @callback CreateToken
@@ -88,6 +90,36 @@ class Token {
         jwt.sign(info, TokenEmail, { expiresIn: '30m' }, (err, token) => {
             callback(err, token);
         });
+    }
+
+    /**
+     * Controlla che il token passato sia valido e disponibile
+     * @param token Token da cercare
+     * @param type Tipo di token email
+     * @param callback (errore se esiste, credenziali)
+     */
+    static checkTokenEmail(token, type, callback) {
+        jwt.verify(token, TokenEmail, {}, async (err, data) => {
+            if (err != null) {
+                if (err.message === 'jwt malformed') {
+                    return callback(new Error('Token not valid'), null);
+                }
+                return callback(err, null);
+            }
+            // Controlla i dati contenuti nel token
+            const credentials = await Credentials.findOne({
+                user: new ObjectId(data.userId),
+                token: {
+                    value: token,
+                    type: type,
+                    active: true
+                }
+            }).populate('user').exec();
+            if (credentials == null) {
+                return callback(new Error('Token not valid'), null);
+            }
+            callback(null, credentials);
+        })
     }
 }
 
