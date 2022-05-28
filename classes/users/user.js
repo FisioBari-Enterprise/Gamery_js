@@ -336,8 +336,9 @@ class User {
                 if (err != null) {
                     return callback(err.message, null);
                 }
-                // Aggiorna la nuova password
+                // Aggiorna la nuova password e rende non valido il token
                 credentials.password = hash;
+                credentials.token.active = false;
                 await credentials.save();
                 // Rende invalide tutte le sessioni con questo utente
                 await SessionModel.updateMany({user: {_id: new ObjectId(this.user._id)}}, {valid: false}).exec();
