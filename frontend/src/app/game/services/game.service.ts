@@ -25,9 +25,9 @@ export class GameService {
   /**
    * Avvia una nuova partita
    */
-  newGame(): Observable<GameResponse> {
+  newGame(): Observable<GameRoundResponse> {
     const headers = this.base.TokenHeader;
-    return this.http.post<GameResponse>(this.base.apiUrl('game'), {}, {headers});
+    return this.http.post<GameRoundResponse>(this.base.apiUrl('game'), {}, {headers});
   }
 
   /**

@@ -4,6 +4,7 @@ const CredentialsModel = require('../../database/users/credentials');
 const SessionModel = require('../../database/users/session');
 const {cryptPassword, comparePassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
+const {EmailManager} = require("../email");
 let ObjectId = require("mongoose").Types.ObjectId;
 
 /**
@@ -71,6 +72,8 @@ class User {
                 }
                 //Genera il nuovo utente
                 const newUser = new UserModel({username: `Player${newNumber}`, uuid: uuid});
+                // Crea i colori di base per l'icona
+                newUser.preferences.colors_icon = ['#2AF39A', '#00A1F9']
                 await newUser.save();
                 Token.createToken(newUser._id.toString(), ipAddress, (err, token) => {
                     callback(err, token, uuid);
@@ -239,13 +242,21 @@ class User {
             await credentials.save();
             this.id = oldUser.id;
             this.user = oldUser;
-            Token.createToken(oldUser._id.toString(), ipAddress,function (err, token) {
-                if(err) {
+            // Invio email per il reset della password
+            const emailManager = new EmailManager();
+            await emailManager.sendConfirmEmail(email, (err) => {
+                if (err != null) {
                     callback(err, null);
-                } else {
-                    callback(null, token);
                 }
-            });
+                // Generazione del token per l'accesso
+                Token.createToken(oldUser._id.toString(), ipAddress,function (err, token) {
+                    if(err) {
+                        callback(err, null);
+                    } else {
+                        callback(null, token);
+                    }
+                });
+            })
         });
     }
 
@@ -260,6 +271,22 @@ class User {
         }
         // Rende invalide la sessione
         await SessionModel.updateMany({token: token}, {valid: false}).exec();
+    }
+
+    async changePassword(password, passwordConfirm) {
+        if(password == null || password === ''){
+            throw "password:cannot be empty"
+        }
+        if(passwordConfirm == null || passwordConfirm === ''){
+            throw "passwordConfirm:cannot be empty"
+        }
+        if(password !== passwordConfirm){
+            throw "passwordConfirm:passwords do not match"
+        }
+        if (password.length < 8 || password.length > 30) {
+            throw "password:password must be 8 - 30 long";
+        }
+        //TODO: Aggiornare password nel DB
     }
 }
 
