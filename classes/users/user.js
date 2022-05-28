@@ -296,22 +296,55 @@ class User {
      * Effettua la modifica della password
      * @param {String} password Nuova password
      * @param {String} passwordConfirm Conferma della nuova password
+     * @param callback Contiene gli eventuali errori riscontrati. passwordError e passwordConfirmError
      * @return {Promise<void>}
      */
-    async changePassword(password, passwordConfirm) {
+    async changePassword(password, passwordConfirm, callback) {
+        // Controllo dei dati
         if(password == null || password === ''){
-            throw "password:cannot be empty"
+            return callback('Cannot be empty', null);
         }
         if(passwordConfirm == null || passwordConfirm === ''){
-            throw "passwordConfirm:cannot be empty"
-        }
-        if(password !== passwordConfirm){
-            throw "passwordConfirm:passwords do not match"
+            return callback(null, 'Cannot be empty');
         }
         if (password.length < 8 || password.length > 30) {
-            throw "password:password must be 8 - 30 long";
+            return callback('Password must be 8 - 30 long', null);
         }
-        //TODO: Aggiornare password nel DB
+        if(password !== passwordConfirm){
+            return callback(null, 'Passwords do not match');
+        }
+        // Ottiene le credenziali
+        const credentials = await CredentialsModel.findOne({
+            user: {
+                _id: new ObjectId(this.user._id),
+                active: true
+            }
+        }).populate('user').exec();
+        if (credentials == null) {
+            return callback('Credentials not found for this link', null);
+        }
+        // Controlla che la nuova password non sia uguale a quella precedente
+        comparePassword(password, credentials.password, (err, match) => {
+            if (err != null) {
+                return callback(err.message, null);
+            }
+            if (match) {
+                return callback('New password cannot be equal to previous one', null);
+            }
+            // Cripta la nuova password
+            cryptPassword(password, async (err, hash) => {
+                if (err != null) {
+                    return callback(err.message, null);
+                }
+                // Aggiorna la nuova password
+                credentials.password = hash;
+                await credentials.save();
+                // Rende invalide tutte le sessioni con questo utente
+                await SessionModel.updateMany({user: {_id: new ObjectId(this.user._id)}}, {valid: false}).exec();
+                // Risposta di completamento con successo
+                callback(null, null);
+            });
+        });
     }
 }
 

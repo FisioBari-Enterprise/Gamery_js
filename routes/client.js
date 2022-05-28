@@ -178,44 +178,33 @@ router.get("/confirm", UserValidator.checkConfirmEmail, function(req,res){
 /**
  * @openapi
  * \api\client\change\password:
- *  post:
- *      description: Richiede un reset della password. Il link viene inviato per email
+ *  get:
+ *      description: Form per inviare la modifica della password
  *      tags: [Users]
  *      parameters:
- *          - name: email
- *            description: Email al quale inviare il reset della password
- *            in: formData
+ *          - name: token
+ *            description: Token inviato per email
+ *            in: query
  *            required: true
  *            type: string
  *      produces:
  *          - application/json
  *      responses:
  *          200:
- *              description: Successo dell'azione
+ *              description: Pagina web
  *          400:
  *              description: Errore durante l'esecuzione dell'azione
  *          403:
  *              description: Accesso non consentito. Token non valido
  */
-router.post("/change/password", Token.autenticateUser, async function(req,res) {
-    const user = new User(req.user._id);
-    const email = req.body.email;
-    try{
-        await user.sendResetPassword(email, (err) => {
-            if (err != null) {
-                return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
-            } else {
-                return StaticFunctions.sendSuccess(res, true);
-            }
-        })
-    } catch (error) {
-        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
-    }
+router.get("/change/password", UserValidator.checkResetPassword, async function(req,res) {
+    // Renderizza la pagina HTML
+    return StaticFunctions.sendPasswordResetHTML(res);
 });
 /**
  * @openapi
  * \api\client\change\password:
- *  get:
+ *  post:
  *      description: Resetta la password per l'utente
  *      tags: [Users]
  *      parameters:
@@ -244,16 +233,59 @@ router.post("/change/password", Token.autenticateUser, async function(req,res) {
  *          403:
  *              description: Accesso non consentito. Token non valido
  */
-router.put("/change/password", Token.autenticateUser, async function(req,res){
+router.post("/change/password", UserValidator.checkResetPassword, async function(req,res){
+    const link = '/api/client/change/password?token=' + req.query.token;
     let user = new User(req.user._id);
     let password = req.body.password;
     let passwordConfirm = req.body.passwordConfirm;
+    try {
+        await user.buildUser();
+        await user.changePassword(password, passwordConfirm, (passwordError, passwordConfirmError) => {
+            if (passwordError != null || passwordConfirmError != null) {
+                return StaticFunctions.sendPasswordResetHTML(res, passwordError, passwordConfirmError);
+            }
+            return StaticFunctions.sendResultHTML(res, 'Password successfully changed', false);
+        });
+    } catch (error) {
+        return StaticFunctions.sendResultHTML(res, typeof  error === 'string' ? error : error.message, true, link);
+    }
+});
+/**
+ * @openapi
+ * \api\client\change\password:
+ *  put:
+ *      description: Richiede un reset della password. Il link viene inviato per email
+ *      tags: [Users]
+ *      parameters:
+ *          - name: email
+ *            description: Email al quale inviare il reset della password
+ *            in: formData
+ *            required: true
+ *            type: string
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Successo dell'azione
+ *          400:
+ *              description: Errore durante l'esecuzione dell'azione
+ *          403:
+ *              description: Accesso non consentito. Token non valido
+ */
+router.put("/change/password", Token.autenticateUser, async function(req,res) {
+    const user = new User(req.user._id);
+    const email = req.body.email;
     try{
-        await user.changePassword(password,passwordConfirm);
-    } catch (error){
+        await user.sendResetPassword(email, (err) => {
+            if (err != null) {
+                return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+            } else {
+                return StaticFunctions.sendSuccess(res, true);
+            }
+        })
+    } catch (error) {
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
-    return StaticFunctions.sendSuccess(res, true);
 });
 
 module.exports = router

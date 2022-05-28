@@ -25,6 +25,22 @@ module.exports = class UserValidator {
     }
 
     /**
+     * Controlla che nella richiesta per ottenere la pagina di reset della password ci sia un token valido
+     * @param req
+     * @param res
+     * @param next
+     */
+    static async checkResetPassword(req, res, next) {
+        await UserValidator.checkTokenExists(req, res, EmailType.PASSWORD_RESET, async (err, credentials) => {
+            if (err != null) {
+                return StaticFunctions.sendResultHTML(res, err.message);
+            }
+            req.user = credentials.user
+            next();
+        });
+    }
+
+    /**
      * Controlla se esiste il token nella richiesta e se è valido
      * @param {Request} req Richiesta ricevuta
      * @param {Response} res Risposta da inviare

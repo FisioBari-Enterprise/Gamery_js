@@ -63,7 +63,7 @@ class Token {
             }
             const session = await SessionModel.findOne({token: token, valid: true}).populate('user').exec()
             if (session == null) {
-                return StaticFunctions.sendError(res, 'Session not found', 403);
+                return StaticFunctions.sendError(res, 'Session not found or invalid', 403);
             }
             // Controllo sull'utente attivo
             if (session.user === null || session.user._id === userId.id) {
@@ -101,7 +101,7 @@ class Token {
     static checkTokenEmail(token, type, callback) {
         jwt.verify(token, TokenEmail, {}, async (err, data) => {
             if (err != null) {
-                if (err.message === 'jwt malformed') {
+                if (err.message === 'jwt malformed' || err.message === 'jwt expired') {
                     return callback(new Error('Token not valid'), null);
                 }
                 return callback(err, null);

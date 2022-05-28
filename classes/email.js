@@ -101,6 +101,7 @@ class EmailManager {
             }
             // Registra il token sulle credenziali
             credentials.token.value = token
+            credentials.token.active = true
             credentials.token.type = type
             await credentials.save()
             // Ritorna i dati
