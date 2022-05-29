@@ -49,6 +49,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
   @Input() skipLogin: Boolean = false;
   /**Indica la pressione del bottone di pausa*/
   @Output() pauseSet = new EventEmitter<Boolean>();
+  /**Indica la pressione del bottone skipTime*/
+  @Output() isSkipTime = new EventEmitter<Boolean>();
 
   constructor(
     private userService: UserService,
@@ -223,10 +225,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Pressione del bottone Skip time
+   * Evento pressione del bottone Skip time
    */
   skipTime() {
-
+    //Mando l'evento di skipTime
+    this.isSkipTime.emit(true);
+    //devo resettare la variabile a false in qualche modo?
   }
 
   /**

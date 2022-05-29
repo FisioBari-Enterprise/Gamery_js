@@ -34,6 +34,8 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   isMemorization : boolean = true
   /** Indica se il gioco è in pausa */
   isPause : boolean = false;
+  /**Indica se è stato premuto il pulsante skipTime*/
+  isSkipTime : boolean = false;
 
   /** Array di parole da inserire */
   words : string[] = []
@@ -145,6 +147,10 @@ export class HomeGameComponent implements OnInit, OnDestroy {
         //Faccio l'update del timer
         timeBoard.updateValue();
         this.timeSubject.next(timeBoard);
+        //Controllo se è stato premuto il pulsante skipTime
+        if(this.isSkipTime) {
+          timeBoard.value = 0;
+        }
         //Se raggiungo lo zero entro in modalità inserimento o controllo le parole inserite
         if (timeBoard.value === 0) {
           clearInterval(this.timerId);
@@ -201,6 +207,14 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   onPause(event: any) {
     this.isPause = event as boolean
   }
+
+  /**
+     * Evento di pressione bottone skipTime
+     * @param event
+     */
+    skipTime(event: any) {
+      this.isSkipTime = event as boolean
+    }
 
    /**
   * Evento di keypress in ascolto per ottenere il barcode
