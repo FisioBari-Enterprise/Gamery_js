@@ -87,6 +87,22 @@ router.get("/client", Token.autenticateUser, async function (req, res, next) {
  *      tags: [Country]
  *      produces:
  *          - application/json
+ *      parameters:
+ *          - name: id
+ *            description: Id dello stato
+ *            in: formData
+ *            required: false
+ *            type: string
+ *          - name: code
+ *            description: Codice dello stato
+ *            in: formData
+ *            required: false
+ *            type: string
+ *          - name: remove
+ *            description: Rimuove la preferenza dello stato
+ *            in: formData
+ *            required: false
+ *            type: boolean
  *      responses:
  *          200:
  *              description: L'utente aggiornato
