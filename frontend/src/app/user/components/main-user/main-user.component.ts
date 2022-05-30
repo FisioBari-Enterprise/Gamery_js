@@ -13,6 +13,10 @@ export class MainUserComponent implements OnInit, OnDestroy {
   user : UserInfo
   /** Indica se deve essere mostrato il pulsante di back*/
   showBack : boolean = false
+  /** indica quale pagina deve essere aperta */
+  selectedButton : string = ""
+  /** Url per ottenere l'immagine del country*/
+  urlCountry : String = "./assets/userInfo/earth_globe.png"
 
   constructor(
     public dialogRef: MatDialogRef<MainUserComponent>,
@@ -21,10 +25,34 @@ export class MainUserComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user = this.data
+    if(this.user.country.code != null){
+      this.urlCountry = "https://flagcdn.com/32x24/"+ this.user.country.code +".png"
+    }
   }
 
   ngOnDestroy() {
     this.dialogRef.close();
+  }
+
+  changeFlag(){
+    this.showBack = true;
+    this.selectedButton = "flags";
+  }
+
+  showStatistics(){
+    this.showBack = true;
+    this.selectedButton = "statistics";
+
+  }
+
+  showRecentMatch(){
+    this.showBack = true;
+    this.selectedButton = "matches";
+
+  }
+
+  back() {
+    this.showBack = false
   }
 
 }

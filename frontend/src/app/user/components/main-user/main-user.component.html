@@ -9,42 +9,17 @@
 
   <div class="bottom-container">
     <div *ngIf="!showBack">
-      <div class="card row">
-        <div class="col-2 center-vertically">
-          <img class="flag-image" src="https://flagcdn.com/32x24/za.png" alt="image not found"/>
-        </div>
-        <div class="col-7 center-vertically">
-          <h3 class="card-text" > Country </h3>
-        </div>
-        <div class="col-1 center-vertically">
-          <img class="card-arrow"  src="./assets/userInfo/right-arrow.png" alt="image not found">
-        </div>
-      </div>
-      <div class="card row">
-        <div class="col-2 center-vertically">
-          <img class="card-image" src="./assets/userInfo/recent_matches.png" alt="image not found"/>
-        </div>
-        <div class="col-7 center-vertically">
-          <h3 class="card-text" > Recent Matches </h3>
-        </div>
-        <div class="col-1 center-vertically">
-          <img class="card-arrow"  src="./assets/userInfo/right-arrow.png" alt="image not found">
-        </div>
-      </div>
-      <div class="card row">
-        <div class="col-2 center-vertically">
-          <img class="card-image" src="./assets/userInfo/statistics.png" alt="image not found"/>
-        </div>
-        <div class="col-7 center-vertically">
-          <h3 class="card-text" > Statistics </h3>
-        </div>
-        <div class="col-1 center-vertically">
-          <img class="card-arrow"  src="./assets/userInfo/right-arrow.png" alt="image not found">
-        </div>
-      </div>
+      <app-card [image]="urlCountry" [text]="'Country'" (OnClick)="changeFlag()"></app-card>
+      <app-card [image]="'./assets/userInfo/recent_matches.png'" [text]="'Recent Matches'" (OnClick)="showRecentMatch()"></app-card>
+      <app-card [image]="'./assets/userInfo/statistics.png'" [text]="'Statistics'" (OnClick)="showStatistics()"></app-card>
     </div>
     <div *ngIf="showBack">
-      <img class="back-image" src="./assets/buttons/back.png" alt="image not found"/>
+      <img class="back-image" src="./assets/buttons/back.png" alt="image not found" (click)="back()"/>
+      <div style="max-height: 280px">
+        <app-country *ngIf="selectedButton=='flags'"></app-country>
+        <app-matches *ngIf="selectedButton=='matches'"></app-matches>
+        <app-statistics *ngIf="selectedButton=='statistics'"></app-statistics>
+      </div>
     </div>
   </div>
 </div>
