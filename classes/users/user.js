@@ -5,6 +5,7 @@ const SessionModel = require('../../database/users/session');
 const {cryptPassword, comparePassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
 const emailManager = require("../email");
+const SingleGameDB = require("../../database/game/singleGame");
 let ObjectId = require("mongoose").Types.ObjectId;
 
 /**
@@ -346,6 +347,23 @@ class User {
                 callback(null, null);
             });
         });
+    }
+
+    /**
+     * Ottengo le partite precedenti dell'utente
+     * @param nGame{number} numero di partite da ottenere
+     * @returns {[*]} array delle partite
+     */
+    async getGames(nGame){
+        let gamesQuery = SingleGameDB.find({user: this.user, completed: true}).sort({createdAt : 1});
+        if(nGame > -1){
+            gamesQuery = gamesQuery.limit(nGame)
+        }
+        let games = await gamesQuery.exec();
+        if(games.length === 0){
+            throw "No game found for this user"
+        }
+        return games
     }
 }
 

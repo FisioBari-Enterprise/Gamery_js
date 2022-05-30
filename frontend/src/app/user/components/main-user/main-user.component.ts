@@ -25,7 +25,7 @@ export class MainUserComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user = this.data
-    if(this.user.country.code != null){
+    if(this.user.country != null && this.user.country.code != null){
       this.urlCountry = "https://flagcdn.com/32x24/"+ this.user.country.code +".png"
     }
   }

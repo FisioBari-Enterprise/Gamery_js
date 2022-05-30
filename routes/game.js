@@ -4,6 +4,7 @@ const { saveWords } = require('../classes/game/words');
 const Token = require("../classes/token");
 const SingleGame = require("../classes/game/singleGame");
 const UserValidator = require("../classes/users/validator/userValidator");
+const User = require("../classes/users/user");
 let router = express.Router();
 
 /**
@@ -220,6 +221,37 @@ router.put('/round', Token.autenticateUser, async function (req, res) {
     }
     catch (error) {
         console.log(error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+})
+
+/**
+ * @openapi
+ * \api\game\recent:
+ *  put:
+ *      description: Ottengo le ultime partite dell'utente
+ *      tags: [Statistics]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *      responses:
+ *          200:
+ *              description: Ultime partite dell'utente
+ *          400:
+ *              description: Errore riscontrato in fase di update
+ *          401:
+ *              description: Token non passato
+ *          403:
+ *              description: Sessione o token non validi
+ */
+router.get('/recent', Token.autenticateUser, async function(req ,res){
+    let user = new User(req.user._id)
+    try{
+        let games = await user.getGames(50);
+
+        return StaticFunctions.sendSuccess(res,games);
+    }
+    catch (error){
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
 })
