@@ -308,7 +308,7 @@ class User {
             return callback(null, 'Cannot be empty');
         }
         if (password.length < 8 || password.length > 30) {
-            return callback('Password must be 8 - 30 long', null);
+            return callback('Password must be 8 - 30 characters long', null);
         }
         if(password !== passwordConfirm){
             return callback(null, 'Passwords do not match');
@@ -346,6 +346,12 @@ class User {
                 callback(null, null);
             });
         });
+    }
+
+    async changeSettings(font_size, volume, sound) {
+        if(this.user == null){
+            return callback('User is not logged in', null);
+        }
     }
 }
 
