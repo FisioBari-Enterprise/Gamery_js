@@ -3,6 +3,7 @@ const StaticFunctions = require("../static");
 const { saveWords } = require('../classes/game/words');
 const Token = require("../classes/token");
 const SingleGame = require("../classes/game/singleGame");
+const UserValidator = require("../classes/users/validator/userValidator");
 let router = express.Router();
 
 /**
@@ -25,12 +26,7 @@ let router = express.Router();
  *          403:
  *              description: Accesso non consentito
  */
-router.post('/word', function (req, res, next) {
-    if (req.socket.remoteAddress !== "::1") {
-        return StaticFunctions.sendError(res, 'This ip haven\'t the access to the endpoint', 403);
-    }
-    next();
-}, async function (req, res) {
+router.post('/word', UserValidator.onlyLocalHost, async function (req, res) {
     return await saveWords(res, req.body.words);
 });
 

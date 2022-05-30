@@ -1,6 +1,7 @@
 const StaticFunctions = require("../../../static");
 const EmailType = require("../../../database/enum/emailType");
 const Token = require("../../token");
+
 module.exports = class UserValidator {
     /**
      * Controlla che nella richiesta ci sia un token valido
@@ -57,5 +58,19 @@ module.exports = class UserValidator {
         await Token.checkTokenEmail(token, type, (err, credentials) => {
             callback(err, credentials);
         })
+    }
+
+    /**
+     * Controlla se la richiesta è arrivata dal localhost
+     * @param {Request} req Richiesta ricevuta
+     * @param {Response} res Risposta da inviare
+     * @param {*} next Prossima funzione da eseguire
+     * @return {null | Response}
+     */
+    static async onlyLocalHost(req, res, next) {
+        if (req.socket.remoteAddress !== "::1") {
+            return StaticFunctions.sendError(res, 'This ip haven\'t the access to the endpoint', 403);
+        }
+        next();
     }
 }

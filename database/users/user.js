@@ -1,10 +1,12 @@
-const {Schema, model} = require("mongoose");
+const {Schema, model, Types} = require("mongoose");
 const Languages = require("../enum/languages");
 
 const user = new Schema({
     username: String,
     uuid: String,
     active: {type: Boolean, default: true},
+    // Stato selezionato
+    country: { type: Types.ObjectId, ref: 'country', default: null},
     // Statistiche dell'utente
     statistics: {
         game_time: {type: Number, default: 0},
