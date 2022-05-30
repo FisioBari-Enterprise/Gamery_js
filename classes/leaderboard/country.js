@@ -1,5 +1,6 @@
 const CountryModel = require('../../database/users/country');
-const StaticFunctions = require("../../static");
+const UserModel = require("../../database/users/user");
+const ObjectId = require('mongoose').Types.ObjectId;
 
 /**
  * Classe per la gestione degli stati possibili
@@ -18,6 +19,57 @@ class Country {
      */
     async getAll() {
         return await CountryModel.find({}).sort({code: 1}).lean().exec();
+    }
+
+    /**
+     * Ottiene lo stato assegnato all'utente
+     */
+    getCountryUser() {
+        if (this.user == null) {
+            throw "User not found";
+        }
+        return this.user.country;
+    }
+
+    /**
+     * Aggiorna lo stato assegnato all'utente
+     * @param {String | null} id L'id del nuovo stato
+     * @param {String | null} code Il nome del nuovo stato
+     * @param {Boolean | null} remove Indica di rimuove il country
+     * @return {Promise<void>}
+     */
+    async updateCountry(id, code, remove) {
+        // Controllo sull'utente
+        if (this.user == null) {
+            throw "User not found";
+        }
+        // Costruisce la query
+        let query = {}
+        if (id != null){
+            query['_id'] = new ObjectId(id);
+        }
+        if (code != null) {
+            query['code'] = code;
+        }
+        // Controllo sui dati
+        if (query.id == null && query.code == null && remove != null && !remove) {
+            throw "No params found";
+        }
+        // Aggiorna il country
+        if (remove == null || !remove) {
+            const country = await CountryModel.findOne(query).lean().exec();
+            if (country == null) {
+                throw "Id or code not valid";
+            }
+            this.user.country = country._id;
+        } else {
+            // Rimuove il country dall'utente
+            this.user.country = null;
+        }
+        // Salva le modifiche
+        await this.user.save()
+        // Ricarica l'utente
+        this.user = await UserModel.findOne({_id: this.user._id}).populate('country').exec();
     }
 }
 
