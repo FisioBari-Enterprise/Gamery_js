@@ -30,7 +30,9 @@ const swaggerOptions = {
 };
 //End point per la documentazione
 const swaggerDocument = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
+    explorer: true
+}));
 
 //ROUTING
 const index = require("./routes/index.js");

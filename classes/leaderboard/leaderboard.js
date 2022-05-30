@@ -6,8 +6,36 @@ const SingleGameModel = require("../../database/game/singleGame");
  * Filtri che si possono applicare alla leaderboard nella richiesta
  */
 class LeaderboardFilters {
-    constructor() {
+    /**
+     * Crea i filtri
+     * @param {Number} type Tipo di classifica
+     * @param {Number} start Indice d'inizio della ricerca
+     * @param {Number} count Numero degli elementi richiesti
+     * @param {Boolean} onlyMe Indica se prendere solo l'utente del token
+     */
+    constructor(type, start, count, onlyMe) {
+        this.type = type != null ? type : LeaderboardType.GLOBAL;
+        this.start = start != null ? start : 0;
+        this.count = count != null ? count : 100;
+        this.onlyMe = onlyMe != null ? onlyMe : false;
+    }
 
+    /**
+     * Controlla che i filtri siano corretti
+     */
+    validate(){
+        // Controllo del tipo
+        if (!LeaderboardType.all().includes(this.type)) {
+            throw "Type not valid"
+        }
+        // Controllo sul punto di partenza
+        if (this.start < 0) {
+            throw "Start point not valid"
+        }
+        // Controllo sul numero di elementi
+        if (this.count <= 0 || this.count > 100) {
+            throw "Count value not valid. Max value: 100"
+        }
     }
 }
 
@@ -18,17 +46,41 @@ class Leaderboard {
     /**Indica se la classifica è in fase di aggiornamento*/
     static updateMode = false;
 
-    constructor() {
-
+    /**
+     *
+     * @param user L'utente connesso al token
+     */
+    constructor(user) {
+        this.user = user
     }
 
     /**
      * Ottiene la classifica con dei filtri applicati
+     * @param {LeaderboardFilters} filter Filtri da applicare alla query
      */
-    getFilteredLeaderboard() {
+    async getFilteredLeaderboard(filter) {
         if (Leaderboard.updateMode) {
             throw "Leaderboard is being updated. Please try again in a few moments";
         }
+        // Controlla che i filtri siano stati inviati in maniera corretta
+        filter.validate();
+        // Ottiene la classifica
+        if (!filter.onlyMe) {
+            return await LeaderboardModel.find({type: filter.type}).populate([
+                {
+                    path: 'game',
+                    populate: {
+                        path: 'user',
+                        select: 'username'
+                    }
+                }
+            ]).sort({points: -1})
+                .skip(filter.start).limit(filter.count).lean().exec();
+        }
+        // Prende la posizione in classifica solo dell'utente del token
+        return await LeaderboardModel.findOne({
+            'game.user': this.user._id.toString()
+        }).lean().exec();
     }
 
     /**
