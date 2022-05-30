@@ -9,9 +9,10 @@ import {UserInfo} from "../../../classes/UserResponse";
 })
 export class MainUserComponent implements OnInit, OnDestroy {
 
-  firstCharUsername : string = "_"
-
+  /**Info dell'utente*/
   user : UserInfo
+  /** Indica se deve essere mostrato il pulsante di back*/
+  showBack : boolean = false
 
   constructor(
     public dialogRef: MatDialogRef<MainUserComponent>,

@@ -1,9 +1,50 @@
 <div class="main-container">
-  <div>
+  <div style="position: relative">
     <div class="background-letter">
       <img class="custom-image" src="./assets/navbar/new-moon.png" alt="image not found"/>
-      <h1 class="letter-name">{{firstCharUsername}}</h1>
+      <h1 class="letter-name">{{user.username[0]}}</h1>
     </div>
-    <h1>{{user.username}}</h1>
+    <h1 class="username"> {{user.username}}</h1>
+  </div>
+
+  <div class="bottom-container">
+    <div *ngIf="!showBack">
+      <div class="card row">
+        <div class="col-2 center-vertically">
+          <img class="flag-image" src="https://flagcdn.com/32x24/za.png" alt="image not found"/>
+        </div>
+        <div class="col-7 center-vertically">
+          <h3 class="card-text" > Country </h3>
+        </div>
+        <div class="col-1 center-vertically">
+          <img class="card-arrow"  src="./assets/userInfo/right-arrow.png" alt="image not found">
+        </div>
+      </div>
+      <div class="card row">
+        <div class="col-2 center-vertically">
+          <img class="card-image" src="./assets/userInfo/recent_matches.png" alt="image not found"/>
+        </div>
+        <div class="col-7 center-vertically">
+          <h3 class="card-text" > Recent Matches </h3>
+        </div>
+        <div class="col-1 center-vertically">
+          <img class="card-arrow"  src="./assets/userInfo/right-arrow.png" alt="image not found">
+        </div>
+      </div>
+      <div class="card row">
+        <div class="col-2 center-vertically">
+          <img class="card-image" src="./assets/userInfo/statistics.png" alt="image not found"/>
+        </div>
+        <div class="col-7 center-vertically">
+          <h3 class="card-text" > Statistics </h3>
+        </div>
+        <div class="col-1 center-vertically">
+          <img class="card-arrow"  src="./assets/userInfo/right-arrow.png" alt="image not found">
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showBack">
+      <img class="back-image" src="./assets/buttons/back.png" alt="image not found"/>
+    </div>
   </div>
 </div>

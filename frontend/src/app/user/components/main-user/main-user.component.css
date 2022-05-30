@@ -1,0 +1,82 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.main-container{
+  width: 300px;
+  height: 500px;
+}
+
+.background-letter {
+  position: relative;
+  top: 20px;
+  left: 50%;
+  transform: translate(-50%);
+  width: 60px;
+  height: 60px;
+}
+
+.custom-image{
+  width: 60px;
+  height: 60px;
+}
+
+.back-image{
+  width: 46px;
+  height: 46px;
+}
+
+.letter-name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-family: "Exo2", serif;
+}
+
+.username {
+  text-align: center;
+  font-family: "Exo2", serif;
+  margin-top: 40px;
+}
+
+.bottom-container {
+  padding: 10px;
+  background-color: #F1F1F1;
+  height: 352px
+}
+
+.card {
+  padding: 5px;
+  border-radius: 8px;
+  --bs-gutter-x: 0;
+  height: 46px;
+  margin-bottom: 10px;
+}
+
+.flag-image {
+  width: 32px;
+  height: 24px;
+}
+
+.card-text {
+  font-family: "Exo2", serif;
+  width: auto;
+}
+
+.card-image{
+  height: 30px;
+  width: 30px;
+}
+
+.center-vertically {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.card-arrow {
+  width: 12px;
+  height: 12px;
+}
