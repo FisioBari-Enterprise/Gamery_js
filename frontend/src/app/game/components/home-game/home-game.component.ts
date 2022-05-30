@@ -150,6 +150,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
         //Controllo se è stato premuto il pulsante skipTime
         if(this.isSkipTime) {
           timeBoard.value = 0;
+          this.isSkipTime = false;
         }
         //Se raggiungo lo zero entro in modalità inserimento o controllo le parole inserite
         if (timeBoard.value === 0) {
