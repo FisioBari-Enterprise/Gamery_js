@@ -12,5 +12,6 @@ module.exports = {
     TokenEmail: process.env.TOKEN_EMAIL,
     Database: process.env.DATABASE,
     IdEmail: process.env.EMAIL_ID,
-    PasswordEMail: process.env.EMAIL_PASSWORD
+    PasswordEMail: process.env.EMAIL_PASSWORD,
+    UpdateOnLoad: process.env.UPDATE_ON_LOAD
 };
