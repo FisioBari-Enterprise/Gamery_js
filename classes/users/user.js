@@ -350,6 +350,17 @@ class User {
     }
 
     /**
+    * Funzione per cambiare le impostazioni dell'utente
+    * @param font_size{number}
+    * @param volume{number}
+    * @param sound{boolean}
+    */
+    async changeSettings(font_size, volume, sound) {
+        if(this.user == null){
+            return callback('User is not logged in', null);
+        }
+
+    /**
      * Ottengo le partite precedenti dell'utente
      * @param nGame{number} numero di partite da ottenere
      * @returns {[*]} array delle partite
