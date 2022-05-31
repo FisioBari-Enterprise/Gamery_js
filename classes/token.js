@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const StaticFunctions = require('../static');
 const SessionModel = require('../database/users/session');
 const Credentials = require('../database/users/credentials');
+const UserModel = require('../database/users/user');
 const ObjectId = require('mongoose').Types.ObjectId;
 
 /**
@@ -56,7 +57,6 @@ class Token {
         //Controlla il token
         jwt.verify(token, TokenSecret, {}, async function (err, userId) {
             if(err) {
-                console.log(err);
                 //Rende la sessione non valida se la trova nel DB
                 await SessionModel.updateMany({token: token}, {valid: false}).exec();
                 return StaticFunctions.sendError(res, 'Token not valid', 403);
@@ -73,7 +73,8 @@ class Token {
             if(!session.user.active) {
                 return StaticFunctions.sendError(res, 'User not active', 403);
             }
-            req.user = session.user;
+            // Carica l'utente con lo stato
+            req.user = await UserModel.findOne({_id: session.user._id}).populate('country').exec();
             next()
         });
     }

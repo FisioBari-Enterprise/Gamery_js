@@ -7,12 +7,18 @@ export class UserInfo{
     username : String;
     uuid : String;
     active : Boolean;
+    country: Country;
     statistics: Statistics;
     preferences: Preferences;
     settings : Settings;
     createdAt : Date;
     updatedAt : Date;
     __v : Number
+}
+
+export class Country{
+  code: String;
+  name: String;
 }
 
 export class Statistics {

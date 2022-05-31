@@ -5,6 +5,7 @@ const SessionModel = require('../../database/users/session');
 const {cryptPassword, comparePassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
 const emailManager = require("../email");
+const SingleGameDB = require("../../database/game/singleGame");
 let ObjectId = require("mongoose").Types.ObjectId;
 
 /**
@@ -308,7 +309,7 @@ class User {
             return callback(null, 'Cannot be empty');
         }
         if (password.length < 8 || password.length > 30) {
-            return callback('Password must be 8 - 30 characters long', null);
+            return callback('Password must be 8 - 30 long', null);
         }
         if(password !== passwordConfirm){
             return callback(null, 'Passwords do not match');
@@ -348,10 +349,21 @@ class User {
         });
     }
 
-    async changeSettings(font_size, volume, sound) {
-        if(this.user == null){
-            return callback('User is not logged in', null);
+    /**
+     * Ottengo le partite precedenti dell'utente
+     * @param nGame{number} numero di partite da ottenere
+     * @returns {[*]} array delle partite
+     */
+    async getGames(nGame){
+        let gamesQuery = SingleGameDB.find({user: this.user, completed: true}).sort({createdAt : 1});
+        if(nGame > -1){
+            gamesQuery = gamesQuery.limit(nGame)
         }
+        let games = await gamesQuery.exec();
+        if(games.length === 0){
+            throw "No game found for this user"
+        }
+        return games
     }
 }
 

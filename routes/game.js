@@ -3,6 +3,8 @@ const StaticFunctions = require("../static");
 const { saveWords } = require('../classes/game/words');
 const Token = require("../classes/token");
 const SingleGame = require("../classes/game/singleGame");
+const UserValidator = require("../classes/users/validator/userValidator");
+const User = require("../classes/users/user");
 let router = express.Router();
 
 /**
@@ -25,12 +27,7 @@ let router = express.Router();
  *          403:
  *              description: Accesso non consentito
  */
-router.post('/word', function (req, res, next) {
-    if (req.socket.remoteAddress !== "::1") {
-        return StaticFunctions.sendError(res, 'This ip haven\'t the access to the endpoint', 403);
-    }
-    next();
-}, async function (req, res) {
+router.post('/word', UserValidator.onlyLocalHost, async function (req, res) {
     return await saveWords(res, req.body.words);
 });
 
@@ -224,6 +221,37 @@ router.put('/round', Token.autenticateUser, async function (req, res) {
     }
     catch (error) {
         console.log(error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+})
+
+/**
+ * @openapi
+ * \api\game\recent:
+ *  put:
+ *      description: Ottengo le ultime partite dell'utente
+ *      tags: [Statistics]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *      responses:
+ *          200:
+ *              description: Ultime partite dell'utente
+ *          400:
+ *              description: Errore riscontrato in fase di update
+ *          401:
+ *              description: Token non passato
+ *          403:
+ *              description: Sessione o token non validi
+ */
+router.get('/recent', Token.autenticateUser, async function(req ,res){
+    let user = new User(req.user._id)
+    try{
+        let games = await user.getGames(50);
+
+        return StaticFunctions.sendSuccess(res,games);
+    }
+    catch (error){
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
 })

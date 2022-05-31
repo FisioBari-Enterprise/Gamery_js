@@ -154,8 +154,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
    * Apre la visualizzazione della schermata dello user
    */
   openUser(){
-
-    this.dialog.showDialog(MainUserComponent,() => {})
+    this.dialog.showDialog(MainUserComponent,() => {},{data : this.userInfo})
   }
 
   /**

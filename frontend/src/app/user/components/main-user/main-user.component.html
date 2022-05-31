@@ -1,9 +1,25 @@
 <div class="main-container">
-  <div>
+  <div style="position: relative">
     <div class="background-letter">
       <img class="custom-image" src="./assets/navbar/new-moon.png" alt="image not found"/>
-      <h1 class="letter-name">{{firstCharUsername}}</h1>
+      <h1 class="letter-name">{{user.username[0]}}</h1>
     </div>
-    <h1>{{user.username}}</h1>
+    <h1 class="username"> {{user.username}}</h1>
+  </div>
+
+  <div class="bottom-container">
+    <div *ngIf="!showBack">
+      <app-card [image]="urlCountry" [text]="'Country'" (OnClick)="changeFlag()"></app-card>
+      <app-card [image]="'./assets/userInfo/recent_matches.png'" [text]="'Recent Matches'" (OnClick)="showRecentMatch()"></app-card>
+      <app-card [image]="'./assets/userInfo/statistics.png'" [text]="'Statistics'" (OnClick)="showStatistics()"></app-card>
+    </div>
+    <div *ngIf="showBack">
+      <img class="back-image" src="./assets/buttons/back.png" alt="image not found" (click)="back()"/>
+      <div style="max-height: 280px">
+        <app-country *ngIf="selectedButton=='flags'"></app-country>
+        <app-matches *ngIf="selectedButton=='matches'"></app-matches>
+        <app-statistics *ngIf="selectedButton=='statistics'"></app-statistics>
+      </div>
+    </div>
   </div>
 </div>
