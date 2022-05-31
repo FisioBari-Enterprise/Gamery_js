@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+h1 {
+  color: #fff;
+  text-align: center;
+  font-family: "Exo2", serif;
+}
+
+.container-play {
+  height: 93%;
+}
+
+.container-max-points {
+  height: 90%;
+  text-align: center;
+}
+
+.max-points-center {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

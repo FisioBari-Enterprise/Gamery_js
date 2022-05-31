@@ -133,7 +133,7 @@
 }
 
 .mText {
-  font-family: "Exo2";
+  font-family: "Exo2", serif;
   color: white;
   text-align: center;
   font-weight: bold;
@@ -157,7 +157,7 @@
 }
 
 .play-text {
-  font-family: "Exo2";
+  font-family: "Exo2", serif;
   color: black;
   text-align: center;
   font-weight: bold;

@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
-import {DialogManagerService} from "../../services/dialog-manager.service";
+import {DialogManagerService} from "../../../services/dialog-manager.service";
 import {Router} from "@angular/router";
-import {ColorButtons} from "../../shared/enum/colorButtons";
+import {ColorButtons} from "../../../shared/enum/colorButtons";
+import {UserInfo} from "../../../classes/UserResponse";
 
 @Component({
   selector: 'app-home',
@@ -10,9 +11,8 @@ import {ColorButtons} from "../../shared/enum/colorButtons";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-
-  /**Colore del bottone play*/
-  colorButton = ColorButtons.Yellow;
+  /**Dati dell'utente*/
+  userInfo: UserInfo | null = null;
 
   constructor(
     private route: Router
@@ -24,6 +24,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
 
+  }
+
+  /**
+   * Aggiorna i dati dell'utente
+   * @param {UserInfo | null} event User passato dalla navbar
+   */
+  updateUser(event: any) {
+    this.userInfo = event as UserInfo;
   }
 
   /**

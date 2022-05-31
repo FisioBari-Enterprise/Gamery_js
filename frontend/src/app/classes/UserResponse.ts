@@ -17,6 +17,7 @@ export class UserInfo{
 }
 
 export class Country{
+  _id: String;
   code: String;
   name: String;
 }

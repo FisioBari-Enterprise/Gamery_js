@@ -1,6 +1,6 @@
 <div style="height:100vh">
     <!--Nav bar per la gestione dei dati utente-->
-    <app-nav-bar></app-nav-bar>
+    <app-nav-bar (onUserInfo)="updateUser($event)"></app-nav-bar>
     <!--Contenuto della pagina home-->
     <div class="main-container">
         <div class="title-box">
@@ -8,10 +8,10 @@
         </div>
         <div class="row center-area">
             <div class="home-box col-4">
-                <h1 class="mText">New Game</h1>
-                <div class="container-play">
-                  <app-button [setCenter]="true" [title]="'PLAY'" [colorSchema]="colorButton" [image]="'play-button'" (onClick)="onPlayClick()"></app-button>
-                </div>
+                <app-home-play [user]="userInfo" (playClick)="onPlayClick()"></app-home-play>
+            </div>
+            <div class="home-box col-4">
+              <app-home-ranking></app-home-ranking>
             </div>
         </div>
     </div>

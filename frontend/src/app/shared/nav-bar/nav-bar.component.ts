@@ -52,6 +52,9 @@ export class NavBarComponent implements OnInit, OnDestroy {
   /**Indica la pressione del bottone skipTime*/
   @Output() isSkipTime = new EventEmitter<Boolean>();
 
+  /**Evento sollevato quando viene caricato correttamente l'utente*/
+  @Output() onUserInfo = new EventEmitter<UserInfo>();
+
   constructor(
     private userService: UserService,
     private dialog: DialogManagerService,
@@ -202,6 +205,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
           // Si prende i dati trovati
           this.userInfo = res.data;
           this.firstCharUsername = this.userInfo.username.charAt(0).toUpperCase();
+          this.onUserInfo.emit(this.userInfo);
           this.dialog.closeDialog();
         },
         err => {
