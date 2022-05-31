@@ -60,7 +60,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Cancella tutti i dati presenti nel local storage
-    //localStorage.clear();
+    // localStorage.clear();
 
     // Carica il tipo
     if (this.gameMode) {

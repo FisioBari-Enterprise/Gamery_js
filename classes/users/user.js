@@ -356,10 +356,11 @@ class User {
     * @param sound{boolean}
     */
     async changeSettings(font_size, volume, sound) {
-        if(this.user == null){
+        if (this.user == null) {
             return callback('User is not logged in', null);
         }
-
+    }
+    
     /**
      * Ottengo le partite precedenti dell'utente
      * @param nGame{number} numero di partite da ottenere
