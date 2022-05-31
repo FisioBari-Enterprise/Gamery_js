@@ -13,7 +13,7 @@
 
 .card-text {
   font-family: "Exo2", serif;
-  width: auto;
+  text-align: center;
 }
 
 .card-image{
@@ -29,4 +29,15 @@
 .card-arrow {
   width: 12px;
   height: 12px;
+  left: 0;
+}
+
+.arrow{
+  align-self: end;
+  width: auto;
+}
+
+.icon {
+  align-self: start;
+  width: auto;
 }

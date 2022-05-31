@@ -246,6 +246,7 @@ router.put('/round', Token.autenticateUser, async function (req, res) {
  */
 router.get('/recent', Token.autenticateUser, async function(req ,res){
     let user = new User(req.user._id)
+    await user.buildUser()
     try{
         let games = await user.getGames(50);
 

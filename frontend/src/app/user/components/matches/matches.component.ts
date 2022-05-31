@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {UserManagerService} from "../../services/user-manager.service";
 import {Game} from "../../../game/classes/game";
 import {Subscription} from "rxjs";
@@ -14,6 +14,9 @@ export class MatchesComponent implements OnInit, OnDestroy {
 
   matches : string[] = ["aa","aa","aa","afe","aa","rhi"]
   games : Game[]
+
+  @Output() showChange = new EventEmitter<boolean>();
+
 
   subscriptions : Subscription[]
 
@@ -34,10 +37,12 @@ export class MatchesComponent implements OnInit, OnDestroy {
 
   getMatches(){
      this.subscriptions.push(this.userManager.getGames().subscribe(res => {
-       this.games = res;
+       this.games = res.data
      }, err => {
        if(err.error.error === 'No game found for this user'){
-         this.dialogManager.showDialog(SimpleTextComponent, 'No game found for this user');
+         this.dialogManager.showDialog(SimpleTextComponent, () => {
+           this.showChange.emit(false)
+         },{data: 'No game found for this user'});
        }
      }))
   }

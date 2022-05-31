@@ -1,11 +1,11 @@
-<div class="card row" (click)="onClick()">
-  <div class="col-2 center-vertically">
+<div class="card row" (click)="onClick()" style="position:relative;">
+  <div class="center-vertically icon" >
     <img class="card-image" [ngClass]="{'flag-image': text ==='Country' && !image.includes('assets') }"  src="{{image}}" alt="image not found"/>
   </div>
-  <div class="col-7 center-vertically">
+  <div class="center-vertically" style="width: auto">
     <h3 class="card-text" > {{text}} </h3>
   </div>
-  <div class="col-1 center-vertically">
+  <div class="center-vertically arrow" >
     <img class="card-arrow"  src="./assets/userInfo/right-arrow.png" alt="image not found">
   </div>
 </div>

@@ -367,7 +367,8 @@ class User {
      * @returns {[*]} array delle partite
      */
     async getGames(nGame){
-        let gamesQuery = SingleGameDB.find({user: this.user, completed: true}).sort({createdAt : 1});
+
+        let gamesQuery = SingleGameDB.find({user: this.user._id, completed: true}).sort({createdAt : 1});
         if(nGame > -1){
             gamesQuery = gamesQuery.limit(nGame)
         }

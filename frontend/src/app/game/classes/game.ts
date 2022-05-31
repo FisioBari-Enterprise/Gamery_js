@@ -4,6 +4,10 @@ export class GameResponse {
   data: Game
 }
 
+export class Games {
+  data : Game[]
+}
+
 export class GameRoundResponse {
   data: GameRound
 }
