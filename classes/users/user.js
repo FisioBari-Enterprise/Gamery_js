@@ -360,7 +360,7 @@ class User {
             return callback('User is not logged in', null);
         }
     }
-    
+
     /**
      * Ottengo le partite precedenti dell'utente
      * @param nGame{number} numero di partite da ottenere

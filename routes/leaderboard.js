@@ -23,7 +23,7 @@ const Token = require("../classes/token");
  */
 router.get("", Token.autenticateUser, async function (req, res, next) {
     const leaderboard = new Leaderboard(req.user);
-    const filter = new LeaderboardFilters(req.query.type, req.query.start, req.query.count, req.query.onlyMe);
+    const filter = new LeaderboardFilters(req.query.type, req.query.start, req.query.count, req.query.onlyMe, req.query.country);
     try {
         const data = await leaderboard.getFilteredLeaderboard(filter);
         return StaticFunctions.sendSuccess(res, data);
@@ -47,7 +47,7 @@ router.get("", Token.autenticateUser, async function (req, res, next) {
  *              description: Accesso non consentito
  */
 router.get("/type", async function (req, res, next) {
-    return StaticFunctions.sendSuccess(res, LeaderboardType.map([1]));
+    return StaticFunctions.sendSuccess(res, LeaderboardType.map());
 });
 
 module.exports = router
