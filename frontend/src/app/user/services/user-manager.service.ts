@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {BaseService} from "../../services/base.service";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Game, GameResponse, Games} from "../../game/classes/game";
+import {Game, GameResponse, GameRounds, Games} from "../../game/classes/game";
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +18,11 @@ export class UserManagerService {
   getGames() : Observable<Games>{
     let headers = this.base.TokenHeader;
     return this.http.get<Games>(this.base.apiUrl("game","recent"),{headers});
+  }
+
+  getGame(id : string) : Observable<GameRounds>{
+    let headers = this.base.TokenHeader;
+    let ids = "/" + id + "/rounds";
+    return this.http.get<GameRounds>(this.base.apiUrl("game", ids),{headers})
   }
 }

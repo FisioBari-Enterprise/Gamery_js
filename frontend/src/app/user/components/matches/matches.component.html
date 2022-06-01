@@ -1,7 +1,7 @@
 <div class="main-container">
   <div>
-    <div *ngFor="let game of games; let i = index">
-      <app-card [image]="'./assets/userInfo/recent_matches.png'" [text]="text[i]" (OnClick)="showMatch(i)"></app-card>
+    <div *ngFor="let textInput of text; let i = index">
+      <app-card [image]="'./assets/userInfo/recent_matches.png'" [text]="textInput" (OnClick)="showMatch(i)"></app-card>
     </div>
   </div>
 </div>
