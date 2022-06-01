@@ -4,11 +4,15 @@
   <div class="row justify-content-center">
     <div class="col" align="center">
       <!--Bottone per la visualizzazione della classifica globale-->
-      <app-card [width]="150" [showArrow]="false" [text]="'GLOBAL'" [image]="'./assets/userInfo/earth_globe.png'"></app-card>
+      <app-card [width]="150" [showArrow]="false" [text]="'GLOBAL'"
+                [image]="'./assets/userInfo/earth_globe.png'" [isSelected]="globalSelect"
+                (OnClick)="onButtonSelect(true)"></app-card>
     </div>
     <div class="col" align="center" [style.display]="user != null && user.country != null ? 'inline' : 'none'">
       <!--Bottone per la visualizzazione della classifica locale-->
-      <app-card [width]="150" [showArrow]="false" [text]="'LOCAL'" [image]="userFlag"></app-card>
+      <app-card [width]="150" [showArrow]="false" [text]="'LOCAL'"
+                [image]="userFlag" [isSelected]="!globalSelect"
+                (OnClick)="onButtonSelect(false)"></app-card>
     </div>
   </div>
 </div>

@@ -44,3 +44,9 @@
 .container-card-arrow {
   height: 100%;
 }
+
+.card-selected {
+  background: rgb(50, 170, 255);
+  color: white;
+  border: 2px solid #000;
+}

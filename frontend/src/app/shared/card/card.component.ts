@@ -15,6 +15,8 @@ export class CardComponent implements OnInit {
   @Input() width: number | null = null;
   /** Indica se visualizzare o meno la freccia */
   @Input() showArrow : boolean = true;
+  /**Indica se il bottone è selezionato*/
+  @Input() isSelected : boolean = false;
 
   /** Azione da eseguire premendo la card*/
   @Output() OnClick : EventEmitter<any> = new EventEmitter();

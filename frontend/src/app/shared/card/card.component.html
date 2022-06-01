@@ -1,5 +1,5 @@
 <div (click)="onClick()" style="position:relative; cursor: pointer" [style.width]="width != null ? width + 'px' : 'auto'">
-  <div class="d-flex container-card">
+  <div class="d-flex container-card" [ngClass]="{'card-selected': isSelected}">
     <img class="card-image" [ngClass]="{'flag-image': (text ==='Country' || text === 'LOCAL') && !image.includes('assets') }"  src="{{image}}" alt="image not found"/>
     <h3 class="card-text">{{text}}</h3>
     <ng-container *ngIf="showArrow">
@@ -8,12 +8,4 @@
       </div>
     </ng-container>
   </div>
-  <!--
-  <div class="center-vertically icon" >
-  </div>
-  <div class="center-vertically" style="width: auto">
-  </div>
-  <div class="center-vertically arrow" >
-  </div>
-  -->
 </div>

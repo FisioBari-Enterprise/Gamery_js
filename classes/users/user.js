@@ -394,7 +394,7 @@ class User {
     }
 
     async getGamesRound(id){
-        let rounds =  GameRoundDB.find(
+        let rounds = await GameRoundDB.find(
             {user: this.user._id, game : {_id : new ObjectId(id)}},
             {points : 1, round : 1, correct : 1, _id : 1}
         ).lean().exec();

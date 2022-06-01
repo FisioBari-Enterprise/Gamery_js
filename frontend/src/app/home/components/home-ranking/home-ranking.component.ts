@@ -9,6 +9,10 @@ import {UserInfo} from "../../../classes/UserResponse";
 export class HomeRankingComponent implements OnInit, OnChanges {
   /**Link della bandiera associata all'utente*/
   userFlag: string = '';
+  /**Indica che il bottone global è selezionato*/
+  globalSelect: boolean = true;
+  /**Indica se sono accessibili i bottoni*/
+  buttonActive: boolean = true;
 
   /** Informazioni dell'utente attivo */
   @Input() user: UserInfo | null = null;
@@ -18,6 +22,7 @@ export class HomeRankingComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.user = null;
     this.userFlag = '';
+    this.globalSelect = true;
   }
 
   /**
@@ -36,6 +41,18 @@ export class HomeRankingComponent implements OnInit, OnChanges {
       this.userFlag = this.getFlagLink();
       console.log(this.userFlag);
     }
+  }
+
+  /**
+   * Azione dei bottoni per il cambio della visualizzazione della classifica
+   * @param {Boolean} isGlobal Indica che è stato eseguita l'azione in global
+   */
+  onButtonSelect(isGlobal: boolean) {
+    // Controlla che non sia già selezionato il bottone
+    if (this.globalSelect == isGlobal) {
+      return;
+    }
+    this.globalSelect = isGlobal;
   }
 
 }
