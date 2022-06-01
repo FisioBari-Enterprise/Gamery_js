@@ -6,14 +6,26 @@
   margin-bottom: 10px;
 }
 
+.container-card {
+  background: #fff;
+  padding: 6px;
+  border-radius: 8px;
+  --bs-gutter-x: 0;
+  height: 46px;
+  margin-bottom: 10px;
+}
+
 .flag-image {
   width: 32px;
   height: 24px !important;
+  margin-top: 5px;
 }
 
 .card-text {
   font-family: "Exo2", serif;
   text-align: center;
+  width: 100%;
+  margin-top: 2px;
 }
 
 .card-image{
@@ -21,23 +33,14 @@
   width: 30px;
 }
 
-.center-vertically {
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
 .card-arrow {
   width: 12px;
   height: 12px;
   left: 0;
+  float: right;
+  margin-top: 10px;
 }
 
-.arrow{
-  align-self: end;
-  width: auto;
-}
-
-.icon {
-  align-self: start;
-  width: auto;
+.container-card-arrow {
+  height: 100%;
 }

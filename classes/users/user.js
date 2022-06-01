@@ -41,7 +41,7 @@ class User {
      */
     async buildUser(){
 
-        let doc = await UserModel.findOne({_id : new ObjectId(this.id)}).exec();
+        let doc = await UserModel.findOne({_id : new ObjectId(this.id)}).populate('country').exec();
 
         if(doc === null)
             throw "Utente non trovato"
