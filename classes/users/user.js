@@ -350,14 +350,23 @@ class User {
     }
 
     /**
-    * Funzione per cambiare le impostazioni dell'utente
-    * @param font_size{number}
-    * @param volume{number}
-    * @param sound{boolean}
-    */
+     * Funzione per cambiare le impostazioni dell'utente
+     * @param font_size{number}
+     * @param volume{number}
+     * @param sound{boolean}
+     */
     async changeSettings(font_size, volume, sound) {
+        //Controlla che l'utente sia loggato
         if (this.user == null) {
             return callback('User is not logged in', null);
+        }
+        //Cambia i parametri delle impostazioni con quelli in input
+        this.user.settings.font_size = font_size;
+        this.user.settings.volume = volume;
+        this.user.settings.sound = sound;
+        //Controlla che non ci siano stati errori negli assegnamenti
+        if(err != null){
+            return callback(err.message, null);
         }
     }
 

@@ -288,4 +288,23 @@ router.put("/change/password", Token.autenticateUser, async function(req,res) {
     }
 });
 
+router.put('/settings', async function (req, res) {
+    const font_size = req.body.font_size;
+    const volume = req.body.volume;
+    const sound = req.body.sound;
+    /*if (typeof font_size != "number" || typeof volume != "number" || typeof sound != "boolean") {
+        console.log('Typing does not match');
+    }*/
+    try {
+        await user.settings(font_size, volume, sound, (err) => {
+            if (err !== null) {
+                return StaticFunctions.sendError(res, err);
+            }
+            StaticFunctions.sendSuccess(res, true);
+        });
+    } catch (error) {
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+});
+
 module.exports = router
