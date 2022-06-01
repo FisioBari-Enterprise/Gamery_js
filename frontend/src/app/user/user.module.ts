@@ -5,6 +5,7 @@ import { CountryComponent } from './components/country/country.component';
 import { MatchesComponent } from './components/matches/matches.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import {SharedModule} from "../shared/shared.module";
+import { MatchInfoComponent } from './components/match-info/match-info.component';
 
 
 
@@ -13,7 +14,8 @@ import {SharedModule} from "../shared/shared.module";
     MainUserComponent,
     CountryComponent,
     MatchesComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    MatchInfoComponent
   ],
     imports: [
         CommonModule,

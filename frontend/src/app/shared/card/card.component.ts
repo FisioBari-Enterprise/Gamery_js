@@ -8,15 +8,21 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class CardComponent implements OnInit {
 
   /** Immagine da inserire */
-  @Input() image : String;
+  @Input() image : String = "";
   /** Testo della card*/
-  @Input() text : String;
+  @Input() text : String = "";
+  /** Imposta una lunghezza al componente */
+  @Input() width: number | null = null;
+  /** Indica se visualizzare o meno la freccia */
+  @Input() showArrow : boolean = true;
+
   /** Azione da eseguire premendo la card*/
   @Output() OnClick : EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
   onClick(){

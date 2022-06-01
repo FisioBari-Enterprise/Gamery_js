@@ -12,7 +12,12 @@ export class GameRoundResponse {
   data: GameRound
 }
 
+export class GameRounds {
+  data : GameRound[]
+}
+
 export class GameRound {
+  _id : string;
   game: Game;
   round: number;
   points: number;

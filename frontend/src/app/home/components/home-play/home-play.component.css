@@ -3,24 +3,32 @@
   src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
 }
 
-h1 {
+.main-container-home-play {
+  position: relative;
+  height: 100%;
+}
+
+.main-container-home-play h1 {
   color: #fff;
   text-align: center;
   font-family: "Exo2", serif;
 }
 
-.container-play {
-  height: 93%;
-}
-
 .container-max-points {
-  height: 90%;
   text-align: center;
 }
 
 .max-points-center {
-  position: relative;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.play-button-container {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  padding-bottom: 10px;
 }

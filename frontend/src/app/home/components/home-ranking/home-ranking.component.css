@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.main-container-home-ranking {
+  position: relative;
+  height: 100%;
+}
+
+.main-container-home-ranking h1 {
+  color: #fff;
+  text-align: center;
+  font-family: "Exo2", serif;
+}

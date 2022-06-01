@@ -3,15 +3,13 @@
     <app-nav-bar (onUserInfo)="updateUser($event)"></app-nav-bar>
     <!--Contenuto della pagina home-->
     <div class="main-container">
-        <div class="title-box">
-            <h1 class="title">Gamery</h1>
-        </div>
+        <h1 class="title">Gamery</h1>
         <div class="row center-area">
             <div class="home-box col-4">
                 <app-home-play [user]="userInfo" (playClick)="onPlayClick()"></app-home-play>
             </div>
             <div class="home-box col-4">
-              <app-home-ranking></app-home-ranking>
+              <app-home-ranking [user]="userInfo"></app-home-ranking>
             </div>
         </div>
     </div>

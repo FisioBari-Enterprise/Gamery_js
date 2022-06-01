@@ -110,7 +110,7 @@
   height: 80%;
   border-radius: 10px;
   margin: auto;
-  padding: 50px;
+  padding: 10px;
 }
 
 .title-box {
@@ -128,8 +128,7 @@
 
 .center-area {
   align-items: center;
-  margin: auto;
-  height: 80%;
+  height: 100%;
 }
 
 .mText {
@@ -137,29 +136,4 @@
   color: white;
   text-align: center;
   font-weight: bold;
-
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-}
-
-.container-play {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%);
-  width: 100%;
-  height: 100px;
-}
-
-.play-button {
-  margin: auto;
-}
-
-.play-text {
-  font-family: "Exo2", serif;
-  color: black;
-  text-align: center;
-  font-weight: bold;
-  padding: 8px;
 }

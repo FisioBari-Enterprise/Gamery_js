@@ -6,6 +6,7 @@ const {cryptPassword, comparePassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
 const emailManager = require("../email");
 const SingleGameDB = require("../../database/game/singleGame");
+const GameRoundDB = require("../../database/game/gameRound")
 let ObjectId = require("mongoose").Types.ObjectId;
 
 /**
@@ -41,7 +42,7 @@ class User {
      */
     async buildUser(){
 
-        let doc = await UserModel.findOne({_id : new ObjectId(this.id)}).exec();
+        let doc = await UserModel.findOne({_id : new ObjectId(this.id)}).populate('country').exec();
 
         if(doc === null)
             throw "Utente non trovato"
@@ -390,6 +391,18 @@ class User {
             throw "No game found for this user"
         }
         return games
+    }
+
+    async getGamesRound(id){
+        let rounds =  GameRoundDB.find(
+            {user: this.user._id, game : {_id : new ObjectId(id)}},
+            {points : 1, round : 1, correct : 1, _id : 1}
+        ).lean().exec();
+
+        if(rounds.length === 0){
+            throw "No round found for this game"
+        }
+        return rounds;
     }
 }
 

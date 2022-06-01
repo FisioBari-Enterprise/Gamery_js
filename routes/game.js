@@ -257,4 +257,17 @@ router.get('/recent', Token.autenticateUser, async function(req ,res){
     }
 })
 
+router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
+    let user = new User(req.user._id);
+    await user.buildUser();
+    try {
+        let roundGames = await user.getGamesRound(req.params.id);
+
+        return StaticFunctions.sendSuccess(res, roundGames);
+    }
+    catch (error){
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+})
+
 module.exports = router
