@@ -356,18 +356,22 @@ class User {
      * @param sound{boolean}
      */
     async changeSettings(font_size, volume, sound) {
+        const user = this.buildUser();
+
         //Controlla che l'utente sia loggato
         if (this.user == null) {
-            return callback('User is not logged in', null);
+            throw "User is not logged in";
+        }
+        //Controlla che i tipi delle variabili siano corretti
+        if (typeof font_size != "number" || typeof volume != "number" || typeof sound != "boolean") {
+            throw "Typing does not match";
         }
         //Cambia i parametri delle impostazioni con quelli in input
-        this.user.settings.font_size = font_size;
-        this.user.settings.volume = volume;
-        this.user.settings.sound = sound;
-        //Controlla che non ci siano stati errori negli assegnamenti
-        if(err != null){
-            return callback(err.message, null);
-        }
+        user.settings.font_size = font_size;
+        user.settings.volume = volume;
+        user.settings.sound = sound;
+        //Salva le modifiche
+        await user.save();
     }
 
     /**
