@@ -104,6 +104,7 @@ class Leaderboard {
             return await LeaderboardModel.find(filter.getFilter()).populate([
                 {
                     path: 'game',
+                    select: 'points',
                     populate: {
                         path: 'user',
                         select: 'username'

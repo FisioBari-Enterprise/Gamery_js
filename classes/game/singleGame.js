@@ -204,8 +204,8 @@ module.exports = class SingleGame {
 async function elaborateLose(game, user) {
     game.complete = true;
     // Controllo se ha raggiunto il punteggio massimo
-    const currentRecord = await SingleGameDB.find({user: game.user}).sort({points: -1}).limit(2).exec();
-    if (currentRecord.length === 0 || currentRecord[0]._id === game._id) {
+    const currentRecord = await SingleGameDB.find({user: game.user._id}).sort({points: -1}).limit(2).exec();
+    if (currentRecord.length === 0 || currentRecord[0]._id.toString() === game._id.toString()) {
         game.record = true;
         user.statistics.max_points = game.points;
         if(currentRecord.length !== 0){

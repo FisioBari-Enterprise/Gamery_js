@@ -1,10 +1,15 @@
-<h1 class="mText">New Game</h1>
-<div class="container-play">
-  <div class="container-max-points">
-    <div class="max-points-center">
-      <img src="./assets/home/ranking.png" alt="Ranking image not found" width="140px" height="140px" />
-      <h1>Top score: {{user != null ? user.statistics.max_points : '0'}}</h1>
+<div class="main-container-home-play">
+  <h1 class="mText">New Game</h1>
+  <div class="container-play">
+    <div class="container-max-points">
+      <div class="max-points-center">
+        <img src="./assets/home/ranking.png" alt="Ranking image not found" width="140px" height="140px" />
+        <h1>Top score: {{user != null ? user.statistics.max_points : '0'}}</h1>
+      </div>
+    </div>
+    <!--Bottone di play-->
+    <div class="play-button-container">
+      <app-button class="play-button" [setCenter]="true" [title]="'PLAY'" [colorSchema]="colorButton" [image]="'play-button'" (onClick)="onPlayClick()"></app-button>
     </div>
   </div>
-  <app-button class="play-button" [setCenter]="true" [title]="'PLAY'" [colorSchema]="colorButton" [image]="'play-button'" (onClick)="onPlayClick()"></app-button>
 </div>
