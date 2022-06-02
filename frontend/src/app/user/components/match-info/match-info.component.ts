@@ -6,6 +6,7 @@ import {UserManagerService} from "../../services/user-manager.service";
 import {Subscription} from "rxjs";
 import {SimpleTextComponent} from "../../../dialogs/simple-text/simple-text.component";
 import {DialogManagerService} from "../../../services/dialog-manager.service";
+import {WordListComponent} from "../../../dialogs/word-list/word-list.component";
 
 @Component({
   selector: 'app-match-info',
@@ -57,7 +58,7 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
 
   onRoundClick(i){
     this.subscriptions.push(this.userManager.getRound(this.game._id, this.rounds[i].round).subscribe(res =>{
-      this.roundInfo = res.data;
+      this.dialogManager.showDialog(WordListComponent, () => {} , {data : res.data});
     } , err => {
       this.dialogManager.showDialog(SimpleTextComponent,() => { }, {data : err})
     }))

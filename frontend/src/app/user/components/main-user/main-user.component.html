@@ -6,6 +6,9 @@
     </div>
     <h1 class="username"> {{user.username}}</h1>
   </div>
+  <div class="close" (click)="close()">
+    <img  class="close_icon" src="assets/userInfo/close.png" alt="Image not found">
+  </div>
 
   <div class="bottom-container">
     <div *ngIf="!showBack">

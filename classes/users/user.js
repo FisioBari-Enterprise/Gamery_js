@@ -7,6 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 const emailManager = require("../email");
 const SingleGameDB = require("../../database/game/singleGame");
 const GameRoundDB = require("../../database/game/gameRound")
+const Languages = require("../../database/enum/languages")
 let ObjectId = require("mongoose").Types.ObjectId;
 
 /**
@@ -387,7 +388,7 @@ class User {
      */
     async getGames(nGame){
 
-        let gamesQuery = SingleGameDB.find({user: this.user._id, completed: true}).sort({createdAt : 1});
+        let gamesQuery = SingleGameDB.find({user: this.user._id, complete: true}).sort({createdAt : -1});
         if(nGame > -1){
             gamesQuery = gamesQuery.limit(nGame)
         }
@@ -411,13 +412,33 @@ class User {
     }
 
     async getGameRound(id, number){
+
         let round = await GameRoundDB.findOne(
-            { user: this.user._id, game : {_id : new ObjectId(id)}, round : number}
-        ).lean().exec();
+            { user: this.user._id, game : {_id : new ObjectId(id)}, round : number},
+            {_id : 1, round : 1, words : {word : 1, word_insert : 1, correct : 1}}
+        ).populate([
+            {
+                path: "words.word"
+            },
+            {
+                path: "game",
+                select: "language"
+            }
+
+        ]).lean().exec();
 
         if(round == null){
-            throw "Round non trovato"
+            throw "Round not found"
         }
+
+        let languageField = Languages.getWordFields(round.game.language)
+
+        round.words.forEach((item) => {
+            if(item.word != null) {
+                item.word = item.word[languageField[0]]
+            }
+        });
+
 
         return round;
     }

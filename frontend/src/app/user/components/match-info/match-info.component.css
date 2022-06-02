@@ -45,8 +45,6 @@
 }
 
 .m_border {
+  border: 1px solid #222222;
   border-radius: 8px;
-  border-color: #222222;
-  border-width: 1px;
-  border-style: solid;
 }

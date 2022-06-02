@@ -1,0 +1,15 @@
+<div class="main-component">
+  <div class="close" (click)="close()">
+    <img  class="close_icon" src="assets/userInfo/close.png" alt="Image not found">
+  </div>
+  <div class="row m-card" style="margin-top: 30px">
+    <h1 class="col m-text"> Word </h1>
+    <h1 class="col m-text"> Word insert </h1>
+  </div>
+  <div style="height: 490px">
+    <div class="row m-card red-card" [ngClass]="{'green-card' : word.correct} "  *ngFor="let word of data.words; let i = index">
+      <h1 class="col m-text"> {{word.word != null ? word.word : ""}} </h1>
+      <h1 class="col m-text"> {{word.word_insert != null ? word.word_insert : ""}} </h1>
+    </div>
+  </div>
+</div>

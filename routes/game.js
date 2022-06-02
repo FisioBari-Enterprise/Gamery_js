@@ -271,7 +271,7 @@ router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
     }
 })
 
-router.get('/:id/rounds/:number', Token.autenticateUser, async function(req, res){
+router.get('/:id/round/:number', Token.autenticateUser, async function(req, res){
     let user = new User(req.user._id);
     try {
         await user.buildUser();

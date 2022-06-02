@@ -55,4 +55,8 @@ export class MainUserComponent implements OnInit, OnDestroy {
     this.showBack = false
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
 }
