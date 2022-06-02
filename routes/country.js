@@ -114,7 +114,33 @@ router.get("/client", Token.autenticateUser, async function (req, res, next) {
 router.put("/client", Token.autenticateUser, async function (req, res, next) {
     const country = new Country(req.user);
     try {
-        await country.updateCountry(req.body.id, req.body.code, req.body.remove);
+        await country.updateCountry(req.body.id, req.body.code);
+        return StaticFunctions.sendSuccess(res, country.user);
+    } catch (error) {
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+});
+
+/**
+ * @openapi
+ * \api\country\client:
+ *  delete:
+ *      description: Rimuove il country selezionato dall'utente
+ *      tags: [Country]
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Il country selezionato dall'utente
+ *          400:
+ *              description: Errore riscontrato nell'esecuzione
+ *          403:
+ *              description: Accesso negato
+ */
+router.delete("/client", Token.autenticateUser, async function (req, res, next) {
+    const country = new Country(req.user);
+    try {
+        await country.removeCountry();
         return StaticFunctions.sendSuccess(res, country.user);
     } catch (error) {
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);

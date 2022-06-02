@@ -98,6 +98,8 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     this.allSubscriptions.push(
       this.gameService.newGame().subscribe(res => {
         // Dopo la generazione della partita carico un nuovo round
+        this.game = res.data;
+        this.startRound();
       }, error => {
         this.dialogManager.showError(error.message, () => this.dialogManager.closeDialog());
       })
