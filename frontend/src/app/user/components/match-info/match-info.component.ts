@@ -14,10 +14,13 @@ import {DialogManagerService} from "../../../services/dialog-manager.service";
 })
 export class MatchInfoComponent implements OnInit, OnDestroy {
 
-  game : Game
-
-  rounds : GameRound[]
-
+  /** Informazioni relative al game selezionato*/
+  game : Game;
+  /** Informazioni di base relative a tutti i round*/
+  rounds : GameRound[];
+  /** Informazioni specifiche per un round*/
+  roundInfo : GameRound;
+  /** Lista delle subscription per fare le richieste*/
   subscriptions : Subscription[]
 
   constructor(
@@ -27,14 +30,6 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
     private dialogManager : DialogManagerService
   ) {
 
-  }
-
-  getGameInfo(){
-    this.subscriptions.push(this.userManager.getGame(this.game._id).subscribe(res => {
-      this.rounds = res.data
-    }, err => {
-      this.dialogManager.showDialog(SimpleTextComponent,() => { close()}, {data : err})
-    }))
   }
 
   ngOnInit(): void {
@@ -50,5 +45,21 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
 
   close(){
     this.dialogRef.close();
+  }
+
+  getGameInfo(){
+    this.subscriptions.push(this.userManager.getGame(this.game._id).subscribe(res => {
+      this.rounds = res.data
+    }, err => {
+      this.dialogManager.showDialog(SimpleTextComponent,() => { close()}, {data : err})
+    }))
+  }
+
+  onRoundClick(i){
+    this.subscriptions.push(this.userManager.getRound(this.game._id, this.rounds[i].round).subscribe(res =>{
+      this.roundInfo = res.data;
+    } , err => {
+      this.dialogManager.showDialog(SimpleTextComponent,() => { }, {data : err})
+    }))
   }
 }

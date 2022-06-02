@@ -259,11 +259,25 @@ router.get('/recent', Token.autenticateUser, async function(req ,res){
 
 router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
     let user = new User(req.user._id);
-    await user.buildUser();
     try {
-        let roundGames = await user.getGamesRound(req.params.id);
+        await user.buildUser();
+
+        let roundGames = await user.getGameRounds(req.params.id);
 
         return StaticFunctions.sendSuccess(res, roundGames);
+    }
+    catch (error){
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+})
+
+router.get('/:id/rounds/:number', Token.autenticateUser, async function(req, res){
+    let user = new User(req.user._id);
+    try {
+        await user.buildUser();
+
+        let round = await user.getGameRound(req.params.id, req.params.number);
+        return StaticFunctions.sendSuccess(res, round);
     }
     catch (error){
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);

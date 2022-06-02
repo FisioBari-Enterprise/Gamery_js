@@ -25,9 +25,28 @@
 }
 
 .m_card{
+  position: relative;
   margin: 0 0 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.m_text {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.custom-image{
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translate(0,-50%);
+  width: 12px;
+}
+
+.m_border {
   border-radius: 8px;
   border-color: #222222;
   border-width: 1px;
-  cursor: pointer;
+  border-style: solid;
 }

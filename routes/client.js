@@ -288,7 +288,7 @@ router.put("/change/password", Token.autenticateUser, async function(req,res) {
     }
 });
 
-router.put('/settings', Token.autenticateUser {
+router.put('/settings', Token.autenticateUser, async function(req, res) {
     const user = new User(req.user._id);
 
     const font_size = req.body.font_size;

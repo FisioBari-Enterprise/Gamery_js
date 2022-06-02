@@ -398,7 +398,7 @@ class User {
         return games
     }
 
-    async getGamesRound(id){
+    async getGameRounds(id){
         let rounds = await GameRoundDB.find(
             {user: this.user._id, game : {_id : new ObjectId(id)}},
             {points : 1, round : 1, correct : 1, _id : 1}
@@ -409,6 +409,21 @@ class User {
         }
         return rounds;
     }
+
+    async getGameRound(id, number){
+        let round = await GameRoundDB.findOne(
+            { user: this.user._id, game : {_id : new ObjectId(id)}, round : number}
+        ).lean().exec();
+
+        if(round == null){
+            throw "Round non trovato"
+        }
+
+        return round;
+    }
+
+
+
 }
 
 const validateEmail = (email) => {

@@ -14,8 +14,11 @@
   <div style="margin-top: 10px">
     <h1>Rounds list:</h1>
   </div>
-  <div class="row m_card" *ngFor="let round of rounds; let i = index" >
-    <h1 class="col" style="text-align: center"> Round: {{round.round}} </h1>
-    <h1 class="col" style="text-align: center"> Points: {{round.points}} </h1>
+  <div class="row m_card m_border"  *ngFor="let round of rounds; let i = index" (click)="onRoundClick(i)">
+    <h1 class="col-5 m_text"> Round: {{round.round}} </h1>
+    <h1 class="col-5 m_text"> Points: {{round.points}} </h1>
+    <div class="col-2">
+      <img class="custom-image" src="assets/userInfo/right-arrow.png " alt="image not found"/>
+    </div>
   </div>
 </div>
