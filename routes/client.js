@@ -294,13 +294,10 @@ router.put('/settings', Token.autenticateUser, async function(req, res) {
     const font_size = req.body.font_size;
     const volume = req.body.volume;
     const sound = req.body.sound;
+
     try {
-        await user.changeSettings(font_size, volume, sound, (err) => {
-            if (err !== null) {
-                return StaticFunctions.sendError(res, err);
-            }
-            StaticFunctions.sendSuccess(res, true);
-        });
+        await user.changeSettings(font_size, volume, sound);
+        StaticFunctions.sendSuccess(res, user.user);
     } catch (error) {
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }

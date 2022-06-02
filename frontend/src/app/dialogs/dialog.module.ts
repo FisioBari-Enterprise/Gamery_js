@@ -7,6 +7,7 @@ import { CompleteLevelComponent } from './complete-level/complete-level.componen
 import { LoseComponent } from './lose/lose.component';
 import {SharedModule} from "../shared/shared.module";
 import { SimpleTextComponent } from './simple-text/simple-text.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 
@@ -17,7 +18,8 @@ import { SimpleTextComponent } from './simple-text/simple-text.component';
     PauseComponent,
     CompleteLevelComponent,
     LoseComponent,
-    SimpleTextComponent
+    SimpleTextComponent,
+    SettingsComponent
   ],
     imports: [
         CommonModule,

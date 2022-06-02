@@ -357,7 +357,7 @@ class User {
      * @param sound{boolean}
      */
     async changeSettings(font_size, volume, sound) {
-        const user = buildUser();
+        await this.buildUser();
 
         //Controlla che i tipi delle variabili siano corretti
         if (typeof font_size != "number" || typeof volume != "number" || typeof sound != "boolean") {
@@ -371,13 +371,11 @@ class User {
             throw "Volume parameter out of range"
         }
         //Cambia i parametri delle impostazioni con quelli in input
-        user.settings.font_size = font_size;
-        user.settings.volume = volume;
-        user.settings.sound = sound;
+        this.user.settings.font_size = font_size;
+        this.user.settings.volume = volume;
+        this.user.settings.sound = sound;
         //Salva le modifiche
-        await user.save();
-        //Ritorna lo user modificato
-        return user;
+        await this.user.save();
     }
 
     /**

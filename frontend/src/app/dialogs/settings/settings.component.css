@@ -1,0 +1,4 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
