@@ -8,6 +8,7 @@ import { LoseComponent } from './lose/lose.component';
 import {SharedModule} from "../shared/shared.module";
 import { SimpleTextComponent } from './simple-text/simple-text.component';
 import { WordListComponent } from './word-list/word-list.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 
@@ -19,7 +20,8 @@ import { WordListComponent } from './word-list/word-list.component';
     CompleteLevelComponent,
     LoseComponent,
     SimpleTextComponent,
-    WordListComponent
+    WordListComponent,
+    SettingsComponent
   ],
     imports: [
         CommonModule,

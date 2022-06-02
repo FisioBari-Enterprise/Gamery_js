@@ -35,10 +35,9 @@ class Country {
      * Aggiorna lo stato assegnato all'utente
      * @param {String | null} id L'id del nuovo stato
      * @param {String | null} code Il nome del nuovo stato
-     * @param {Boolean | null} remove Indica di rimuove il country
      * @return {Promise<void>}
      */
-    async updateCountry(id, code, remove) {
+    async updateCountry(id, code) {
         // Controllo sull'utente
         if (this.user == null) {
             throw "User not found";
@@ -52,24 +51,32 @@ class Country {
             query['code'] = code;
         }
         // Controllo sui dati
-        if (query.id == null && query.code == null && remove != null && !remove) {
+        if (query.id == null && query.code == null) {
             throw "No params found";
         }
         // Aggiorna il country
-        if (remove == null || !remove) {
-            const country = await CountryModel.findOne(query).lean().exec();
-            if (country == null) {
-                throw "Id or code not valid";
-            }
-            this.user.country = country._id;
-        } else {
-            // Rimuove il country dall'utente
-            this.user.country = null;
+        const country = await CountryModel.findOne(query).lean().exec();
+        if (country == null) {
+            throw "Id or code not valid";
         }
+        this.user.country = country._id;
         // Salva le modifiche
         await this.user.save()
-        // Ricarica l'utente
-        this.user = await UserModel.findOne({_id: this.user._id}).populate('country').exec();
+        // Aggiorna l'utente
+        this.user = await UserModel.findOne({_id: new ObjectId(this.user._id)}).populate('country').exec();
+    }
+
+    /**
+     * Rimuove la preferenza dello stato dall'utente
+     * @return {Promise<void>}
+     */
+    async removeCountry() {
+        if (this.user == null) {
+            throw "User not found";
+        }
+        // Aggiorna i dati
+        this.user.country = null;
+        await this.user.save();
     }
 }
 

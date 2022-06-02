@@ -107,10 +107,10 @@
   position:relative;
   align-self: center;
   background-color: #08273F;
-  height: 80%;
   border-radius: 10px;
-  margin: auto;
+  height: calc(100% - 170px);
   padding: 10px;
+  margin: auto;
 }
 
 .title-box {
