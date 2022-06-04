@@ -303,4 +303,39 @@ router.put('/settings', Token.autenticateUser, async function(req, res) {
     }
 });
 
+/**
+ * * @openapi
+ *  * \api\client\id:
+ *  *  put:
+ *  *      description: Richiedo le informazioni indicate dall'id
+ *  *      tags: [Users]
+ *  *      parameters:
+ *  *          - name: id
+ *  *            description: Id dell'utente da ricercare
+ *  *            in: formData
+ *  *            required: true
+ *  *            type: string
+ *  *      produces:
+ *  *          - application/json
+ *  *      responses:
+ *  *          200:
+ *  *              description: Ricezione delle informazioni dell'utente
+ *  *          400:
+ *  *              description: Errore durante l'esecuzione dell'azione
+ *  *          403:
+ *  *              description: Accesso non consentito. Token non valido
+ *  */
+router.get('/:id', Token.autenticateUser, async function(req, res) {
+    let user = new User(req.params.id);
+
+    try {
+        await user.buildSimpleUser();
+
+        StaticFunctions.sendSuccess(res, user.user);
+
+    } catch (error) {
+        return StaticFunctions.sendError(res, typeof error === 'string' ? error : error.message);
+    }
+});
+
 module.exports = router

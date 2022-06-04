@@ -51,6 +51,18 @@ class User {
         this.user = doc;
     }
 
+    async buildSimpleUser(){
+        let nUser = await UserModel.findOne(
+            {_id : new ObjectId(this.id)},
+            { _id: 1, username: 1, statistics : 1, country : 1})
+            .populate('statistics').populate('country').exec()
+
+        if(nUser === null){
+            throw "Utente non trovato"
+        }
+        this.user = nUser;
+    }
+
     /**
      * Genera un nuovo utente temporaneo
      * @param {String} ipAddress Indirirzzo ip della richiesta
