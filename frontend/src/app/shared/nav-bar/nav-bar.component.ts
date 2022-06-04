@@ -9,6 +9,7 @@ import { PauseComponent } from 'src/app/dialogs/pause/pause.component';
 import {Router} from "@angular/router";
 import {ColorButtons} from "../enum/colorButtons";
 import {MainUserComponent} from "../../user/components/main-user/main-user.component";
+import {SettingsComponent} from "../../dialogs/settings/settings.component";
 
 // TODO: Bottone di pausa e gestione
 // TODO: Bottone di login se non ha un account registrato attivo e mostra la view dedicata
@@ -37,6 +38,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
   colorSchemaLogin = ColorButtons.Blue;
   /**Colore del bottone di logout*/
   colorSchemaLogout = ColorButtons.Red;
+  /**Colore del bottone delle impostazioni*/
+  colorSchemaSettings = ColorButtons.Yellow;
 
 
   /**Tipo di navbar da visualizzare in base agli input*/
@@ -51,6 +54,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
   @Output() pauseSet = new EventEmitter<Boolean>();
   /**Indica la pressione del bottone skipTime*/
   @Output() isSkipTime = new EventEmitter<Boolean>();
+  /**Indica la pressione del bottone delle impostazioni*/
+  @Output() isSettings = new EventEmitter<Boolean>();
 
   /**Evento sollevato quando viene caricato correttamente l'utente*/
   @Output() onUserInfo = new EventEmitter<UserInfo>();
@@ -233,7 +238,15 @@ export class NavBarComponent implements OnInit, OnDestroy {
   skipTime() {
     //Mando l'evento di skipTime
     this.isSkipTime.emit(true);
-    //devo resettare la variabile a false in qualche modo?
+  }
+
+  openSettings() {
+    //Mostro dialog delle impostazioni
+    this.dialog.showDialog(SettingsComponent, () => {
+      this.isSettings.emit(false);
+      }, { 'border-radius' : '20px' });
+    //Mando l'evento di pressione del bottone impostazioni
+    this.isSettings.emit(true);
   }
 
   /**
