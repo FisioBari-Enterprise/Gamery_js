@@ -1,1 +1,15 @@
-<p>statistics works!</p>
+<div class="main-container">
+  <div class="row m-line">
+    <h1 class="col m-text"> Best placement: {{statistics.best_placement}}</h1>
+    <h1 class="col m-text"> Max points: {{statistics.max_points}}</h1>
+  </div>
+  <div class="row m-line">
+    <h1 class="col m-text"> Total game played: {{statistics.tot_games}}</h1>
+  </div>
+  <div class="row m-line">
+    <h1 class="col m-text"> Total time spent playing: {{getTime(statistics.game_time)}}</h1>
+  </div>
+  <div class="row m-line">
+    <h1 class="col m-text"> Total point earned: {{statistics.tot_points}}</h1>
+  </div>
+</div>

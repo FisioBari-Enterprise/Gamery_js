@@ -413,7 +413,7 @@ class User {
 
         let round = await GameRoundDB.findOne(
             { user: this.user._id, game : {_id : new ObjectId(id)}, round : number},
-            {_id : 1, round : 1, words : {word : 1, word_insert : 1, correct : 1}}
+            {_id : 1, round : 1, words : 1}
         ).populate([
             {
                 path: "words.word"

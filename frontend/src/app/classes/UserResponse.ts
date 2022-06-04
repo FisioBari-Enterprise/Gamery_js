@@ -23,11 +23,11 @@ export class Country{
 }
 
 export class Statistics {
-  game_time : Number;
-  tot_game: Number;
-  tot_point: Number;
-  max_points : Number;
-  best_placement : Number;
+  game_time : number;
+  tot_games: number;
+  tot_points: number;
+  max_points : number;
+  best_placement : number;
 }
 
 export class Preferences {
