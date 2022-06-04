@@ -242,11 +242,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   openSettings() {
     //Mostro dialog delle impostazioni
-    this.dialog.showDialog(SettingsComponent, () => {
-      this.isSettings.emit(false);
-      }, { 'border-radius' : '20px' });
-    //Mando l'evento di pressione del bottone impostazioni
-    this.isSettings.emit(true);
+    this.dialog.showDialog(SettingsComponent, () => {});
   }
 
   /**
