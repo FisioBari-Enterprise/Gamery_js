@@ -2,6 +2,7 @@ const LeaderboardType = require("../../database/enum/leaderboardType");
 const LeaderboardModel = require("../../database/game/leaderboard");
 const SingleGameModel = require("../../database/game/singleGame");
 const CountryModel = require("../../database/users/country");
+const UserModel = require("../../database/users/user");
 const ObjectId = require('mongoose').Types.ObjectId;
 
 /**
@@ -13,14 +14,16 @@ class LeaderboardFilters {
      * @param {Number} type Tipo di classifica
      * @param {Number} start Indice d'inizio della ricerca
      * @param {Number} count Numero degli elementi richiesti
-     * @param {Boolean} onlyMe Indica se prendere solo l'utente del token
+     * @param {Boolean} byUser Indica se ottenere la classifica in base agli utenti
+     * @param {String} user Id o username dell'utente
      * @param {String} country Stato dal quale si vuole ottenere la classifica, id o codice
      */
-    constructor(type, start, count, onlyMe, country) {
+    constructor(type, start, count, country, byUser, user) {
         this.type = type != null ? parseInt(type) : LeaderboardType.GLOBAL;
         this.start = start != null ? start : 0;
         this.count = count != null ? count : 100;
-        this.onlyMe = onlyMe != null ? onlyMe : false;
+        this.byUser = byUser != null ? byUser : false;
+        this.user = user != null ? user : null;
         this.country = country != null ? country : null;
     }
 
@@ -63,14 +66,54 @@ class LeaderboardFilters {
     }
 
     /**
-     * Ottiene il campo find di mongoDB in base ai dati che ha
+     * Ottiene il campo find di mongoDB in base ai dati che possiede
+     * @param {String | null} gameId Id della partita da aggiungere al filtro in modo opzionale
      */
-    getFilter() {
+    getFilter(gameId=null) {
+        let query;
         switch (this.type) {
-            case LeaderboardType.GLOBAL: return {type: this.type};
-            case LeaderboardType.LOCAL: return {type: this.type, country: this.country};
+            case LeaderboardType.GLOBAL: query = {type: this.type}; break;
+            case LeaderboardType.LOCAL: query = {type: this.type, country: this.country}; break;
             default: throw "Query not supported";
         }
+        if (gameId !== null) {
+            query['game'] = new ObjectId(gameId);
+        }
+        return query;
+    }
+
+    /**
+     * Ottiene la partita presa in considerazione per la generazione della classifica
+     * @param {ObjectId | string} user Id dell'utente di riferimento o il suo username
+     */
+    async getLeaderboardGame(user) {
+        // Dato che la query find({'game.user': this.user._id}) non da risultati
+        // Ricerco la partita che è stata presa in considerazione alla generazione della classifica per l'utente connesso
+
+        // Ottiene la data di creazione della classifica corrente
+        const topLeaderboard = await LeaderboardModel.find(this.getFilter()).limit(1).lean().exec();
+        if (topLeaderboard.length === 0) {
+            return null;
+        }
+        // Prende la data di creazione
+        let date = topLeaderboard[0].createdAt;
+        date.setMilliseconds(0);
+        // Preparazione della query
+        let query = {createdAt: {$lte: date.toISOString()}};
+        try {
+            // Cerca per id
+            query['user'] = new ObjectId(user);
+        } catch {
+            // Ricerca l'id dell'utente in base al username
+            const userUsername = await UserModel.findOne({username: user}).lean().exec();
+            if (userUsername === null) {
+                return null;
+            }
+            query['user'] = userUsername._id;
+        }
+        // In base alla data seleziona la partita inserita nella classifica
+        const game = await SingleGameModel.find(query).sort({points: -1}).limit(1).lean().exec();
+        return game.length === 0 ? null : game[0];
     }
 }
 
@@ -99,24 +142,29 @@ class Leaderboard {
         }
         // Controlla che i filtri siano stati inviati in maniera corretta
         await filter.validate();
-        // Ottiene la classifica
-        if (!filter.onlyMe) {
-            return await LeaderboardModel.find(filter.getFilter()).populate([
-                {
-                    path: 'game',
-                    select: 'points',
-                    populate: {
-                        path: 'user',
-                        select: 'username'
-                    }
+        // Definizione della popolazione dei sotto oggetti
+        const populate = [
+            {
+                path: 'game',
+                select: 'points',
+                populate: {
+                    path: 'user',
+                    select: 'username'
                 }
-            ]).sort({points: -1})
+            }
+        ]
+        // Ottiene la classifica
+        if (!filter.byUser) {
+            return await LeaderboardModel.find(filter.getFilter()).populate(populate).sort({points: -1})
                 .skip(filter.start).limit(filter.count).lean().exec();
         }
-        // Prende la posizione in classifica solo dell'utente del token
-        return await LeaderboardModel.findOne({
-            'game.user': this.user._id.toString()
-        }).lean().exec();
+        // Ottiene la posizione in classifica di un utente
+        const game = await filter.getLeaderboardGame(filter.user);
+        if (game === null) {
+            return null;
+        }
+        // Ottiene la risposta in base alla partita trovata
+        return await LeaderboardModel.findOne(filter.getFilter(game._id.toString())).populate(populate).lean().exec();
     }
 
     /**
@@ -209,7 +257,7 @@ function leaderboardArrayToMatrix(array, sub, getElement) {
     let data = [];
     for (let i = 0; i < array.length; i++){
         const item = array[i];
-        if (sub != null && item[sub] == null){
+        if (sub != null && (item[sub] == null || item[sub].country == null)){
             continue;
         }
         const key = sub != null ? item[sub].country._id.toString() : item.country._id.toString();

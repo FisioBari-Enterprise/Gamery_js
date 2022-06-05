@@ -4,6 +4,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {SharedModule} from "../shared/shared.module";
 import { HomePlayComponent } from './components/home-play/home-play.component';
 import { HomeRankingComponent } from './components/home-ranking/home-ranking.component';
+import { CardRankingComponent } from './components/card-ranking/card-ranking.component';
 
 
 
@@ -11,7 +12,8 @@ import { HomeRankingComponent } from './components/home-ranking/home-ranking.com
   declarations: [
     HomeComponent,
     HomePlayComponent,
-    HomeRankingComponent
+    HomeRankingComponent,
+    CardRankingComponent
   ],
   imports: [
     CommonModule,

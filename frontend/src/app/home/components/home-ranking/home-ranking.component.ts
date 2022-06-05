@@ -1,5 +1,6 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {UserInfo} from "../../../classes/UserResponse";
+import { LeaderboardPos } from '../../classes/leaderboardPos';
 
 @Component({
   selector: 'app-home-ranking',
@@ -13,6 +14,8 @@ export class HomeRankingComponent implements OnInit, OnChanges {
   globalSelect: boolean = true;
   /**Indica se sono accessibili i bottoni*/
   buttonActive: boolean = true;
+  /**La classifica trovata*/
+  leaderboard: LeaderboardPos[];
 
   /** Informazioni dell'utente attivo */
   @Input() user: UserInfo | null = null;
@@ -23,6 +26,7 @@ export class HomeRankingComponent implements OnInit, OnChanges {
     this.user = null;
     this.userFlag = '';
     this.globalSelect = true;
+    this.leaderboard = []
   }
 
   /**
@@ -39,7 +43,6 @@ export class HomeRankingComponent implements OnInit, OnChanges {
     // Controlla il cambiamento del input user
     if (changes['user'] != null) {
       this.userFlag = this.getFlagLink();
-      console.log(this.userFlag);
     }
   }
 
@@ -53,6 +56,13 @@ export class HomeRankingComponent implements OnInit, OnChanges {
       return;
     }
     this.globalSelect = isGlobal;
+  }
+
+  /**
+   * Ottiene i dati della classifica
+   */
+  getLeaderboard() {
+
   }
 
 }

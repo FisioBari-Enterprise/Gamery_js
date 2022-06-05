@@ -20,7 +20,7 @@ test( 'Login con utente temporaneo', () => {
         .set('Accept', 'application/json')
         .send(body)
         .then(response => {
-
+            expect(response.status).toBe(200);
         });
 })
 

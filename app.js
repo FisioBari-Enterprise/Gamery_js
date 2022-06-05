@@ -30,6 +30,7 @@ const swaggerOptions = {
 };
 //End point per la documentazione
 const swaggerDocument = swaggerJsDoc(swaggerOptions);
+// console.log(JSON.stringify(swaggerDocument));
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
     explorer: true
 }));

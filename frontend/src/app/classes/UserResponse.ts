@@ -1,3 +1,5 @@
+import {Country} from "../home/classes/country";
+
 export class UserResponse {
     data : UserInfo
 }
@@ -14,12 +16,6 @@ export class UserInfo{
     createdAt : Date;
     updatedAt : Date;
     __v : Number
-}
-
-export class Country{
-  _id: String;
-  code: String;
-  name: String;
 }
 
 export class Statistics {
