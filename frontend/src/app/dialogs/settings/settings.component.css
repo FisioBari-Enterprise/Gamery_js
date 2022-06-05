@@ -2,3 +2,15 @@
   font-family: "Exo2";
   src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
 }
+
+.main-container {
+  position: relative;
+  background-color: white;
+  border-radius: 20px;
+  width: 300px;
+  padding: 10px;
+}
+
+.title{
+  
+}
