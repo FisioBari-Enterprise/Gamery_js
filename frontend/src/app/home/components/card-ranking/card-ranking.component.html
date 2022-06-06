@@ -1,1 +1,35 @@
-<p>card-ranking works!</p>
+<!--Viene caricato solo sei ha dei dati al suo interno-->
+<ng-container *ngIf="leaderboardData != null">
+  <div class="row main-container-card-ranking" [style.margin-bottom]="spacingBottom != null ? spacingBottom + 'px' : ''">
+    <!--Nome e score-->
+    <div class="col">
+      <h2>{{leaderboardData.game.user.username}}</h2>
+      <h2>Score: {{leaderboardData.game.points}}</h2>
+    </div>
+    <!--Posizione e cambiamento nel corso del tempo-->
+    <div class="col col-right">
+      <!--Posizione-->
+      <div class="position-container">
+        <img src="./assets/home/star.png" alt="No star found" width="20px" height="20px"/>
+        <h2>{{leaderboardData.position}}</h2>
+      </div>
+      <!--Cambiamento posizione-->
+      <div class="position-change">
+        <!--Equal-->
+        <ng-container *ngIf="leaderboardData.prev_position == null || leaderboardData.prev_position - leaderboardData.position === 0">
+          <img src="./assets/leaderboard/equal.png" alt="No star found" width="20px" height="20px"/>
+        </ng-container>
+        <!--Up-->
+        <ng-container *ngIf="leaderboardData.prev_position != null && leaderboardData.prev_position - leaderboardData.position > 0">
+          <img src="./assets/leaderboard/up_arrow.png" alt="No star found" width="20px" height="20px"/>
+          <h3 class="up-text">{{getPositionDiff() > 9 ? '9+' : getPositionDiff()}}</h3>
+        </ng-container>
+        <!--Down-->
+        <ng-container *ngIf="leaderboardData.prev_position != null && leaderboardData.prev_position - leaderboardData.position < 0">
+          <img src="./assets/leaderboard/down_arrow.png" alt="No star found" width="20px" height="20px"/>
+          <h3 class="down-text">{{getPositionDiff() > 9 ? '9+' : getPositionDiff()}}</h3>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-container>

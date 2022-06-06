@@ -15,4 +15,19 @@
                 (OnClick)="onButtonSelect(false)"></app-card>
     </div>
   </div>
+  <!--Visualizzato solo quando l'utente è stato caricato-->
+  <ng-container *ngIf="this.user != null">
+    <!--Visualizzazione della classifica complessivo-->
+    <div class="container-all-leaderboard">
+      <ng-container *ngFor="let item of leaderboard; let i = index">
+        <app-card-ranking [leaderboardData]="item" [spacingBottom]="5"></app-card-ranking>
+      </ng-container>
+    </div>
+    <!--Divisore-->
+    <div class="division-leaderboards"></div>
+    <!--Visualizzazione della classifica complessivo-->
+    <div class="container-my-leaderboard">
+      <app-card-ranking [leaderboardData]="userLeaderboard"></app-card-ranking>
+    </div>
+  </ng-container>
 </div>

@@ -13,3 +13,24 @@
   text-align: center;
   font-family: "Exo2", serif;
 }
+
+.container-all-leaderboard {
+  overflow: visible;
+  height: calc(100% - 200px);
+  padding: 10px;
+}
+
+.all-leaderboard {
+  margin-bottom: 5px;
+}
+
+.division-leaderboards {
+  width: 100%;
+  height: 3px;
+  background: rgb(255, 230, 42);
+}
+
+.container-my-leaderboard {
+  height: 70px;
+  padding: 10px;
+}

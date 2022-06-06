@@ -1,0 +1,35 @@
+.main-container-card-ranking {
+  background: #fff;
+  border-radius: 10px;
+}
+.main-container-card-ranking h2 {
+  color: #000;
+  margin: 0;
+}
+
+.col-right {
+  max-width: 100px;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+}
+
+.position-container {
+  margin: auto;
+}
+
+.position-change {
+  margin: auto;
+}
+
+.position-change h3 {
+  margin: 0;
+}
+
+.up-text {
+  color: #7BD101;
+}
+
+.down-text {
+  color: #E91F1F;
+}

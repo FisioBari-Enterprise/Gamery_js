@@ -3,7 +3,7 @@ export class AllCountryResponse {
 }
 
 export class Country{
-  _id: String;
-  code: String;
-  name: String;
+  _id: string;
+  code: string;
+  name: string;
 }
