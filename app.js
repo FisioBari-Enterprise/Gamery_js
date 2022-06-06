@@ -41,6 +41,7 @@ const user = require("./routes/client.js");
 const game = require("./routes/game.js");
 const country = require("./routes/country.js");
 const leaderboard = require("./routes/leaderboard.js");
+const routeValidator = require("./classes/routeValidator");
 
 //Migliora la sicurezza
 //app.use(helmet());
@@ -78,7 +79,7 @@ app.use("/api/game", game);
 app.use("/api/country", country);
 app.use("/api/leaderboard", leaderboard);
 //Errore se non trova endpoint validi
-app.use(function(req, res, next) {
+app.use(routeValidator, function(req, res, next) {
     StaticFunctions.sendError(res, 'Url or method not valid');
 });
 

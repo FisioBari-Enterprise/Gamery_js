@@ -1,7 +1,7 @@
 <div class="row top-container" >
   <div class="col-10">
     <ng-container *ngIf="currentType !== 3">
-      <div (click)="openUser()">
+      <div style="cursor: pointer;" (click)="openUser()">
         <div class="container-username">
           <p class="username">{{userInfo === null ? 'Username' : userInfo.username}}</p>
         </div>
