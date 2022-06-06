@@ -240,7 +240,7 @@ router.get('/recent', Token.autenticateUser, async function(req ,res){
 
 /**
  * @openapi
- * \api\game\:id\rounds
+ * \api\game\{id}\rounds:
  *  get:
  *      description: Ottengo i round per una specifica partita
  *      tags: [Statistics]
@@ -273,13 +273,12 @@ router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
 
 /**
  * @openapi
- * \api\game\:id\round\:number
+ * \api\game\{id}\round\{number}:
  *  get:
  *      description: Ottengo il round indicato per una specifica partita
  *      tags: [Statistics]
  *      produces:
  *          - application/json
- *      parameters:
  *      responses:
  *          200:
  *              description: Round della partita richiesto
