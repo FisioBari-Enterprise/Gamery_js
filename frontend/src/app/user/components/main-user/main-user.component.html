@@ -19,7 +19,7 @@
     <div *ngIf="showBack">
       <img class="back-image" src="./assets/buttons/back.png" alt="image not found"  (click)="back()"/>
       <div style="max-height: 280px">
-        <app-country *ngIf="selectedButton=='flags'" [userInfo]="user" (changeUserinfo)="user = $event"></app-country>
+        <app-country *ngIf="selectedButton=='flags'" [userInfo]="user" (changeUserinfo)="onUpdateUser($event)"></app-country>
         <app-matches *ngIf="selectedButton=='matches'" (showChange)="showBack = $event"></app-matches>
         <app-statistics *ngIf="selectedButton=='statistics'" [statistics]="user.statistics"></app-statistics>
       </div>

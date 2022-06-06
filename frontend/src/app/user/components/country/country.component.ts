@@ -54,7 +54,9 @@ export class CountryComponent implements OnInit, OnDestroy {
     this.allCountriesSubscription = this.userService.getAllCountries().subscribe(res => {
       // Salva tutti i country
       this.allCountries = res.data;
-      this.indexChecked = this.allCountries.findIndex((item) => item._id === this.userInfo.country._id);
+      if (this.userInfo.country != null) {
+        this.indexChecked = this.allCountries.findIndex((item) => item._id === this.userInfo.country._id);
+      }
       this.dialogManager.closeDialog();
     }, error => {
       this.dialogManager.closeDialog();

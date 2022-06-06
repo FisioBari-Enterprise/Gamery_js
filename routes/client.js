@@ -37,6 +37,7 @@ router.post("/login", async function (req, res) {
  *  post:
  *      description: Registra un nuovo utente temporaneo
  *      tags: [Users]
+ *
  *      produces:
  *          - application/json
  *      responses:
@@ -61,6 +62,15 @@ router.get("/register/temporary", function (req, res) {
  *  post:
  *      description: Registra un nuovo utente
  *      tags: [Users]
+ *      security:
+ *          - userAuth: []
+ *      requestBody:
+ *          description: Dati per la creazione dell'utente
+ *          require: true
+ *          content:
+ *              application\json:
+ *                  schema:
+ *                      $ref: '#/components/requestBodies/registration_body'
  *      produces:
  *          - application/json
  *      responses:

@@ -44,7 +44,6 @@ export class MainUserComponent implements OnInit{
   showRecentMatch(){
     this.showBack = true;
     this.selectedButton = "matches";
-
   }
 
   back() {
@@ -52,7 +51,15 @@ export class MainUserComponent implements OnInit{
   }
 
   close(){
-    this.dialogRef.close();
+    this.dialogRef.close(this.user);
+  }
+
+  /**
+   * Evento di aggiornamento dello user
+   * @param event
+   */
+  onUpdateUser(event) {
+    this.user = event;
   }
 
 }

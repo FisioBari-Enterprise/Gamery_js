@@ -47,6 +47,7 @@ export class UserManagerService {
    * @param {String | null} id Nuovo id o null se si vuole eliminare
    */
   updateCountry(id: string | null): Observable<UserResponse> {
+    console.log(id);
     let headers = this.base.TokenHeader;
     // Elimina la preferenza
     if (id === null) {
