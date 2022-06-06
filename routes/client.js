@@ -76,6 +76,10 @@ router.get("/register/temporary", function (req, res) {
  *      responses:
  *          200:
  *              description: Token di accesso e uuid assegnato
+ *              content:
+ *                  object:
+ *                      schema:
+ *                          $ref: '#components/responses/login_response'
  *          400:
  *              description: Errore riscontrato in fase di creazione
  */

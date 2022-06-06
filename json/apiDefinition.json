@@ -23,31 +23,30 @@
       }
     },
     "schemas": {
+
     },
     "requestBodies": {
       "registration_body": {
         "type": "object",
+        "required": true,
         "properties": {
           "uuid": {
-            "type": "string",
-            "description": "uuid del dispositivo in cui si sta giocando"
+            "type": "string"
           },
           "username": {
-            "type": "string",
-            "description": "username del giocatore"
+            "type": "string"
           },
           "email": {
-            "type": "string",
-            "description": "email del giocatore"
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "description": "Password dell'utente"
+            "type": "string"
           }
         }
       },
       "login_body": {
         "type": "object",
+        "required": true,
         "properties": {
           "usernameEmail": {
             "type": "string"
@@ -59,6 +58,7 @@
       },
       "change_password_body": {
         "type": "object",
+        "required": true,
         "properties": {
           "password": {
             "type": "string"
@@ -70,6 +70,7 @@
       },
       "change_password_email_body": {
         "type": "object",
+        "required": true,
         "properties": {
           "email": {
             "type": "string"
@@ -78,6 +79,7 @@
       },
       "setting_body": {
         "type": "object",
+        "required": true,
         "properties": {
           "font_size": {
             "type": "number"
@@ -92,6 +94,7 @@
       },
       "change_country_body": {
         "type": "object",
+        "required": true,
         "properties": {
           "id": {
             "type": "string"
@@ -103,6 +106,7 @@
       },
       "game_body": {
         "type": "object",
+        "required": true,
         "properties": {
           "words": {
             "type": "array",
@@ -110,6 +114,21 @@
           },
           "game_time": {
             "type": "number"
+          }
+        }
+      }
+    },
+    "responses": {
+      "login_response": {
+        "type" : "object",
+        "properties": {
+          "access": {
+            "type": "string",
+            "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTRmM2NkMDY2NmRjZWVhMTVhMWQxZSIsImlhdCI6MTY1NDQxNTgyMiwiZXhwIjoxNjU0NDIzMDIyfQ.WB5UMCcLA-AH8cnngWj4DguOzbmG4FrYvJCGUXFvXO8"
+          },
+          "uuid": {
+            "type": "string",
+            "example": "14c01601-99d6-44e4-8042-e5d614ea8867"
           }
         }
       }
