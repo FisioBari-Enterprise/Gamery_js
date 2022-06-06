@@ -1,6 +1,6 @@
 <div class="main.container">
   <div class="close_button">
-    <app-button [image]="null" (onClick)="close()"></app-button>
+    <input class="button" type="button" value="X" onclick="close()" >
   </div>
   <div class="title">
     <div class="image">
@@ -9,6 +9,7 @@
     <p>SETTINGS</p>
   </div>
 
+  <div class="modify-settings">
     <div class="font_size">
       <label class="form-label my-text" >FONT SIZE</label>
     </div>
@@ -22,5 +23,5 @@
         <span class="slider round"></span>
       </label>
     </div>
-
+  </div>
 </div>
