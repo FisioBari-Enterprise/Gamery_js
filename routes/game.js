@@ -238,6 +238,25 @@ router.get('/recent', Token.autenticateUser, async function(req ,res){
     }
 })
 
+/**
+ * @openapi
+ * \api\game\:id\rounds
+ *  get:
+ *      description: Ottengo i round per una specifica partita
+ *      tags: [Statistics]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *      responses:
+ *          200:
+ *              description: Elenco dei round per la partita
+ *          400:
+ *              description: Errore riscontrato in fase di update
+ *          401:
+ *              description: Token non passato
+ *          403:
+ *              description: Sessione o token non validi
+ */
 router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
     let user = new User(req.user._id);
     try {
@@ -252,6 +271,25 @@ router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
     }
 })
 
+/**
+ * @openapi
+ * \api\game\:id\round\:number
+ *  get:
+ *      description: Ottengo il round indicato per una specifica partita
+ *      tags: [Statistics]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *      responses:
+ *          200:
+ *              description: Round della partita richiesto
+ *          400:
+ *              description: Errore riscontrato in fase di update
+ *          401:
+ *              description: Token non passato
+ *          403:
+ *              description: Sessione o token non validi
+ */
 router.get('/:id/round/:number', Token.autenticateUser, async function(req, res){
     let user = new User(req.user._id);
     try {

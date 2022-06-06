@@ -23,7 +23,91 @@
       }
     },
     "schemas": {
-      
+    },
+    "requestBodies": {
+      "registration_body": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "login_body": {
+        "type": "object",
+        "properties": {
+          "usernameEmail": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "change_password_body": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "passwordConfirm": {
+            "type": "string"
+          }
+        }
+      },
+      "change_password_email_body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "setting_body": {
+        "type": "object",
+        "properties": {
+          "font_size": {
+            "type": "number"
+          },
+          "volume": {
+            "type": "number"
+          },
+          "sound": {
+            "type": "boolean"
+          }
+        }
+      },
+      "change_country_body": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          }
+        }
+      },
+      "game_body": {
+        "type": "object",
+        "properties": {
+          "words": {
+            "type": "string[]"
+          },
+          "game_time": {
+            "type": "number"
+          }
+        }
+      }
     }
   },
   "paths": {
