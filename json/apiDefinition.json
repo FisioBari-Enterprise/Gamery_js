@@ -29,16 +29,20 @@
         "type": "object",
         "properties": {
           "uuid": {
-            "type": "string"
+            "type": "string",
+            "description": "uuid del dispositivo in cui si sta giocando"
           },
           "username": {
-            "type": "string"
+            "type": "string",
+            "description": "username del giocatore"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "description": "email del giocatore"
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "description": "Password dell'utente"
           }
         }
       },
@@ -101,7 +105,8 @@
         "type": "object",
         "properties": {
           "words": {
-            "type": "string[]"
+            "type": "array",
+            "item": "string"
           },
           "game_time": {
             "type": "number"
