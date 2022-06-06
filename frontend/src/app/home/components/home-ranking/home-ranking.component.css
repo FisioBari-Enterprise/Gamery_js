@@ -14,9 +14,16 @@
   font-family: "Exo2", serif;
 }
 
+.last-update-text {
+  color: #fff;
+  text-align: center;
+  font-family: "Exo2", serif;
+  margin: 0;
+}
+
 .container-all-leaderboard {
   overflow: scroll;
-  height: calc(100% - 200px);
+  height: calc(100% - 230px);
   padding: 10px;
 }
 

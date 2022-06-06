@@ -18,7 +18,7 @@
   <!--Visualizzato solo quando l'utente è stato caricato-->
   <ng-container *ngIf="this.user != null">
     <!--Ultima data di aggiornamento della classifica-->
-
+    <h3 class="last-update-text">{{getLastUpdateDateString()}}</h3>
     <!--Visualizzazione della classifica complessivo-->
     <div class="container-all-leaderboard">
       <ng-container *ngFor="let item of leaderboard; let i = index">

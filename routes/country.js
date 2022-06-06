@@ -83,11 +83,6 @@ router.get("/client", Token.autenticateUser, async function (req, res, next) {
  *            in: formData
  *            required: false
  *            type: string
- *          - name: remove
- *            description: Rimuove la preferenza dello stato
- *            in: formData
- *            required: false
- *            type: boolean
  *      responses:
  *          200:
  *              description: L'utente aggiornato

@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Game, GameResponse, GameRound, GameRoundResponse, GameRounds, Games} from "../../game/classes/game";
 import {AllCountryResponse} from "../../home/classes/country";
+import {UserResponse} from "../../classes/UserResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +40,20 @@ export class UserManagerService {
   getAllCountries(): Observable<AllCountryResponse> {
     let headers = this.base.TokenHeader;
     return this.http.get<AllCountryResponse>(this.base.apiUrl('country'), {headers});
+  }
+
+  /**
+   * Aggiorna la preferenza del country dell'utente
+   * @param {String | null} id Nuovo id o null se si vuole eliminare
+   */
+  updateCountry(id: string | null): Observable<UserResponse> {
+    let headers = this.base.TokenHeader;
+    // Elimina la preferenza
+    if (id === null) {
+      return this.http.delete<UserResponse>(this.base.apiUrl('country', 'client'), {headers});
+    }
+    // Modica la preferenza
+    const body = {id: id};
+    return this.http.put<UserResponse>(this.base.apiUrl('country', 'client'), body, {headers});
   }
 }

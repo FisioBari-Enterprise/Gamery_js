@@ -9,6 +9,7 @@
   padding: 10px;
   background-color: #fff;
   margin-bottom: 5px;
+  border-radius: 10px;
 }
 
 .container-country img {
@@ -22,5 +23,8 @@
 }
 
 .container-country input {
-  margin-top: 10px;
+  margin-top: 8px;
+  width: 22px;
+  height: 20px;
+  cursor: pointer;
 }

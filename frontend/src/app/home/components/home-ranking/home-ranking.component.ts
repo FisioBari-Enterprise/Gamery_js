@@ -4,6 +4,7 @@ import { LeaderboardPos } from '../../classes/leaderboardPos';
 import {Subscription} from "rxjs";
 import {HomeService} from "../../services/home.service";
 import {DialogManagerService} from "../../../services/dialog-manager.service";
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-home-ranking',
@@ -136,6 +137,16 @@ export class HomeRankingComponent implements OnInit, OnChanges, OnDestroy {
         });
       })
     );
+  }
+
+  /**
+   * Converte in stringa la data di ultimo aggiornamento della classifica
+   */
+  getLastUpdateDateString(): string{
+    if (this.leaderboard.length === 0){
+      return 'No update available';
+    }
+    return 'Last update: ' + moment(this.leaderboard[0].createdAt).format('MM/DD/YYYY HH:mm:ss');
   }
 
 }

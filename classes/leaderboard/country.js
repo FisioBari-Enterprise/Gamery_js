@@ -18,7 +18,7 @@ class Country {
      * Ottiene tutti gli stati attualmente salvati
      */
     async getAll() {
-        return await CountryModel.find({}).sort({code: 1}).lean().exec();
+        return await CountryModel.find({}).sort({name: 1}).lean().exec();
     }
 
     /**
@@ -51,7 +51,7 @@ class Country {
             query['code'] = code;
         }
         // Controllo sui dati
-        if (query.id == null && query.code == null) {
+        if (query._id == null && query.code == null) {
             throw "No params found";
         }
         // Aggiorna il country

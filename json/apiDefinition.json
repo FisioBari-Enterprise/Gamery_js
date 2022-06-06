@@ -10,7 +10,7 @@
       "description": "Development"
     },
     {
-      "url": "https://web-gamery.herokuapp.com/home",
+      "url": "https://web-gamery.herokuapp.com",
       "description": "Production"
     }
   ],
@@ -23,7 +23,7 @@
       }
     },
     "schemas": {
-
+      
     }
   },
   "paths": {
