@@ -208,7 +208,7 @@ async function elaborateLose(game, user) {
     if (currentRecord.length === 0 || currentRecord[0]._id.toString() === game._id.toString()) {
         game.record = true;
         user.statistics.max_points = game.points;
-        if(currentRecord.length !== 0){
+        if(currentRecord.length === 2){
             currentRecord[1].record = false;
             await currentRecord[1].save();
         }

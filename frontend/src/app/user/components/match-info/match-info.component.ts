@@ -41,7 +41,6 @@ export class MatchInfoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.forEach(item => item.unsubscribe())
-    close();
   }
 
   close(){

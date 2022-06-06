@@ -7,7 +7,7 @@ import {UserInfo} from "../../../classes/UserResponse";
   templateUrl: './main-user.component.html',
   styleUrls: ['./main-user.component.css']
 })
-export class MainUserComponent implements OnInit, OnDestroy {
+export class MainUserComponent implements OnInit{
 
   /**Info dell'utente*/
   user : UserInfo
@@ -28,10 +28,6 @@ export class MainUserComponent implements OnInit, OnDestroy {
     if(this.user.country != null && this.user.country.code != null){
       this.urlCountry = "https://flagcdn.com/32x24/"+ this.user.country.code +".png"
     }
-  }
-
-  ngOnDestroy() {
-    this.dialogRef.close();
   }
 
   changeFlag(){

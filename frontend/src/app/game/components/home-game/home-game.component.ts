@@ -191,7 +191,9 @@ export class HomeGameComponent implements OnInit, OnDestroy {
       if(res.data.game.complete){
         this.dialogManager.showDialog(LoseComponent,() => {
           this.router.navigateByUrl('home');
-        }, {data : this.game.game.points});
+        }, {data :
+            {point : this.game.game.points,
+             round : this.game}});
       }
       else{
         this.dialogManager.showDialog(CompleteLevelComponent, () => {

@@ -15,7 +15,6 @@ export class WordListComponent implements OnInit , OnDestroy{
   ) { }
 
   ngOnInit(): void {
-
   }
 
   ngOnDestroy() {
