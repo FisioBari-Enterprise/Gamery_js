@@ -8,11 +8,11 @@ function routeValidator(req, res, next) {
     let url = req.originalUrl.toString();
     // Nel caso del backend non ha trovato un endpoint valido
     if (url.includes('/api/')) {
-        next();
+        return next();
     }
     // Ha già effettuato un tentativo di redirect
     if (req.query.path != null) {
-        next();
+        return next();
     }
     // Rimuove il primo /
     url = url.substring(1, url.length);
