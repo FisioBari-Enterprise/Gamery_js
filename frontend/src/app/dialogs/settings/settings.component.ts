@@ -12,4 +12,11 @@ export class SettingsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /*Funzione che chiude il dialog quando viene cliccato il bottone di chiusura in alto a dx*/
+  close() {
+
+  }
+
+  
+
 }
