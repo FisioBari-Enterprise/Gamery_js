@@ -17,7 +17,7 @@
       <app-card [image]="'./assets/userInfo/statistics.png'" [text]="'Statistics'" (OnClick)="showStatistics()"></app-card>
     </div>
     <div *ngIf="showBack">
-      <img class="back-image" src="./assets/buttons/back.png" alt="image not found" (click)="back()"/>
+      <img class="back-image" src="./assets/buttons/back.png" alt="image not found"  (click)="back()"/>
       <div style="max-height: 280px">
         <app-country *ngIf="selectedButton=='flags'"></app-country>
         <app-matches *ngIf="selectedButton=='matches'" (showChange)="showBack = $event"></app-matches>

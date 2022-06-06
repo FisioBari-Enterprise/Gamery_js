@@ -143,7 +143,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }
     this.allSubscriptions.push(
       this.userService.login(usernameEmail, password).subscribe(res => {
-        this.currentType = NavBarType.Logged;
+        // Se non sono in game mode aggiorna il tipo
+        if (this.currentType != NavBarType.Game) {
+          this.currentType = NavBarType.Logged;
+        }
         // Salva il token
         sessionStorage.setItem('auth_token', res.data.access)
         this.getUserInfo();

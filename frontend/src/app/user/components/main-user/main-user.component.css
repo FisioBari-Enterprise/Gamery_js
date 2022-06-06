@@ -26,6 +26,7 @@
 .back-image{
   width: 46px;
   height: 46px;
+  cursor: pointer;
 }
 
 .letter-name {

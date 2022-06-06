@@ -7,26 +7,7 @@ const UserValidator = require("../classes/users/validator/userValidator");
 const User = require("../classes/users/user");
 let router = express.Router();
 
-/**
- * @openapi
- * \api\game\word\:
- *  post:
- *      description: Aggiunge le parole al DB (solo LOCALHOST)
- *      tags: [Word]
- *      produces:
- *          - application/json
- *      parameters:
- *          - name: words
- *            description: All words
- *            in: formData
- *            required: true
- *            type: object
- *      responses:
- *          200:
- *              description: Tutto salvato correttamente
- *          403:
- *              description: Accesso non consentito
- */
+// Carica le parole
 router.post('/word', UserValidator.onlyLocalHost, async function (req, res) {
     return await saveWords(res, req.body.words);
 });

@@ -8,6 +8,14 @@ const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require('swagger-jsdoc');
 const {MongoDBUser, MongoDBPassword, Database} = require('./config');
 const StaticFunctions = require("./static");
+const routeValidator = require("./classes/routeValidator");
+const fs = require("fs");
+//ROUTING importing
+const index = require("./routes/index.js");
+const user = require("./routes/client.js");
+const game = require("./routes/game.js");
+const country = require("./routes/country.js");
+const leaderboard = require("./routes/leaderboard.js");
 
 //Connessione a MongoDB
 mongoose.connect(
@@ -18,14 +26,9 @@ mongoose.connect(
 );
 
 // Opzioni della documentazione
+const definition = JSON.parse(fs.readFileSync('./json/apiDefinition.json', 'utf8'));
 const swaggerOptions = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Gamery js',
-            version: '0.1',
-        },
-    },
+    definition: definition,
     apis: ['./routes/*.js'],
 };
 //End point per la documentazione
@@ -34,14 +37,6 @@ const swaggerDocument = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
     explorer: true
 }));
-
-//ROUTING
-const index = require("./routes/index.js");
-const user = require("./routes/client.js");
-const game = require("./routes/game.js");
-const country = require("./routes/country.js");
-const leaderboard = require("./routes/leaderboard.js");
-const routeValidator = require("./classes/routeValidator");
 
 //Migliora la sicurezza
 //app.use(helmet());
@@ -80,7 +75,7 @@ app.use("/api/country", country);
 app.use("/api/leaderboard", leaderboard);
 //Errore se non trova endpoint validi
 app.use(routeValidator, function(req, res, next) {
-    StaticFunctions.sendError(res, 'Url or method not valid');
+    return StaticFunctions.sendError(res, 'Url or method not valid');
 });
 
 module.exports = app;

@@ -26,7 +26,7 @@ export class MainUserComponent implements OnInit{
   ngOnInit(): void {
     this.user = this.data
     if(this.user.country != null && this.user.country.code != null){
-      this.urlCountry = "https://flagcdn.com/32x24/"+ this.user.country.code +".png"
+      this.urlCountry = "https://flagcdn.com/84x63/"+ this.user.country.code +".png"
     }
   }
 

@@ -1,0 +1,26 @@
+.main-container-countries {
+  height: 280px;
+  overflow: scroll;
+  padding: 10px;
+}
+
+.container-country {
+  display: flex;
+  padding: 10px;
+  background-color: #fff;
+  margin-bottom: 5px;
+}
+
+.container-country img {
+  margin-top: 3px;
+}
+
+.container-country h2 {
+  margin-left: 10px;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.container-country input {
+  margin-top: 10px;
+}
