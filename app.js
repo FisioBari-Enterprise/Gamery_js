@@ -6,36 +6,37 @@ const helmet = require("helmet");
 const morgan = require('morgan');
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require('swagger-jsdoc');
-const {MongoDBUser, MongoDBPassword, Port} = require('./config');
+const {MongoDBUser, MongoDBPassword, Database} = require('./config');
 const StaticFunctions = require("./static");
+const routeValidator = require("./classes/routeValidator");
+const fs = require("fs");
+//ROUTING importing
+const index = require("./routes/index.js");
+const user = require("./routes/client.js");
+const game = require("./routes/game.js");
+const country = require("./routes/country.js");
+const leaderboard = require("./routes/leaderboard.js");
 
 //Connessione a MongoDB
 mongoose.connect(
-    `mongodb+srv://${MongoDBUser}:${MongoDBPassword}@freecluster.xj48j.mongodb.net/Gamery?retryWrites=true&w=majority`,
+    `mongodb+srv://${MongoDBUser}:${MongoDBPassword}@freecluster.xj48j.mongodb.net/${Database}?retryWrites=true&w=majority`,
     function (error) {
         console.log(error != null ? `DB connection error: ${error.message}` : 'Connected to MongoDB');
     }
 );
 
 // Opzioni della documentazione
+const definition = JSON.parse(fs.readFileSync('./json/apiDefinition.json', 'utf8'));
 const swaggerOptions = {
-    definition: {
-        swagger: "2.0",
-        info: {
-            title: 'Gamery js',
-            version: '0.1',
-        },
-    },
+    definition: definition,
     apis: ['./routes/*.js'],
 };
 //End point per la documentazione
 const swaggerDocument = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
-//ROUTING
-const index = require("./routes/index.js");
-const user = require("./routes/client.js");
-const game = require("./routes/game.js");
+// console.log(JSON.stringify(swaggerDocument));
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
+    explorer: true
+}));
 
 //Migliora la sicurezza
 //app.use(helmet());
@@ -70,12 +71,11 @@ app.use("/", express.static("client"));
 app.use("/api", index);
 app.use("/api/client", user);
 app.use("/api/game", game);
+app.use("/api/country", country);
+app.use("/api/leaderboard", leaderboard);
 //Errore se non trova endpoint validi
-app.use(function(req, res, next) {
-    StaticFunctions.sendError(res, 'Url or method not valid');
+app.use(routeValidator, function(req, res, next) {
+    return StaticFunctions.sendError(res, 'Url or method not valid');
 });
 
-app.listen(Port || 3000, function() {
-    console.log('Server running on port ', 3000);
-
-});
+module.exports = app;

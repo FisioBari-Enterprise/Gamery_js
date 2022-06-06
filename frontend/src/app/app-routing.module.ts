@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './home/components/home/home.component';
 import { LoginComponent } from './auth/components/login/login.component';
 import {HomeGameComponent} from "./game/components/home-game/home-game.component";
 import {UserGuard} from "./auth/guards/user.guard";
-import {ButtonComponent} from "./shared/button/button.component";
-import {LoseComponent} from "./dialogs/lose/lose.component";
-import {CompleteLevelComponent} from "./dialogs/complete-level/complete-level.component";
+import {PathRedirectGuard} from "./guards/path-redirect.guard";
 
 const routes: Routes = [
   {
@@ -14,18 +12,22 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: HomeComponent
+    component: HomeComponent,
+    canLoad: [PathRedirectGuard],
+    canActivate: [PathRedirectGuard]
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canLoad: [PathRedirectGuard],
+    canActivate: [PathRedirectGuard]
   },
   {
     path: 'game',
     component: HomeGameComponent,
     // Da attivare non appena il componente sarà completato
-    // canLoad: [UserGuard],
-    // canActivate: [UserGuard]
+    canLoad: [UserGuard, PathRedirectGuard],
+    canActivate: [UserGuard, PathRedirectGuard]
   },
   {
     path:'**',redirectTo : 'home'

@@ -1,8 +1,4 @@
 <div class="board-container" [style.background-image]="getImageUrl()">
-  <!--Contenitori dei numeri-->
-  <ng-container *ngFor="let n of valueNumbers; let i = index">
-    <div class="number-container" [style.left]="getXPosition(i)" [style.background]="getBackground(i)">
-
-    </div>
-  </ng-container>
+  <!--Testo contenente i numeri-->
+  <h1 class="board-title">{{valueNumbersString}}</h1>
 </div>

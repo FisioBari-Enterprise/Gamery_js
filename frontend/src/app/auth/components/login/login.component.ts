@@ -5,6 +5,7 @@ import {Subscription} from "rxjs";
 import { UserService } from '../../services/user.service';
 import {DialogManagerService} from "../../../services/dialog-manager.service";
 import {Router} from "@angular/router";
+import {getLocalePluralCase} from "@angular/common";
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   /**Indica se è attivo il login*/
   public isLogin: Boolean = true;
+  /** Indica se sto facendo un recupero della mail */
+  public forgotPassword : Boolean = false
 
   /**Colore del bottone registrazione*/
   colorRegister = ColorButtons.Blue;
@@ -31,7 +34,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private dialogManager: DialogManagerService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.isLogin = true;
@@ -56,7 +60,7 @@ export class LoginComponent implements OnInit, OnDestroy {
    * Bottone del bottone di reset
    */
   passwordForgotten(){
-
+    this.forgotPassword = true;
   }
 
   /**

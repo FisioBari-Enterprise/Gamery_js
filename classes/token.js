@@ -1,7 +1,8 @@
-const { TokenSecret } = require('../config');
+const { TokenSecret, TokenEmail } = require('../config');
 const jwt = require("jsonwebtoken");
 const StaticFunctions = require('../static');
 const SessionModel = require('../database/users/session');
+const Credentials = require('../database/users/credentials');
 const UserModel = require('../database/users/user');
 const ObjectId = require('mongoose').Types.ObjectId;
 
@@ -56,14 +57,13 @@ class Token {
         //Controlla il token
         jwt.verify(token, TokenSecret, {}, async function (err, userId) {
             if(err) {
-                console.log(err);
                 //Rende la sessione non valida se la trova nel DB
                 await SessionModel.updateMany({token: token}, {valid: false}).exec();
                 return StaticFunctions.sendError(res, 'Token not valid', 403);
             }
             const session = await SessionModel.findOne({token: token, valid: true}).populate('user').exec()
             if (session == null) {
-                return StaticFunctions.sendError(res, 'Session not found', 403);
+                return StaticFunctions.sendError(res, 'Session not found or invalid', 403);
             }
             // Controllo sull'utente attivo
             if (session.user === null || session.user._id === userId.id) {
@@ -73,9 +73,54 @@ class Token {
             if(!session.user.active) {
                 return StaticFunctions.sendError(res, 'User not active', 403);
             }
-            req.user = session.user;
+            // Carica l'utente con lo stato
+            req.user = await UserModel.findOne({_id: session.user._id}).populate('country').exec();
             next()
         });
+    }
+
+    /**
+     * Genera un token effettuare cambiamenti nell'utente
+     * @param {String} userId L'utente a cui assegnare il token da generare
+     * @param {Number} type Tipo di token da creare
+     * @param {CreateToken} callback Funzione con due parametri: error e token
+     */
+    static createTokenEmail(userId, type, callback) {
+        // Creazione del token da usare per le email
+        const info = {userId, type}
+        jwt.sign(info, TokenEmail, { expiresIn: '30m' }, (err, token) => {
+            callback(err, token);
+        });
+    }
+
+    /**
+     * Controlla che il token passato sia valido e disponibile
+     * @param token Token da cercare
+     * @param type Tipo di token email
+     * @param callback (errore se esiste, credenziali)
+     */
+    static checkTokenEmail(token, type, callback) {
+        jwt.verify(token, TokenEmail, {}, async (err, data) => {
+            if (err != null) {
+                if (err.message === 'jwt malformed' || err.message === 'jwt expired') {
+                    return callback(new Error('Token not valid'), null);
+                }
+                return callback(err, null);
+            }
+            // Controlla i dati contenuti nel token
+            const credentials = await Credentials.findOne({
+                user: new ObjectId(data.userId),
+                token: {
+                    value: token,
+                    type: type,
+                    active: true
+                }
+            }).populate('user').exec();
+            if (credentials == null) {
+                return callback(new Error('Token not valid'), null);
+            }
+            callback(null, credentials);
+        })
     }
 }
 

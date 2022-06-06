@@ -9,3 +9,8 @@ html, body
   overflow: hidden;
   font-family: "Exo2", serif;
 }
+
+.mat-dialog-container{
+  padding: 0 !important;
+  border-radius: 20px !important;
+}

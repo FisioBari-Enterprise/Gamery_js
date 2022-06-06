@@ -1,0 +1,49 @@
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+
+.main-container-card-ranking {
+  background: #fff;
+  border-radius: 10px;
+}
+.main-container-card-ranking h2 {
+  color: #000;
+  margin: 0;
+  font-family: "Exo2", serif;
+}
+
+.col-right {
+  max-width: 100px;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+}
+
+.position-container {
+  margin: auto;
+}
+
+.position-container h2 {
+  font-family: "Exo2", serif;
+}
+
+.position-change {
+  margin: auto;
+}
+
+.position-change h3 {
+  margin: 0;
+  font-family: "Exo2", serif;
+}
+
+.up-text {
+  color: #7BD101;
+  font-family: "Exo2", serif;
+}
+
+.down-text {
+  color: #E91F1F;
+  font-family: "Exo2", serif;
+}

@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { DialogManagerService } from 'src/app/services/dialog-manager.service';
 import { AuthField } from '../../classes/authField';
 import { UserService } from '../../services/user.service';
+import {ColorButtons} from "../../../shared/enum/colorButtons";
+import {SimpleTextComponent} from "../../../dialogs/simple-text/simple-text.component";
 
 @Component({
   selector: 'app-register',
@@ -13,7 +15,7 @@ import { UserService } from '../../services/user.service';
 export class RegisterComponent implements OnInit {
 
   /** Subscription dell'utente */
-  subscription : Subscription
+  subscriptions : Subscription[]
 
   /**Cambiamento del campo login*/
   @Output() isLoginChange = new EventEmitter<Boolean>();
@@ -24,6 +26,8 @@ export class RegisterComponent implements OnInit {
   email: AuthField = new AuthField();
   /**password data*/
   password: AuthField = new AuthField();
+  /**Colore del bottone cancel*/
+  colorCancel = ColorButtons.Blue;
 
 
   constructor(
@@ -34,12 +38,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetField();
+    this.subscriptions = []
   }
 
   ngOnDestroy(): void {
-    if(this.subscription != null){
-      this.subscription.unsubscribe();
-    }
+    this.subscriptions.forEach(item => item.unsubscribe())
   }
 
   /**
@@ -59,12 +62,12 @@ export class RegisterComponent implements OnInit {
     this.email.error = "";
     this.password.error = "";
     this.dialogService.showLoading('Checking credentials...');
-    this.subscription =
+    this.subscriptions.push(
       this.userService.registerNewUser(this.username.value, this.email.value, this.password.value,localStorage.getItem("uuid")!).subscribe( res => {
         this.dialogService.closeDialog();
         // Salva le credenziali e fa il redirect
         this.userService.saveCredentials(this.username.value, this.password.value, res.data, false);
-        this.router.navigateByUrl("home");
+        this.dialogService.showDialog(SimpleTextComponent,() => {}, {data : "Registration completed. A confirmation email is been sent, if you don't find one check the spam"})
       }, err =>  {
         this.dialogService.closeDialog();
         let errore = err.error.error
@@ -82,7 +85,7 @@ export class RegisterComponent implements OnInit {
         } else {
           this.dialogService.showError(err.error, () => {})
         }
-      })
+      }));
   }
 
   /**

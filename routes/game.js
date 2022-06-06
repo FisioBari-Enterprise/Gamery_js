@@ -3,39 +3,17 @@ const StaticFunctions = require("../static");
 const { saveWords } = require('../classes/game/words');
 const Token = require("../classes/token");
 const SingleGame = require("../classes/game/singleGame");
+const UserValidator = require("../classes/users/validator/userValidator");
+const User = require("../classes/users/user");
 let router = express.Router();
 
-/**
- * @swagger
- * \api\game\word\:
- *  post:
- *      description: Aggiunge le parole al DB (solo LOCALHOST)
- *      tags: [Word]
- *      produces:
- *          - application/json
- *      parameters:
- *          - name: words
- *            description: All words
- *            in: formData
- *            required: true
- *            type: object
- *      responses:
- *          200:
- *              description: Tutto salvato correttamente
- *          403:
- *              description: Accesso non consentito
- */
-router.post('/word', function (req, res, next) {
-    if (req.socket.remoteAddress !== "::1") {
-        return StaticFunctions.sendError(res, 'This ip haven\'t the access to the endpoint', 403);
-    }
-    next();
-}, async function (req, res) {
+// Carica le parole
+router.post('/word', UserValidator.onlyLocalHost, async function (req, res) {
     return await saveWords(res, req.body.words);
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\:
  *  get:
  *      description: Ottiene l'ultima partita creata
@@ -57,13 +35,13 @@ router.get('', Token.autenticateUser, async function (req, res) {
     try {
         await game.build(true);
     } catch (error) {
-        return StaticFunctions.sendError(res, error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
    StaticFunctions.sendSuccess(res, {game: game.game});
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\:
  *  post:
  *      description: Genera una nuova partita
@@ -84,14 +62,16 @@ router.post('', Token.autenticateUser, async function (req, res) {
    let newGame = new SingleGame(req.user);
    try {
        await newGame.createNewGame();
+       await newGame.generateNewRound();
+       let response = await newGame.getRound(newGame.game.max_round, true);
+       return StaticFunctions.sendSuccess(res, response);
    } catch (error) {
-       return StaticFunctions.sendError(res, error);
+       return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
    }
-   return StaticFunctions.sendSuccess(res, newGame.game, 201);
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\round:
  *  post:
  *      description: Lista dell'ultimo round dell'ultima partita generata
@@ -110,18 +90,18 @@ router.post('', Token.autenticateUser, async function (req, res) {
  */
 router.get('/round', Token.autenticateUser, async function (req, res) {
    let game = new SingleGame(req.user);
-   let response = null;
    try {
        await game.build(true);
-       response = await game.getRound(game.game.max_round, true);
+       let response = await game.getRound(game.game.max_round, true);
+       return StaticFunctions.sendSuccess(res, response);
    } catch (error) {
-       return StaticFunctions.sendError(res, error);
+       console.log(error);
+       return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
    }
-   return StaticFunctions.sendSuccess(res, response);
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\round:
  *  post:
  *      description: Genera un nuovo round per l'ultima partita generata dall'utente
@@ -147,13 +127,13 @@ router.post('/round', Token.autenticateUser, async function (req, res) {
        response = await game.getRound(game.game.max_round, true);
    } catch (error) {
        console.log(error);
-       return StaticFunctions.sendError(res, error);
+       return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
    }
    return StaticFunctions.sendSuccess(res, response, 201);
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\round:
  *  get:
  *      description: informazioni di un terminato round
@@ -177,12 +157,12 @@ router.get('/round/:id', Token.autenticateUser, async function (req, res) {
         const response = await game.getRound(req.params.id, true);
         return StaticFunctions.sendSuccess(res, response);
     } catch (error) {
-        return StaticFunctions.sendError(res, error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
 });
 
 /**
- * @swagger
+ * @openapi
  * \api\game\round:
  *  put:
  *      description: Controllo su parole inserite al termine del round
@@ -217,16 +197,108 @@ router.put('/round', Token.autenticateUser, async function (req, res) {
     try {
         await game.build(true);
         await game.checkRound(req.body.words, req.body.gameTime);
-        // Invia la risposta
-        if(game.game.complete) {
-            return StaticFunctions.sendSuccess(res, {game: game.game});
-        }
         const newRound = await game.getRound(game.game.max_round, true);
         return StaticFunctions.sendSuccess(res, newRound);
     }
     catch (error) {
         console.log(error);
-        return StaticFunctions.sendError(res, error);
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+})
+
+/**
+ * @openapi
+ * \api\game\recent:
+ *  put:
+ *      description: Ottengo le ultime partite dell'utente
+ *      tags: [Statistics]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *      responses:
+ *          200:
+ *              description: Ultime partite dell'utente
+ *          400:
+ *              description: Errore riscontrato in fase di update
+ *          401:
+ *              description: Token non passato
+ *          403:
+ *              description: Sessione o token non validi
+ */
+router.get('/recent', Token.autenticateUser, async function(req ,res){
+    let user = new User(req.user._id)
+    await user.buildUser()
+    try{
+        let games = await user.getGames(50);
+
+        return StaticFunctions.sendSuccess(res,games);
+    }
+    catch (error){
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+})
+
+/**
+ * @openapi
+ * \api\game\{id}\rounds:
+ *  get:
+ *      description: Ottengo i round per una specifica partita
+ *      tags: [Statistics]
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *      responses:
+ *          200:
+ *              description: Elenco dei round per la partita
+ *          400:
+ *              description: Errore riscontrato in fase di update
+ *          401:
+ *              description: Token non passato
+ *          403:
+ *              description: Sessione o token non validi
+ */
+router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
+    let user = new User(req.user._id);
+    try {
+        await user.buildUser();
+
+        let roundGames = await user.getGameRounds(req.params.id);
+
+        return StaticFunctions.sendSuccess(res, roundGames);
+    }
+    catch (error){
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+})
+
+/**
+ * @openapi
+ * \api\game\{id}\round\{number}:
+ *  get:
+ *      description: Ottengo il round indicato per una specifica partita
+ *      tags: [Statistics]
+ *      produces:
+ *          - application/json
+ *      responses:
+ *          200:
+ *              description: Round della partita richiesto
+ *          400:
+ *              description: Errore riscontrato in fase di update
+ *          401:
+ *              description: Token non passato
+ *          403:
+ *              description: Sessione o token non validi
+ */
+router.get('/:id/round/:number', Token.autenticateUser, async function(req, res){
+    let user = new User(req.user._id);
+    try {
+        await user.buildUser();
+
+        let round = await user.getGameRound(req.params.id, req.params.number);
+        return StaticFunctions.sendSuccess(res, round);
+    }
+    catch (error){
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
 })
 

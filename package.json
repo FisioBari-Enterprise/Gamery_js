@@ -2,9 +2,9 @@
   "name": "gamery_js",
   "version": "1.0.0",
   "description": "Web app di gamery",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "jest",
     "start": "npm start"
   },
   "repository": {
@@ -28,8 +28,17 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.3",
     "morgan": "^1.10.0",
+    "node-cron": "^3.0.0",
+    "nodemailer": "^6.7.5",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^28.1.0",
+    "superagent": "^7.1.3",
+    "supertest": "^6.2.3"
   }
 }

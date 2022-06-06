@@ -8,6 +8,8 @@ import {NavBarType} from "../enum/navBarType";
 import { PauseComponent } from 'src/app/dialogs/pause/pause.component';
 import {Router} from "@angular/router";
 import {ColorButtons} from "../enum/colorButtons";
+import {MainUserComponent} from "../../user/components/main-user/main-user.component";
+import {SettingsComponent} from "../../dialogs/settings/settings.component";
 
 // TODO: Bottone di pausa e gestione
 // TODO: Bottone di login se non ha un account registrato attivo e mostra la view dedicata
@@ -30,6 +32,15 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   /**Colore del bottone di home*/
   colorSchemaHome = ColorButtons.Blue;
+  /**Colore del bottone di home*/
+  colorSchemaSkip = ColorButtons.Green;
+  /**Colore del bottone di login*/
+  colorSchemaLogin = ColorButtons.Blue;
+  /**Colore del bottone di logout*/
+  colorSchemaLogout = ColorButtons.Red;
+  /**Colore del bottone delle impostazioni*/
+  colorSchemaSettings = ColorButtons.Yellow;
+
 
   /**Tipo di navbar da visualizzare in base agli input*/
   @Input() currentType: number = NavBarType.NoLogged;
@@ -41,6 +52,13 @@ export class NavBarComponent implements OnInit, OnDestroy {
   @Input() skipLogin: Boolean = false;
   /**Indica la pressione del bottone di pausa*/
   @Output() pauseSet = new EventEmitter<Boolean>();
+  /**Indica la pressione del bottone skipTime*/
+  @Output() isSkipTime = new EventEmitter<Boolean>();
+  /**Indica la pressione del bottone delle impostazioni*/
+  @Output() isSettings = new EventEmitter<Boolean>();
+
+  /**Evento sollevato quando viene caricato correttamente l'utente*/
+  @Output() onUserInfo = new EventEmitter<UserInfo>();
 
   constructor(
     private userService: UserService,
@@ -50,7 +68,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Cancella tutti i dati presenti nel local storage
-    //localStorage.clear();
+    // localStorage.clear();
 
     // Carica il tipo
     if (this.gameMode) {
@@ -125,7 +143,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }
     this.allSubscriptions.push(
       this.userService.login(usernameEmail, password).subscribe(res => {
-        this.currentType = NavBarType.Logged;
+        // Se non sono in game mode aggiorna il tipo
+        if (this.currentType != NavBarType.Game) {
+          this.currentType = NavBarType.Logged;
+        }
         // Salva il token
         sessionStorage.setItem('auth_token', res.data.access)
         this.getUserInfo();
@@ -138,6 +159,15 @@ export class NavBarComponent implements OnInit, OnDestroy {
         this.dialog.showError(err, () => {});
       })
     );
+  }
+
+  /**
+   * Apre la visualizzazione della schermata dello user
+   */
+  openUser(){
+    this.dialog.showDialog(MainUserComponent,() => {
+
+    },{data : this.userInfo})
   }
 
   /**
@@ -185,6 +215,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
           // Si prende i dati trovati
           this.userInfo = res.data;
           this.firstCharUsername = this.userInfo.username.charAt(0).toUpperCase();
+          this.onUserInfo.emit(this.userInfo);
           this.dialog.closeDialog();
         },
         err => {
@@ -204,6 +235,19 @@ export class NavBarComponent implements OnInit, OnDestroy {
     }, { 'border-radius': '20px' });
     // Mando l'evento di pausa
     this.pauseSet.emit(true);
+  }
+
+  /**
+   * Evento pressione del bottone Skip time
+   */
+  skipTime() {
+    //Mando l'evento di skipTime
+    this.isSkipTime.emit(true);
+  }
+
+  openSettings() {
+    //Mostro dialog delle impostazioni
+    this.dialog.showDialog(SettingsComponent, () => {});
   }
 
   /**

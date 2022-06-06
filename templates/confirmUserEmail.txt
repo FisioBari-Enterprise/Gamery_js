@@ -1,0 +1,10 @@
+Hi $username,
+
+Please click on the link below to confirm your registration:
+
+$link
+
+This link will be valid for 30 minutes
+
+Gamery,
+The Website Team

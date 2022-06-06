@@ -1,0 +1,10 @@
+.myinput{
+  background-color: #F8F8F8;
+  color: #333333;
+}
+
+.errormsg{
+  text-align: center;
+  color: red;
+  font-family: "Exo2";
+}

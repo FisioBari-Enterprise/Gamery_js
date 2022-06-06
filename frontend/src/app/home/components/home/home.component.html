@@ -1,0 +1,16 @@
+<div style="height:100vh">
+    <!--Nav bar per la gestione dei dati utente-->
+    <app-nav-bar (onUserInfo)="updateUser($event)"></app-nav-bar>
+    <!--Contenuto della pagina home-->
+    <div class="main-container">
+        <h1 class="title">Gamery</h1>
+        <div class="row center-area">
+            <div class="home-box col-4">
+                <app-home-play [user]="userInfo" (playClick)="onPlayClick()"></app-home-play>
+            </div>
+            <div class="home-box col-4">
+              <app-home-ranking [user]="userInfo"></app-home-ranking>
+            </div>
+        </div>
+    </div>
+</div>
