@@ -14,17 +14,16 @@ router.post('/word', UserValidator.onlyLocalHost, async function (req, res) {
 
 /**
  * @openapi
- * \api\game\:
+ * /api/game/:
  *  get:
  *      description: Ottiene l'ultima partita creata
  *      tags: [Game]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: L'istanza del gioco
  *              content:
- *                  application\json:
+ *                  application/json:
  *                      $ref: '#/components/responses/game/game'
  *          400:
  *              description: Istanza non trovata
@@ -45,12 +44,11 @@ router.get('', Token.autenticateUser, async function (req, res) {
 
 /**
  * @openapi
- * \api\game\:
+ * /api/game/:
  *  post:
  *      description: Genera una nuova partita
  *      tags: [Game]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: L'istanza del gioco
@@ -75,12 +73,11 @@ router.post('', Token.autenticateUser, async function (req, res) {
 
 /**
  * @openapi
- * \api\game\round:
+ * /api/game/round:
  *  post:
  *      description: Lista dell'ultimo round dell'ultima partita generata
  *      tags: [Game]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Lista dei round
@@ -105,12 +102,11 @@ router.get('/round', Token.autenticateUser, async function (req, res) {
 
 /**
  * @openapi
- * \api\game\round:
+ * /api/game/round:
  *  post:
  *      description: Genera un nuovo round per l'ultima partita generata dall'utente
  *      tags: [Game]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Lista dei round
@@ -137,12 +133,11 @@ router.post('/round', Token.autenticateUser, async function (req, res) {
 
 /**
  * @openapi
- * \api\game\round:
+ * /api/game/round:
  *  get:
  *      description: informazioni di un terminato round
  *      tags: [Game]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Lista dei round
@@ -166,12 +161,11 @@ router.get('/round/:id', Token.autenticateUser, async function (req, res) {
 
 /**
  * @openapi
- * \api\game\round:
+ * /api/game/round:
  *  put:
  *      description: Controllo su parole inserite al termine del round
  *      tags: [Game]
- *      produces:
- *          - application/json
+ *      
  *      parameters:
  *          - name: words
  *            description: Lista delle parole inserite dall'utente
@@ -211,12 +205,11 @@ router.put('/round', Token.autenticateUser, async function (req, res) {
 
 /**
  * @openapi
- * \api\game\recent:
+ * /api/game/recent:
  *  put:
  *      description: Ottengo le ultime partite dell'utente
  *      tags: [Statistics]
- *      produces:
- *          - application/json
+ *      
  *      parameters:
  *      responses:
  *          200:
@@ -243,12 +236,11 @@ router.get('/recent', Token.autenticateUser, async function(req ,res){
 
 /**
  * @openapi
- * \api\game\{id}\rounds:
+ * /api/game/{id}/rounds:
  *  get:
  *      description: Ottengo i round per una specifica partita
  *      tags: [Statistics]
- *      produces:
- *          - application/json
+ *      
  *      parameters:
  *      responses:
  *          200:
@@ -276,12 +268,11 @@ router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
 
 /**
  * @openapi
- * \api\game\{id}\round\{number}:
+ * /api/game/{id}/round/{number}:
  *  get:
  *      description: Ottengo il round indicato per una specifica partita
  *      tags: [Statistics]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Round della partita richiesto

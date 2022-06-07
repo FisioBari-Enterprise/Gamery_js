@@ -7,12 +7,11 @@ const Token = require("../classes/token");
 
 /**
  * @openapi
- * \api\leaderboard:
+ * /api/leaderboard:
  *  get:
  *      description: Ottiene la classifica con i filtri applicati
  *      tags: [Leaderboard]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Classifica
@@ -34,12 +33,11 @@ router.get("", Token.autenticateUser, async function (req, res, next) {
 
 /**
  * @openapi
- * \api\leaderboard\client:
+ * /api/leaderboard/client:
  *  get:
  *      description: Ottiene la posizione in classifica dell'utente
  *      tags: [Leaderboard]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Posizione in classifica
@@ -61,12 +59,11 @@ router.get("/client", Token.autenticateUser, async function (req, res, next) {
 
 /**
  * @openapi
- * \api\leaderboard\client\:idOrUsername:
+ * /api/leaderboard/client/:idOrUsername:
  *  get:
  *      description: Ottiene la posizione in classifica di un utente in base all'id o al username
  *      tags: [Leaderboard]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Posizione in classifica
@@ -89,12 +86,11 @@ router.get("/client/:idOrUsername", Token.autenticateUser, async function (req, 
 
 /**
  * @openapi
- * \api\leaderboard\type:
+ * /api/leaderboard/type:
  *  get:
  *      description: Ottiene i tipi di leaderboard supportati dalle API
  *      tags: [Leaderboard]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: I tipi di classifica
