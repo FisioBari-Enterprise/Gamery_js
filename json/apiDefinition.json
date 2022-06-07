@@ -425,7 +425,79 @@
         }
       },
       "game": {
-
+        "game": {
+          "schema": {
+            "data": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "string"
+                    },
+                    "language": {
+                      "type": "number"
+                    },
+                    "game_time": {
+                      "type": "number"
+                    },
+                    "points": {
+                      "type": "number"
+                    },
+                    "record": {
+                      "type": "boolean"
+                    },
+                    "max_round": {
+                      "type": "number"
+                    },
+                    "remaining_pause": {
+                      "type": "number"
+                    },
+                    "memorize_time_for_round": {
+                      "type": "number"
+                    },
+                    "writing_time_for_round": {
+                      "type": "number"
+                    },
+                    "complete": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "example": {
+            "data": {
+              "game": {
+                "_id": "629e283afd7c85eb269fb70b",
+                "user": "6294f3cd0666dceea15a1d1e",
+                "language": 1,
+                "game_time": 0,
+                "points": 0,
+                "record": false,
+                "max_round": 1,
+                "remaining_pause": 3,
+                "memorize_time_for_round": 21,
+                "writing_time_for_round": 28,
+                "complete": false,
+                "createdAt": "2022-01-01T00:00:00.000Z",
+                "updatedAt": "2022-01-01T00:00:00.000Z",
+                "__v": 0
+              }
+            }
+          }
+        }
       }
     }
   },
