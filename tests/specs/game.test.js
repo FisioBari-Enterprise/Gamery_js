@@ -47,7 +47,7 @@ test('Ottenimento ultima partita creata per l\'utente corrente', () => {
         })
 })
 
-test('Errore nella creazione di una nuovo round prima della creazione di uno nuovo', () => {
+test('Errore nella creazione di un nuovo round prima della creazione di uno nuovo', () => {
     return request(app)
         .post('/api/game/round')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
