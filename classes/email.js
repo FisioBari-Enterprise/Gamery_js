@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const {IdEmail, PasswordEMail, Host, TokenEmail} = require("../config");
+const {IdEmail, PasswordEMail, TokenEmail} = require("../config");
 const EmailDB = require("../database/users/email");
 const Credentials = require("../database/users/credentials");
 const path = require("path");
@@ -33,7 +33,7 @@ class EmailManager {
             if (err != null) {
                 return callback(err);
             }
-            const link = `${Host}api/client/confirm?token=${token}`
+            const link = `https://web-gamery.herokuapp.com/api/client/confirm?token=${token}`
             // Invia l'email
             const filePath = path.join(__dirname, "../templates/confirmUserEmail.txt");
             let data = await fs.readFile(filePath, "utf-8");
@@ -60,7 +60,7 @@ class EmailManager {
                 return callback(err);
             }
             // Invia l'email
-            const link = `${Host}api/client/change/password?token=${token}`
+            const link = `https://web-gamery.herokuapp.com/api/client/change/password?token=${token}`
             const filePath = path.join(__dirname, "../templates/passwordResetEmail.txt");
             let data = await fs.readFile(filePath, "utf-8");
             data = data.replace('$username', username).replace('$link', link);
