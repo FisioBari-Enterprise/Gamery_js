@@ -124,11 +124,96 @@
         "properties": {
           "access": {
             "type": "string",
-            "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTRmM2NkMDY2NmRjZWVhMTVhMWQxZSIsImlhdCI6MTY1NDQxNTgyMiwiZXhwIjoxNjU0NDIzMDIyfQ.WB5UMCcLA-AH8cnngWj4DguOzbmG4FrYvJCGUXFvXO8"
+            "example" : "token di accesso"
           },
           "uuid": {
             "type": "string",
-            "example": "14c01601-99d6-44e4-8042-e5d614ea8867"
+            "example": "uuid per l'utente"
+          }
+        }
+      },
+      "user_response": {
+        "type": "object",
+        "properties": {
+          "_id" : {
+            "type" : "string",
+            "example": "0000000getihogtehiej"
+          },
+          "username" : {
+            "type" : "string",
+            "example": "Player2"
+          },
+          "uuid" : {
+            "type" : "string",
+            "example": "uuid dell'utente"
+          },
+          "active" : {
+            "type" : "boolean",
+            "example": "true"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "example": "2022-05-30T16:41:49.997Z"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "example": "2022-05-30T16:41:49.997Z"
+          },
+          "settings": {
+            "type": "object",
+            "properties": {
+              "font_size": {
+                "type": "number",
+                "example": "15"
+              },
+              "volume": {
+                "type": "number",
+                "example": "8"
+              },
+              "sound": {
+                "type": "boolean",
+                "example": "true"
+              }
+            }
+          },
+          "preferences": {
+            "type": "object",
+            "properties":{
+              "language": {
+                "type": "number",
+                "example": "1"
+              },
+              "color_icon": {
+                "type": "array",
+                "item": "string",
+                "example": "#2AF39A,#2AF39A"
+              },
+              "orientation_icon": {
+                "type": "number",
+                "example": "0"
+              }
+            }
+          },
+          "statistics": {
+            "type": "object",
+            "properties": {
+              "game_time": {
+                "type": "number",
+                "example": "320"
+              },
+              "tot_games": {
+                "type": "number",
+                "example": "11"
+              },
+              "tot_points": {
+                "type": "number",
+                "example": "123"
+              },
+              "max_points": {
+                "type": "number",
+                "example": "4"
+              }
+            }
           }
         }
       }

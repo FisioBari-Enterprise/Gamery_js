@@ -149,6 +149,10 @@ router.get('/logout', Token.autenticateUser, async function (req, res) {
  *      responses:
  *          200:
  *              description: Dati dell'utente
+ *              content:
+ *                  application\json:
+ *                      schema:
+ *                          $ref: '#components/responses/user_response'
  *          400:
  *              description: Errore durante l'esecuzione dell'azione
  *          403:
@@ -205,7 +209,7 @@ router.get("/confirm", UserValidator.checkConfirmEmail, function(req,res){
  *          - application/json
  *      responses:
  *          200:
- *              description: Pagina web
+ *              description: Pagina web per il ripristino della password
  *          400:
  *              description: Errore durante l'esecuzione dell'azione
  *          403:
