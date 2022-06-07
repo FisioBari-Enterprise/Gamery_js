@@ -23,6 +23,9 @@ router.post('/word', UserValidator.onlyLocalHost, async function (req, res) {
  *      responses:
  *          200:
  *              description: L'istanza del gioco
+ *              content:
+ *                  application\json:
+ *                      $ref: '#/components/responses/game/game'
  *          400:
  *              description: Istanza non trovata
  *          401:

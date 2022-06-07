@@ -234,119 +234,154 @@
           "schema": {
             "type": "object",
             "properties": {
-              "access": {
-                "type": "string",
-                "example": "token di accesso"
-              },
-              "uuid": {
-                "type": "string",
-                "example": "uuid per l'utente"
+              "data": {
+                "type": "object",
+                "properties": {
+                  "access": {
+                    "type": "string"
+                  },
+                  "uuid": {
+                    "type": "string"
+                  }
+                }
               }
             }
           },
           "example": {
-            "error": "Descrizione dell'errore riscontrato"
+            "access": "Token di accesso",
+            "uuid": "00000000-0000-0000-0000-000000000000"
           }
         },
         "user": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "example": "0000000getihogtehiej"
-            },
-            "username": {
-              "type": "string",
-              "example": "Player2"
-            },
-            "uuid": {
-              "type": "string",
-              "example": "uuid dell'utente"
-            },
-            "active": {
-              "type": "boolean",
-              "example": "true"
-            },
-            "createdAt": {
-              "type": "string",
-              "example": "2022-05-30T16:41:49.997Z"
-            },
-            "updatedAt": {
-              "type": "string",
-              "example": "2022-05-30T16:41:49.997Z"
-            },
-            "settings": {
-              "type": "object",
-              "properties": {
-                "font_size": {
-                  "type": "number",
-                  "example": "15"
-                },
-                "volume": {
-                  "type": "number",
-                  "example": "8"
-                },
-                "sound": {
-                  "type": "boolean",
-                  "example": "true"
+          "schema": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "uuid": {
+                    "type": "string"
+                  },
+                  "active": {
+                    "type": "boolean"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "font_size": {
+                        "type": "number"
+                      },
+                      "volume": {
+                        "type": "number"
+                      },
+                      "sound": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "preferences": {
+                    "type": "object",
+                    "properties": {
+                      "language": {
+                        "type": "number"
+                      },
+                      "color_icon": {
+                        "type": "array",
+                        "item": "string"
+                      },
+                      "orientation_icon": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "statistics": {
+                    "type": "object",
+                    "properties": {
+                      "game_time": {
+                        "type": "number"
+                      },
+                      "tot_games": {
+                        "type": "number"
+                      },
+                      "tot_points": {
+                        "type": "number"
+                      },
+                      "max_points": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "country": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "updatedAt": {
+                        "type": "string"
+                      }
+                    }
+                  }
                 }
               }
-            },
-            "preferences": {
-              "type": "object",
-              "properties": {
-                "language": {
-                  "type": "number",
-                  "example": "1"
-                },
-                "color_icon": {
-                  "type": "array",
-                  "item": "string",
-                  "example": "#2AF39A,#2AF39A"
-                },
-                "orientation_icon": {
-                  "type": "number",
-                  "example": "0"
-                }
-              }
-            },
-            "statistics": {
-              "type": "object",
-              "properties": {
-                "game_time": {
-                  "type": "number",
-                  "example": "320"
-                },
-                "tot_games": {
-                  "type": "number",
-                  "example": "11"
-                },
-                "tot_points": {
-                  "type": "number",
-                  "example": "123"
-                },
-                "max_points": {
-                  "type": "number",
-                  "example": "4"
-                }
-              }
-            },
-            "country": {
-              "_id": {
-                "type": "string"
+            }
+          },
+          "example": {
+            "data": {
+              "statistics": {
+                "game_time": 30,
+                "tot_games": 2,
+                "tot_points": 200,
+                "max_points": 100,
+                "best_placement": 1
               },
-              "_code": {
-                "type": "string"
+              "preferences": {
+                "language": 1,
+                "colors_icon": [
+                  "#2AF39A",
+                  "#00A1F9"
+                ],
+                "orientation_icon": 0
               },
-              "_name": {
-                "type": "string"
+              "settings": {
+                "font_size": 14,
+                "volume": 8,
+                "sound": true
               },
-              "_createdAt": {
-                "type": "string"
+              "_id": "000000000000000000000000",
+              "username": "username",
+              "uuid": "00000000-0000-0000-0000-000000000000",
+              "active": true,
+              "country": {
+                "_id": "000000000000000000000000",
+                "code": "af",
+                "name": "Afghanistan",
+                "createdAt": "2022-01-01T00:00:00.0000Z",
+                "updatedAt": "2022-01-01T00:00:00.0000Z"
               },
-              "_updatedAt": {
-                "type": "string"
-              }
+              "createdAt": "2022-01-01T00:00:00.0000Z",
+              "updatedAt": "2022-01-01T00:00:00.0000Z"
             }
           }
         },
@@ -427,50 +462,53 @@
       "game": {
         "game": {
           "schema": {
-            "data": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "string"
-                    },
-                    "user": {
-                      "type": "string"
-                    },
-                    "language": {
-                      "type": "number"
-                    },
-                    "game_time": {
-                      "type": "number"
-                    },
-                    "points": {
-                      "type": "number"
-                    },
-                    "record": {
-                      "type": "boolean"
-                    },
-                    "max_round": {
-                      "type": "number"
-                    },
-                    "remaining_pause": {
-                      "type": "number"
-                    },
-                    "memorize_time_for_round": {
-                      "type": "number"
-                    },
-                    "writing_time_for_round": {
-                      "type": "number"
-                    },
-                    "complete": {
-                      "type": "boolean"
-                    },
-                    "createdAt": {
-                      "type": "string"
-                    },
-                    "updatedAt": {
-                      "type": "string"
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "game": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "user": {
+                        "type": "string"
+                      },
+                      "language": {
+                        "type": "number"
+                      },
+                      "game_time": {
+                        "type": "number"
+                      },
+                      "points": {
+                        "type": "number"
+                      },
+                      "record": {
+                        "type": "boolean"
+                      },
+                      "max_round": {
+                        "type": "number"
+                      },
+                      "remaining_pause": {
+                        "type": "number"
+                      },
+                      "memorize_time_for_round": {
+                        "type": "number"
+                      },
+                      "writing_time_for_round": {
+                        "type": "number"
+                      },
+                      "complete": {
+                        "type": "boolean"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "updatedAt": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -480,8 +518,8 @@
           "example": {
             "data": {
               "game": {
-                "_id": "629e283afd7c85eb269fb70b",
-                "user": "6294f3cd0666dceea15a1d1e",
+                "_id": "000000000000000000000000",
+                "user": "000000000000000000000000",
                 "language": 1,
                 "game_time": 0,
                 "points": 0,
@@ -492,8 +530,7 @@
                 "writing_time_for_round": 28,
                 "complete": false,
                 "createdAt": "2022-01-01T00:00:00.000Z",
-                "updatedAt": "2022-01-01T00:00:00.000Z",
-                "__v": 0
+                "updatedAt": "2022-01-01T00:00:00.000Z"
               }
             }
           }

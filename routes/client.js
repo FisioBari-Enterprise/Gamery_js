@@ -21,7 +21,7 @@ let router = express.Router();
  *              description: Login effettuato con successo
  *              content:
  *                  application\json:
- *                      $ref: '#/components/responses/login_response'
+ *                      $ref: '#/components/responses/client/login'
  *          400:
  *              $ref: '#/components/responses/bad_request'
  */
@@ -53,7 +53,7 @@ router.post("/login", async function (req, res) {
  *              description: Registrazione di un nuovo utente temporaneo
  *              content:
  *                  application\json:
- *                      $ref: '#/components/responses/login_response'
+ *                      $ref: '#/components/responses/client/login'
  *          400:
  *              $ref: '#/components/responses/bad_request'
  */
@@ -84,7 +84,7 @@ router.get("/register/temporary", function (req, res) {
  *              content:
  *                  object:
  *                      schema:
- *                          $ref: '#components/responses/login_response'
+ *                          $ref: '#components/responses/client/login'
  *          400:
  *              $ref: '#/components/responses/bad_request'
  */
@@ -162,8 +162,7 @@ router.get('/logout', Token.autenticateUser, async function (req, res) {
  *              description: Dati dell'utente
  *              content:
  *                  application\json:
- *                      schema:
- *                          $ref: '#components/responses/user_response'
+ *                      $ref: '#/components/responses/client/user'
  *          400:
  *              description: Errore durante l'esecuzione dell'azione
  *          403:
