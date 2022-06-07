@@ -58,12 +58,13 @@ export class UserManagerService {
     return this.http.put<UserResponse>(this.base.apiUrl('country', 'client'), body, {headers});
   }
 
-  changeSettings(font_size : number, volume : number, sound : boolean) : Observable<any>{
+  changeSettings(font_size : string, volume : string, sound : boolean) : Observable<any>{
     let body = {
-      "font_size": font_size,
-      "volume": volume,
+      "font_size": parseInt(font_size),
+      "volume": parseInt(volume),
       "sound": sound
     }
+    console.log(body);
     let headers = this.base.TokenHeader;
     return this.http.put<any>(this.base.apiUrl("client", "settings"),body,{headers});
   }

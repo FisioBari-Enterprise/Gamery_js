@@ -17,8 +17,8 @@ import {SimpleTextComponent} from "../simple-text/simple-text.component";
 
 export class SettingsComponent implements OnInit, OnDestroy {
 
-  font_size : number = 10;
-  volumeValue : number = 10;
+  font_size : string = "10";
+  volumeValue : string = "10";
   isSound : boolean = true;
 
   /**Evento di modifica dello user*/
@@ -36,8 +36,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<SettingsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserInfo
   ) {
-    this.font_size= this.data.settings.font_size;
-    this.volumeValue= this.data.settings.volume;
+    this.font_size= this.data.settings.font_size.toString();
+    this.volumeValue= this.data.settings.volume.toString();
     this.isSound= this.data.settings.sound;
   }
 
