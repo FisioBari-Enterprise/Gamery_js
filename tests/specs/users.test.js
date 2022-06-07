@@ -1,12 +1,10 @@
 const request = require("supertest");
 const app = require("../../app");
 const mongoose = require("mongoose");
-const {response} = require("express");
 
 jest.setTimeout(60000)
 
 let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOWYyZjMwNzVhMTQ5YjNhYmY0NGM4ZSIsImlhdCI6MTY1NDYwODExOSwiZXhwIjoxNjU0NjE1MzE5fQ.Ht5MnMd4YGKD8G_dLrK2TenaerbPgUgaOWALbEIpbV8"
-let uuid = ""
 
 beforeAll((done) => {
     mongoose.connection.once('open', async () => {
@@ -17,17 +15,17 @@ beforeAll((done) => {
     });
 });
 
-
+/*
 test('Registrazione con utente temporaneo', () => {
     return request(app)
         .get('/api/client/register/temporary')
         .set('Accept', 'application/json')
         .then(response => {
-            console.log(response.body.data)
-            expect(response.body.data.contains("access"))
+            expect(Object.keys(response.body.data).includes('access')).toBe(true)
+            expect(Object.keys(response.body.data).includes('uuid')).toBe(true)
         });
 })
-/*
+
 test('Login con utente temporaneo', () => {
     const body = {'uuid': uuid}
     return request(app)
@@ -131,7 +129,7 @@ test('Errore nel login con credenziali vuote', () => {
 test('Ottenimento info utente', async () => {
     const res = await request(app)
         .get('/api/client')
-        .set({'Authorization': `Bearer ${token}`})
+        .set({'Accept', 'application/json', 'Authorization': `Bearer ${token}`})
 
     return expect(res.status).toBe(200)
 })
@@ -142,6 +140,15 @@ test('Ottenimento info utente non autorizzato', async () => {
 
     return expect(res.status).toBe(401)
 })*/
+
+test('Ottenimento utente tramite un id', () => {
+    return request(app)
+        .get('/api/client/62948c597e80f38444338830')
+        .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
+        .then(response => {
+            expect(response.status).toBe(200)
+        })
+})
 
 afterAll(async () => {
     await mongoose.connection.close();
