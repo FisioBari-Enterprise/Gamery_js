@@ -2,14 +2,24 @@ const request = require("supertest");
 const app = require("../../app");
 const mongoose = require("mongoose");
 const {response} = require("express");
+const Token = require("../../classes/token");
+const SessionModel = require('../../database/users/session');
 
 jest.setTimeout(60000)
 
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTRmM2NkMDY2NmRjZWVhMTVhMWQxZSIsImlhdCI6MTY1NDYyMzc1MSwiZXhwIjoxNjU0NjMwOTUxfQ.YCECmpenM67lup1Rmx4RIUnSiuSwko6WSBeLpJN2a00"
+const userId = '629f2f3075a149b3abf44c8e';
+let token = '';
 
 beforeAll((done) => {
     mongoose.connection.once('open', async () => {
-        done();
+        // Prende il token di accesso per i test
+        Token.createToken(userId, 'test_game', (err, tokenUser) => {
+            if (err != null) {
+                throw new Error("Errore durante la crezione della sessione");
+            }
+            token = tokenUser
+            done();
+        })
     });
     mongoose.connection.once('error', async () => {
         throw new Error("Error during connection to MongoDB");
@@ -99,5 +109,7 @@ test('Tentativo fallito di inserimento di parole per l\'ultimo round', () => {
 
 
 afterAll(async () => {
+    await SessionModel.deleteMany({token: token, ipAddress: 'test_game'})
+    console.log("Deleted session");
     await mongoose.connection.close();
 });
