@@ -1,10 +1,20 @@
-.myinput{
+@font-face {
+  font-family: "Exo2";
+  src: local("Exo2"), url(src/assets/fonts/Exo_2/static/Exo2-Regular.ttf)    format("truetype");
+}
+
+.my-input{
   background-color: #F8F8F8;
   color: #333333;
 }
 
-.errormsg{
+.my-text{
+  color: black;
+  font-family: "Exo2", serif;
+}
+
+.error-msg{
   text-align: center;
   color: red;
-  font-family: "Exo2";
+  font-family: "Exo2", serif;
 }
