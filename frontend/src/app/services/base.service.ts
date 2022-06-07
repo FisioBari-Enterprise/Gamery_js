@@ -12,7 +12,7 @@ export class BaseService {
   /**Header di base per le richieste*/
   private readonly _jsonHeader: HttpHeaders = new HttpHeaders().set('Content-Type', 'application/json');
   /**Tipo di host che si vuole usare per l'applicazione*/
-  private readonly hostType: 'local' | 'production' = 'production';
+  private readonly hostType: 'local' | 'production' = 'local';
   /**Host per lo sviluppo locale*/
   private readonly localHost: string = 'http://localhost:3000';
   /**Host per la produzione*/
