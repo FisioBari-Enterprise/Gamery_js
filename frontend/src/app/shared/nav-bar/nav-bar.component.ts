@@ -10,6 +10,8 @@ import {Router} from "@angular/router";
 import {ColorButtons} from "../enum/colorButtons";
 import {MainUserComponent} from "../../user/components/main-user/main-user.component";
 import {SettingsComponent} from "../../dialogs/settings/settings.component";
+import {SimpleTextComponent} from "../../dialogs/simple-text/simple-text.component";
+import {UserManagerService} from "../../user/services/user-manager.service";
 
 // TODO: Bottone di pausa e gestione
 // TODO: Bottone di login se non ha un account registrato attivo e mostra la view dedicata
@@ -62,6 +64,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   constructor(
     private userService: UserService,
+    private userManagerService : UserManagerService,
     private dialog: DialogManagerService,
     private router: Router
   ) { }
@@ -247,7 +250,17 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   openSettings() {
     //Mostro dialog delle impostazioni
-    this.dialog.showDialog(SettingsComponent, () => {},{});
+    this.dialog.showDialog(SettingsComponent, () => {
+      this.allSubscriptions.push(
+        this.userManagerService.getSettings().subscribe( res => {
+
+        }, err => {
+          console.log(err.error.error);
+          this.dialog.showDialog(SimpleTextComponent, () => {
+          },{data: err.error.error});
+        })
+      )
+    },{data : this.userInfo});
   }
 
   /**

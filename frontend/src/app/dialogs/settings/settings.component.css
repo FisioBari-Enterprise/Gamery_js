@@ -28,16 +28,12 @@
   height: 32px;
 }
 
-/*.custom-image{
-  width: 70px;
-  height: 70px;
-}*/
-
 .title{
   text-align: center;
   font-family: "Exo2", serif;
   font-size: 30px;
   height:80px;
+  top: 20px;
 }
 
 .modify-settings{

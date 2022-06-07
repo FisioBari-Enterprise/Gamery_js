@@ -9,7 +9,7 @@ let router = express.Router();
 
 // Carica le parole
 router.post('/word', UserValidator.onlyLocalHost, async function (req, res) {
-    return await saveWords(res, req.body.words);
+    return await saveWords(res, req.body.words, 201);
 });
 
 /**
@@ -18,19 +18,17 @@ router.post('/word', UserValidator.onlyLocalHost, async function (req, res) {
  *  get:
  *      description: Ottiene l'ultima partita creata
  *      tags: [Game]
- *      
+ *      security:
+ *          - userAuth: []
  *      responses:
  *          200:
- *              description: L'istanza del gioco
- *              content:
- *                  application/json:
- *                      $ref: '#/components/responses/game/game'
+ *              $ref: '#/components/responses/game'
  *          400:
- *              description: Istanza non trovata
+ *              $ref: '#/components/responses/bad_request'
  *          401:
- *              description: Token non passato
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Sessione o token non validi
+ *              $ref: '#/components/responses/no_access'
  */
 router.get('', Token.autenticateUser, async function (req, res) {
     let game = new SingleGame(req.user);
@@ -48,16 +46,17 @@ router.get('', Token.autenticateUser, async function (req, res) {
  *  post:
  *      description: Genera una nuova partita
  *      tags: [Game]
- *      
+ *      security:
+ *          - userAuth: []
  *      responses:
- *          200:
- *              description: L'istanza del gioco
+ *          201:
+ *              $ref: '#/components/responses/game_round'
  *          400:
- *              description: Ha già una partita attiva
+ *              $ref: '#/components/responses/bad_request'
  *          401:
- *              description: Token non passato
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Sessione o token non validi
+ *              $ref: '#/components/responses/no_access'
  */
 router.post('', Token.autenticateUser, async function (req, res) {
    let newGame = new SingleGame(req.user);
@@ -65,7 +64,7 @@ router.post('', Token.autenticateUser, async function (req, res) {
        await newGame.createNewGame();
        await newGame.generateNewRound();
        let response = await newGame.getRound(newGame.game.max_round, true);
-       return StaticFunctions.sendSuccess(res, response);
+       return StaticFunctions.sendSuccess(res, response, 201);
    } catch (error) {
        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
    }
@@ -74,19 +73,20 @@ router.post('', Token.autenticateUser, async function (req, res) {
 /**
  * @openapi
  * /api/game/round:
- *  post:
+ *  get:
  *      description: Lista dell'ultimo round dell'ultima partita generata
  *      tags: [Game]
- *      
+ *      security:
+ *          - userAuth: []
  *      responses:
  *          200:
- *              description: Lista dei round
+ *              $ref: '#/components/responses/game_round'
  *          400:
- *              description: Errore riscontrato in fase di creazione
+ *              $ref: '#/components/responses/bad_request'
  *          401:
- *              description: Token non passato
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Sessione o token non validi
+ *              $ref: '#/components/responses/no_access'
  */
 router.get('/round', Token.autenticateUser, async function (req, res) {
    let game = new SingleGame(req.user);
@@ -106,16 +106,17 @@ router.get('/round', Token.autenticateUser, async function (req, res) {
  *  post:
  *      description: Genera un nuovo round per l'ultima partita generata dall'utente
  *      tags: [Game]
- *      
+ *      security:
+ *          - userAuth: []
  *      responses:
- *          200:
- *              description: Lista dei round
+ *          201:
+ *              $ref: '#/components/responses/game_round'
  *          400:
- *              description: Errore riscontrato in fase di creazione
+ *              $ref: '#/components/responses/bad_request'
  *          401:
- *              description: Token non passato
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Sessione o token non validi
+ *              $ref: '#/components/responses/no_access'
  */
 router.post('/round', Token.autenticateUser, async function (req, res) {
    let game = new SingleGame(req.user);
@@ -133,20 +134,28 @@ router.post('/round', Token.autenticateUser, async function (req, res) {
 
 /**
  * @openapi
- * /api/game/round:
+ * /api/game/round/{id}:
  *  get:
  *      description: informazioni di un terminato round
  *      tags: [Game]
- *      
+ *      security:
+ *          - userAuth: []
+ *      parameters:
+ *          - name: id
+ *            description: Numero del round
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: number
  *      responses:
  *          200:
- *              description: Lista dei round
+ *              $ref: '#/components/responses/game_round'
  *          400:
- *              description: Errore riscontrato in fase di creazione
+ *              $ref: '#/components/responses/bad_request'
  *          401:
- *              description: Token non passato
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Sessione o token non validi
+ *              $ref: '#/components/responses/no_access'
  */
 router.get('/round/:id', Token.autenticateUser, async function (req, res) {
     let game = new SingleGame(req.user);
@@ -165,29 +174,19 @@ router.get('/round/:id', Token.autenticateUser, async function (req, res) {
  *  put:
  *      description: Controllo su parole inserite al termine del round
  *      tags: [Game]
- *      
- *      parameters:
- *          - name: words
- *            description: Lista delle parole inserite dall'utente
- *            in: formData
- *            required: true
- *            type: array
- *            items:
- *              type: string
- *          - name : gameTime
- *            description: Tempo impiegato nel round in secondi
- *            in: formData
- *            required: true
- *            type: number
+ *      security:
+ *          - userAuth: []
+ *      requestBody:
+ *          $ref: '#/components/requestBodies/game_round'
  *      responses:
  *          200:
- *              description: Informazioni sulla partita in corso
+ *              $ref: '#/components/responses/game_round'
  *          400:
- *              description: Errore riscontrato in fase di update
+ *              $ref: '#/components/responses/bad_request'
  *          401:
- *              description: Token non passato
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Sessione o token non validi
+ *              $ref: '#/components/responses/no_access'
  */
 router.put('/round', Token.autenticateUser, async function (req, res) {
     let game = new SingleGame(req.user);
@@ -206,20 +205,20 @@ router.put('/round', Token.autenticateUser, async function (req, res) {
 /**
  * @openapi
  * /api/game/recent:
- *  put:
+ *  get:
  *      description: Ottengo le ultime partite dell'utente
  *      tags: [Statistics]
- *      
- *      parameters:
+ *      security:
+ *          - userAuth: []
  *      responses:
  *          200:
- *              description: Ultime partite dell'utente
+ *              $ref: '#/components/responses/recent_games'
  *          400:
- *              description: Errore riscontrato in fase di update
+ *              $ref: '#/components/responses/bad_request'
  *          401:
- *              description: Token non passato
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Sessione o token non validi
+ *              $ref: '#/components/responses/no_access'
  */
 router.get('/recent', Token.autenticateUser, async function(req ,res){
     let user = new User(req.user._id)
@@ -240,17 +239,24 @@ router.get('/recent', Token.autenticateUser, async function(req ,res){
  *  get:
  *      description: Ottengo i round per una specifica partita
  *      tags: [Statistics]
- *      
+ *      security:
+ *          - userAuth: []
  *      parameters:
+ *          - name: id
+ *            description: Id della partita
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: number
  *      responses:
  *          200:
- *              description: Elenco dei round per la partita
+ *              $ref: '#/components/responses/game_rounds'
  *          400:
- *              description: Errore riscontrato in fase di update
+ *              $ref: '#/components/responses/bad_request'
  *          401:
- *              description: Token non passato
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Sessione o token non validi
+ *              $ref: '#/components/responses/no_access'
  */
 router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
     let user = new User(req.user._id);
@@ -272,16 +278,30 @@ router.get('/:id/rounds', Token.autenticateUser, async function(req, res){
  *  get:
  *      description: Ottengo il round indicato per una specifica partita
  *      tags: [Statistics]
- *      
+ *      security:
+ *          - userAuth: []
+ *      parameters:
+ *          - name: id
+ *            description: Id della partita
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: number
+ *          - name: number
+ *            description: Numero del round
+ *            in: path
+ *            required: true
+ *            schema:
+ *              type: number
  *      responses:
  *          200:
- *              description: Round della partita richiesto
+ *              $ref: '#/components/responses/game_with_rounds'
  *          400:
- *              description: Errore riscontrato in fase di update
+ *              $ref: '#/components/responses/bad_request'
  *          401:
- *              description: Token non passato
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Sessione o token non validi
+ *              $ref: '#/components/responses/no_access'
  */
 router.get('/:id/round/:number', Token.autenticateUser, async function(req, res){
     let user = new User(req.user._id);

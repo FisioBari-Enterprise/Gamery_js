@@ -1,7 +1,7 @@
 import {Country} from "../home/classes/country";
 
 export class UserResponse {
-    data : UserInfo
+    data : UserInfo;
 }
 
 export class UserInfo{
