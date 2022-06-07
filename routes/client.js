@@ -14,7 +14,6 @@ let router = express.Router();
  *      tags: [Users]
  *      requestBody:
  *          $ref: '#/components/requestBodies/login'
- *
  *      responses:
  *          200:
  *              $ref: '#/components/responses/login'
@@ -42,7 +41,6 @@ router.post("/login", async function (req, res) {
  *  get:
  *      description: Registra un nuovo utente temporaneo
  *      tags: [Users]
- *
  *      responses:
  *          200:
  *              $ref: '#/components/responses/login'
@@ -68,7 +66,6 @@ router.get("/register/temporary", function (req, res) {
  *      tags: [Users]
  *      requestBody:
  *          $ref: '#/components/requestBodies/registration'
- *
  *      responses:
  *          200:
  *              $ref: '#components/responses/login'
@@ -96,7 +93,6 @@ router.post('/register', async function (req, res) {
  *      tags: [Users]
  *      security:
  *          - userAuth: []
- *
  *      responses:
  *          200:
  *              $ref: '#/components/responses/base_response'
@@ -114,7 +110,6 @@ router.get("/check", Token.autenticateUser, function (req, res) {
  *  get:
  *      description: Effettua il logout
  *      tags: [Users]
- *
  *      security:
  *          - userAuth: []
  *      responses:
@@ -144,7 +139,6 @@ router.get('/logout', Token.autenticateUser, async function (req, res) {
  *      tags: [Users]
  *      security:
  *          - userAuth: []
- *
  *      responses:
  *          200:
  *              $ref: '#components/responses/full_user'
@@ -176,8 +170,8 @@ router.get("", Token.autenticateUser, async function(req,res){
  *            description: Token inviato per email
  *            in: query
  *            required: true
- *            type: string
- *
+ *            schema:
+ *              type: string
  *      responses:
  *          200:
  *              description: HTML con l'indicazione del successo dell'azione
