@@ -314,6 +314,16 @@ router.put('/settings', Token.autenticateUser, async function(req, res) {
     }
 });
 
+router.get('/settings', Token.autenticateUser, async function(req, res) {
+    const user = new User(req.user._id);
+    try {
+        await user.buildUser()
+        StaticFunctions.sendSuccess(res, user.user.settings);
+    } catch (error) {
+        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
+    }
+})
+
 /**
  * @openapi
  * /api/client/{id}:

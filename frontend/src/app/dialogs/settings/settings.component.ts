@@ -21,8 +21,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
   volumeValue : number = 10;
   isSound : boolean = true;
 
-  /**Dati dell'utente da modificare*/
-  @Input() userInfo: UserInfo;
   /**Evento di modifica dello user*/
   @Output() changeUserinfo: EventEmitter<UserInfo> = new EventEmitter<UserInfo>();
 
@@ -36,11 +34,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private userService: UserManagerService,
     private dialogManager: DialogManagerService,
     public dialogRef: MatDialogRef<SettingsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: UserInfo
   ) {
-    this.font_size= this.userInfo.settings.font_size;
-    this.volumeValue= this.userInfo.settings.volume;
-    this.isSound= this.userInfo.settings.sound;
+    this.font_size= this.data.settings.font_size;
+    this.volumeValue= this.data.settings.volume;
+    this.isSound= this.data.settings.sound;
   }
 
   ngOnInit(): void {
@@ -69,28 +67,18 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.isSound = !this.isSound;
   }
 
-  /**
-   * Cambia i parametri delle impostazioni dell'utente
-   * @param font_size
-   * @param volume
-   * @param sound
-   */
-  onChangeSettings(font_size : number, volume : number, sound : boolean){
-    this.dialogManager.showLoading("Updating settings...");
-
-  }
 
   save(){
     this.subscription.push(
       this.userService.changeSettings(this.font_size, this.volumeValue, this.isSound).subscribe(res => {
         // Aggiorna i dati dell'utente
-        this.userInfo = res.data;
+        this.data = res.data;
         this.changeUserinfo.emit(res.data);
       }, err =>{
+        console.log(err.error.error);
         this.dialogManager.showDialog(SimpleTextComponent, () => {
-        },{data: err.error});
+        },{data: err.error.error});
       })
     )
   }
-
 }
