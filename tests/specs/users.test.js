@@ -178,7 +178,7 @@ test('Ottenimento info utente non autorizzato', async () => {
 
 test('Ottenimento utente tramite un id', () => {
     return request(app)
-        .get('/api/client/' + uuid)
+        .get('/api/client/629f2f3075a149b3abf44c8e')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .then(response => {
             expect(response.status).toBe(200)
