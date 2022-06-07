@@ -1007,7 +1007,7 @@ paths:
         "$ref": "#/components/requestBodies/registration"
       responses:
         "201":
-          "$ref": "#components/responses/login"
+          "$ref": "#/components/responses/login"
         "400":
           "$ref": "#/components/responses/bad_request"
   "/api/client/check":
@@ -1049,7 +1049,7 @@ paths:
         - userAuth: []
       responses:
         "200":
-          "$ref": "#components/responses/full_user"
+          "$ref": "#/components/responses/full_user"
         "400":
           "$ref": "#/components/responses/bad_request"
         "401":
