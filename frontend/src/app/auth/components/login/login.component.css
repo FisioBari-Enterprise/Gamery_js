@@ -40,10 +40,10 @@
     width: 350px;
     height: 480px;
     background-color: white;
-    top: 50%;
+    /*top: 50%;*/
     left: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
+    position: relative;
+    transform: translate(-50%);
     box-sizing: border-box;
     padding: 50px 30px;
     border-radius: 20px;

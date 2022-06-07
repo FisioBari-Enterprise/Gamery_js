@@ -4,6 +4,10 @@ const CredentialsModel = require('../../database/users/credentials');
 const SessionModel = require('../../database/users/session');
 const {cryptPassword, comparePassword} = require("../../security");
 const { v4: uuidv4 } = require('uuid');
+const emailManager = require("../email");
+const SingleGameDB = require("../../database/game/singleGame");
+const GameRoundDB = require("../../database/game/gameRound")
+const Languages = require("../../database/enum/languages")
 let ObjectId = require("mongoose").Types.ObjectId;
 
 /**
@@ -19,9 +23,6 @@ let ObjectId = require("mongoose").Types.ObjectId;
  * @param { String | null } token Token assegnato all'utente
  * @param { * } user Oggetto JS con i dati contenuti nell'utente
  */
-
-// const user = new User(req.user._id);
-// user.serialize();
 
 /**
  * Classe di gestione degli utenti
@@ -42,12 +43,24 @@ class User {
      */
     async buildUser(){
 
-        let doc = await UserModel.findOne({_id : new ObjectId(this.id)}).exec();
+        let doc = await UserModel.findOne({_id : new ObjectId(this.id)}).populate('country').exec();
 
         if(doc === null)
             throw "Utente non trovato"
 
         this.user = doc;
+    }
+
+    async buildSimpleUser(){
+        let nUser = await UserModel.findOne(
+            {_id : new ObjectId(this.id)},
+            { _id: 1, username: 1, statistics : 1, country : 1})
+            .populate('statistics').populate('country').exec()
+
+        if(nUser === null){
+            throw "Utente non trovato"
+        }
+        this.user = nUser;
     }
 
     /**
@@ -71,6 +84,8 @@ class User {
                 }
                 //Genera il nuovo utente
                 const newUser = new UserModel({username: `Player${newNumber}`, uuid: uuid});
+                // Crea i colori di base per l'icona
+                newUser.preferences.colors_icon = ['#2AF39A', '#00A1F9']
                 await newUser.save();
                 Token.createToken(newUser._id.toString(), ipAddress, (err, token) => {
                     callback(err, token, uuid);
@@ -231,21 +246,31 @@ class User {
         // Salva il nuovo utente
         cryptPassword(password, async (err, hash) => {
            if (err != null) {
-               callback("generic: error password encryption");
+               return callback("generic: error password encryption");
            }
-            oldUser.username = username
-            await oldUser.save();
+
             const credentials = new CredentialsModel({email: email, password: hash, user: oldUser._id});
             await credentials.save();
             this.id = oldUser.id;
             this.user = oldUser;
-            Token.createToken(oldUser._id.toString(), ipAddress,function (err, token) {
-                if(err) {
-                    callback(err, null);
-                } else {
-                    callback(null, token);
+
+            // Invio email per il reset della password
+            await emailManager.sendConfirmEmail(email, username, async (err) => {
+                if (err != null) {
+                    return callback(err, null);
                 }
-            });
+                //aggiornamento username
+                oldUser.username = username
+                await oldUser.save();
+                // Generazione del token per l'accesso
+                Token.createToken(oldUser._id.toString(), ipAddress,function (err, token) {
+                    if(err) {
+                        callback(err, null);
+                    } else {
+                        callback(null, token);
+                    }
+                });
+            })
         });
     }
 
@@ -261,6 +286,175 @@ class User {
         // Rende invalide la sessione
         await SessionModel.updateMany({token: token}, {valid: false}).exec();
     }
+
+    /**
+     * Invia per email il link per il reset della password
+     * @param {String} email Email alla quale inviare il reset della password
+     * @param callback Callback che contiene un errore se lo trova
+     * @return {Promise<void>}
+     */
+    async sendResetPassword(email, callback) {
+        // Controllo che il campo email sia corretto
+        if (email == null || validateEmail(email) == null) {
+            throw 'Email not valid';
+        }
+        // Controllo che l'email sia registrata nel sistema
+        const credentials = await CredentialsModel.findOne({email: email, confirmed: true}).populate('user').exec();
+        if (credentials == null) {
+            throw 'Email not registered';
+        }
+        // Invia l'email
+        await emailManager.sendPasswordReset(email, credentials.user.username, (err) => callback(err));
+    }
+
+    /**
+     * Effettua la modifica della password
+     * @param {String} password Nuova password
+     * @param {String} passwordConfirm Conferma della nuova password
+     * @param callback Contiene gli eventuali errori riscontrati. passwordError e passwordConfirmError
+     * @return {Promise<void>}
+     */
+    async changePassword(password, passwordConfirm, callback) {
+        // Controllo dei dati
+        if(password == null || password === ''){
+            return callback('Cannot be empty', null);
+        }
+        if(passwordConfirm == null || passwordConfirm === ''){
+            return callback(null, 'Cannot be empty');
+        }
+        if (password.length < 8 || password.length > 30) {
+            return callback('Password must be 8 - 30 long', null);
+        }
+        if(password !== passwordConfirm){
+            return callback(null, 'Passwords do not match');
+        }
+        // Ottiene le credenziali
+        const credentials = await CredentialsModel.findOne({
+            user: {
+                _id: new ObjectId(this.user._id),
+                active: true
+            }
+        }).populate('user').exec();
+        if (credentials == null) {
+            return callback('Credentials not found for this link', null);
+        }
+        // Controlla che la nuova password non sia uguale a quella precedente
+        comparePassword(password, credentials.password, (err, match) => {
+            if (err != null) {
+                return callback(err.message, null);
+            }
+            if (match) {
+                return callback('New password cannot be equal to previous one', null);
+            }
+            // Cripta la nuova password
+            cryptPassword(password, async (err, hash) => {
+                if (err != null) {
+                    return callback(err.message, null);
+                }
+                // Aggiorna la nuova password e rende non valido il token
+                credentials.password = hash;
+                credentials.token.active = false;
+                await credentials.save();
+                // Rende invalide tutte le sessioni con questo utente
+                await SessionModel.updateMany({user: {_id: new ObjectId(this.user._id)}}, {valid: false}).exec();
+                // Risposta di completamento con successo
+                callback(null, null);
+            });
+        });
+    }
+
+    /**
+     * Funzione per cambiare le impostazioni dell'utente
+     * @param font_size{number}
+     * @param volume{number}
+     * @param sound{boolean}
+     */
+    async changeSettings(font_size, volume, sound) {
+        await this.buildUser();
+
+        //Controlla che i tipi delle variabili siano corretti
+        if (typeof font_size != "number" || typeof volume != "number" || typeof sound != "boolean") {
+            throw "Typing does not match";
+        }
+        //Controlla che i valori delle variabili siano nel range ammesso
+        if (font_size < 10 || font_size > 24) {
+            throw "Font size parameter out of range"
+        }
+        if (volume < 0 || volume > 10) {
+            throw "Volume parameter out of range"
+        }
+        //Cambia i parametri delle impostazioni con quelli in input
+        this.user.settings.font_size = font_size;
+        this.user.settings.volume = volume;
+        this.user.settings.sound = sound;
+        //Salva le modifiche
+        await this.user.save();
+    }
+
+    /**
+     * Ottengo le partite precedenti dell'utente
+     * @param nGame{number} numero di partite da ottenere
+     * @returns {[*]} array delle partite
+     */
+    async getGames(nGame){
+
+        let gamesQuery = SingleGameDB.find({user: this.user._id, complete: true}).sort({createdAt : -1});
+        if(nGame > -1){
+            gamesQuery = gamesQuery.limit(nGame)
+        }
+        let games = await gamesQuery.exec();
+        if(games.length === 0){
+            throw "No game found for this user"
+        }
+        return games
+    }
+
+    async getGameRounds(id){
+        let rounds = await GameRoundDB.find(
+            {user: this.user._id, game : {_id : new ObjectId(id)}},
+            {points : 1, round : 1, correct : 1, _id : 1}
+        ).lean().exec();
+
+        if(rounds.length === 0){
+            throw "No round found for this game"
+        }
+        return rounds;
+    }
+
+    async getGameRound(id, number){
+
+        let round = await GameRoundDB.findOne(
+            { user: this.user._id, game : {_id : new ObjectId(id)}, round : number},
+            {_id : 1, round : 1, words : 1}
+        ).populate([
+            {
+                path: "words.word"
+            },
+            {
+                path: "game",
+                select: "language"
+            }
+
+        ]).lean().exec();
+
+        if(round == null){
+            throw "Round not found"
+        }
+
+        let languageField = Languages.getWordFields(round.game.language)
+
+        round.words.forEach((item) => {
+            if(item.word != null) {
+                item.word = item.word[languageField[0]]
+            }
+        });
+
+
+        return round;
+    }
+
+
+
 }
 
 const validateEmail = (email) => {

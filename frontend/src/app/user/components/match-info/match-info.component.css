@@ -1,0 +1,50 @@
+.main-component{
+  width: 600px;
+  height: 500px;
+  padding: 10px;
+  position: relative;
+}
+
+.close {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 38px;
+  height: 38px;
+}
+
+.close_icon{
+  width: 32px;
+  height: 32px;
+}
+
+.line{
+  margin: 20px 0 0;
+}
+
+.m_card{
+  position: relative;
+  margin: 0 0 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.m_text {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.custom-image{
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translate(0,-50%);
+  width: 12px;
+}
+
+.m_border {
+  border: 1px solid #222222;
+  border-radius: 8px;
+}

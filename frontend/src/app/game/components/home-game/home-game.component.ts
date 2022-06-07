@@ -6,11 +6,7 @@ import { LoseComponent } from 'src/app/dialogs/lose/lose.component';
 import { DialogManagerService } from 'src/app/services/dialog-manager.service';
 import {OnChangeBoard} from "../../classes/onChangeBoard";
 import { GameService } from '../../services/game.service';
-import {Game, GameRound} from "../../classes/game";
-
-// TODO: Gestione inserimento delle parole da parte dell'utente. Per ora in modo infinito
-// TODO: Visualizzazione livello e score
-// TODO: Gestione della pausa
+import {GameRound} from "../../classes/game";
 
 @Component({
   selector: 'app-home-game',
@@ -31,13 +27,21 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   /**Partita in corso*/
   game: GameRound | null = null;
 
+  /** Id del timer */
+  timerId : any
+
   /**Indica se si è in fase di memorizzazione o di inserimento */
   isMemorization : boolean = true
   /** Indica se il gioco è in pausa */
   isPause : boolean = false;
+  /**Indica se è stato premuto il pulsante skipTime*/
+  isSkipTime : boolean = false;
 
+  /** Array di parole da inserire */
+  words : string[] = []
   /** Array delle parole inserite dall'utente */
   userWords : string[] = []
+
 
   /**Parola del input */
   word : string = ""
@@ -58,6 +62,9 @@ export class HomeGameComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.allSubscriptions.forEach(item => item.unsubscribe());
+    if(this.timerId !== null){
+      clearInterval(this.timerId);
+    }
   }
 
   /**
@@ -91,7 +98,8 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     this.allSubscriptions.push(
       this.gameService.newGame().subscribe(res => {
         // Dopo la generazione della partita carico un nuovo round
-        this.newRound();
+        this.game = res.data;
+        this.startRound();
       }, error => {
         this.dialogManager.showError(error.message, () => this.dialogManager.closeDialog());
       })
@@ -105,7 +113,6 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     this.allSubscriptions.push(
       this.gameService.newRound().subscribe(res => {
         this.game = res.data;
-        console.log(this.game);
         // Richiama le funzioni di aggiornamento
         this.startRound();
       }, error => {
@@ -128,7 +135,6 @@ export class HomeGameComponent implements OnInit, OnDestroy {
       })
     );
   }
-
   /**
    * Inizializzo il timer della partita
    */
@@ -137,15 +143,20 @@ export class HomeGameComponent implements OnInit, OnDestroy {
     let timeBoard = new OnChangeBoard(time, false, true, true)
     this.timeSubject.next(timeBoard);
     // Gestione timer
-    let timerId = setInterval(() => {
+    this.timerId = setInterval(() => {
       //Blocco il timer nel caso in cui il gioco entri in pausa
       if(!this.isPause){
         //Faccio l'update del timer
         timeBoard.updateValue();
         this.timeSubject.next(timeBoard);
+        //Controllo se è stato premuto il pulsante skipTime
+        if(this.isSkipTime) {
+          timeBoard.value = 0;
+          this.isSkipTime = false;
+        }
         //Se raggiungo lo zero entro in modalità inserimento o controllo le parole inserite
         if (timeBoard.value === 0) {
-          clearInterval(timerId);
+          clearInterval(this.timerId);
           if(this.isMemorization){
             this.isMemorization = !this.isMemorization;
             this.setUpTimer();
@@ -162,6 +173,7 @@ export class HomeGameComponent implements OnInit, OnDestroy {
    */
   startRound(){
     this.userWords = [];
+    this.words = this.game!.words.map(item => item.word);
     this.isMemorization = true;
     // Aggiorna i dati di score e level
     this.scoreSubject.next(new OnChangeBoard(this.game === null ? 0 : this.game.game.points, false, true));
@@ -179,7 +191,9 @@ export class HomeGameComponent implements OnInit, OnDestroy {
       if(res.data.game.complete){
         this.dialogManager.showDialog(LoseComponent,() => {
           this.router.navigateByUrl('home');
-        }, {data : this.game.game.points});
+        }, {data :
+            {point : this.game.game.points,
+             round : this.game}});
       }
       else{
         this.dialogManager.showDialog(CompleteLevelComponent, () => {
@@ -198,6 +212,14 @@ export class HomeGameComponent implements OnInit, OnDestroy {
   onPause(event: any) {
     this.isPause = event as boolean
   }
+
+  /**
+     * Evento di pressione bottone skipTime
+     * @param event
+     */
+    skipTime(event: any) {
+      this.isSkipTime = event as boolean
+    }
 
    /**
   * Evento di keypress in ascolto per ottenere il barcode

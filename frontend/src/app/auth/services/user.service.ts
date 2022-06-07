@@ -104,4 +104,26 @@ export class UserService {
     localStorage.setItem('password', password);
     localStorage.setItem('isLogin', isLogin.toString());
   }
+
+  /**
+   * Effettuo il cambio della password
+   */
+  changePassword(password: string, passwordConfirm : string) : Observable<boolean>{
+    let headers = this.base.TokenHeader;
+    return this.http.put<boolean>(this.base.apiUrl('client','changePassword'),{
+      password : password,
+      passwordConfirm : passwordConfirm
+    }, {headers})
+  }
+
+  /**
+   * Endpoint per l'invio dell'email
+   * @param email email sulla quale inviare la risposta
+   */
+  sendEmail(email: string) : Observable<any>{
+    let headers = this.base.TokenHeader;
+    return this.http.post<any>(this.base.apiUrl('client','reset/password'), {
+      email: email
+    }, {headers})
+  }
 }

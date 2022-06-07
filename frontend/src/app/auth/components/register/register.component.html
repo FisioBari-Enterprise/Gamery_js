@@ -23,11 +23,7 @@
     </div>
     <p class="errormsg" >{{password.error}}</p>
 </div>  
-<div style="position:relative; padding-top: 30px;">
-    <div class="login-button" (click)="register()">
-        <p class="login-text">REGISTER</p>
-    </div>
-    <div class="register-button" (click)="cancel()">
-        <p class="register-text">CANCEL</p>
-    </div>
+<div style="padding-top: 20px;">
+    <app-button [setCenter]="true" [image]="null" [title]="'REGISTER'" (onClick)="register()"></app-button>
+    <app-button [setCenter]="true" [image]="null" [title]="'CANCEL'" [colorSchema]="colorCancel" (onClick)="cancel()"></app-button>
 </div>

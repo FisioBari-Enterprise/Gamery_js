@@ -22,6 +22,8 @@ export class BaseService {
   private readonly _base = 'api';
   private readonly _client = 'api/client';
   private readonly _game = 'api/game';
+  private readonly _leaderboard = 'api/leaderboard';
+  private readonly _country = 'api/country';
 
   constructor(
 
@@ -61,16 +63,19 @@ export class BaseService {
    * Ottiene l'url completo
    * @param key Tipo di service richiesto
    * @param subUrl subUrl dopo il service
+   * @param addSlash Aggiunge una slash tra key e subUrl
    * @returns Url completo
    */
-  apiUrl(key: 'base' | 'client' | 'game' = 'base', subUrl: string = '') {
+  apiUrl(key: 'base' | 'client' | 'game' | 'leaderboard' | 'country' = 'base', subUrl: string = '', addSlash = true) {
     let service = '';
     switch (key) {
       case "base": service = this._base; break;
       case "client": service = this._client; break;
       case "game": service = this._game; break;
+      case "leaderboard": service = this._leaderboard; break;
+      case "country": service = this._country; break;
     }
-    return `${this.Host}/${service}/${subUrl}`;
+    return `${this.Host}/${service}${addSlash ? '/' : ''}${subUrl}`;
   }
 
   /**

@@ -1,6 +1,9 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {ColorButtons} from "../../shared/enum/colorButtons";
+import {DialogManagerService} from "../../services/dialog-manager.service";
+import {WordListComponent} from "../word-list/word-list.component";
+import {GameRound} from "../../game/classes/game";
 
 @Component({
   selector: 'app-lose',
@@ -14,7 +17,11 @@ export class LoseComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<LoseComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: number,
+    @Inject(MAT_DIALOG_DATA) public data: {
+      point : number,
+      round : GameRound
+    },
+    private dialogManager : DialogManagerService
   ) { }
 
   ngOnInit(): void {
@@ -25,6 +32,10 @@ export class LoseComponent implements OnInit {
    */
   goToHome(){
     this.dialogRef.close()
+  }
+
+  showWord(){
+    this.dialogManager.showDialog(WordListComponent, () => {}, {data : this.data.round})
   }
 
 }

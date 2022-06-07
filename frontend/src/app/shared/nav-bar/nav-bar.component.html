@@ -1,12 +1,14 @@
 <div class="row top-container" >
   <div class="col-10">
     <ng-container *ngIf="currentType !== 3">
-      <div class="container-username">
-        <p class="username">{{userInfo === null ? 'Username' : userInfo.username}}</p>
-      </div>
-      <div class="background-letter">
-        <img class="custom-image" src="./assets/navbar/new-moon.png" alt="image not found"/>
-        <h1 class="letter-name">{{firstCharUsername === null ? '_' : firstCharUsername}}</h1>
+      <div style="cursor: pointer;" (click)="openUser()">
+        <div class="container-username">
+          <p class="username">{{userInfo === null ? 'Username' : userInfo.username}}</p>
+        </div>
+        <div class="background-letter">
+          <img class="custom-image" src="./assets/navbar/new-moon.png" alt="image not found"/>
+          <h1 class="letter-name">{{firstCharUsername === null ? '_' : firstCharUsername}}</h1>
+        </div>
       </div>
     </ng-container>
   </div>
@@ -14,19 +16,30 @@
     <div class="row button-area">
       <!--No logged-->
       <ng-container *ngIf="currentType === 0">
-        <div class="button" (click)="onLoginClick()">
-          <img class="small-image" src="./assets/navbar/login.png" alt = "image not found">
+        <!--<div class="col">
+          <app-button [title]="'SETTINGS'" (click)="openSettings()" [image]="'settings_icon'" [colorSchema]="colorSchemaSettings"></app-button>
+        </div>-->
+        <div class="col">
+          <app-button [title]="'LOGIN'" (click)="onLoginClick()" [image]="'login'" [colorSchema]="colorSchemaLogin"></app-button>
         </div>
       </ng-container>
       <!--Logged-->
       <ng-container *ngIf="currentType === 1">
-        <div class="button" (click)="onLogoutClick()">
-          <img class="small-image" src="./assets/navbar/logout.png" alt = "image not found">
+        <!--<div class="col">
+          <app-button [title]="'SETTINGS'" (click)="openSettings()" [image]="'settings_icon'" [colorSchema]="colorSchemaSettings"></app-button>
+        </div>-->
+        <div class="col">
+          <app-button [title]="'LOGOUT'" (click)="onLogoutClick()" [image]="'logout'" [colorSchema]="colorSchemaLogout"></app-button>
         </div>
       </ng-container>
       <!--Game mode-->
       <ng-container *ngIf="currentType === 2">
-        <app-button [title]="'PAUSE'" (onClick)="onPause()"></app-button>
+        <div class="col">
+          <app-button [title]="'SKIP TIME'" (onClick)="skipTime()" [image]="'next-button'" [colorSchema]="colorSchemaSkip"></app-button>
+        </div>
+        <div class="col">
+          <app-button [title]="'PAUSE'" (onClick)="onPause()"></app-button>
+        </div>
       </ng-container>
       <!--Login page-->
       <ng-container *ngIf="currentType === 3">

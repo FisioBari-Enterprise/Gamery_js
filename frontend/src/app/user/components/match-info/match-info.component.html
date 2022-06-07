@@ -1,0 +1,26 @@
+<div class="main-component">
+  <div class="close" (click)="close()">
+    <img  class="close_icon" src="assets/userInfo/close.png" alt="Image not found">
+  </div>
+  <div class="row line">
+    <h1 class="col" style="text-align: center">Data: {{game.createdAt.toString().split("T")[0]}}</h1>
+    <h1 class="col" style="text-align: center">Time: {{game.createdAt.toString().split("T")[1].split('.')[0]}}</h1>
+  </div>
+  <div class="row line">
+    <h1 class="col" style="text-align: center">Points: {{game.points}}</h1>
+    <h1 class="col" style="text-align: center">Round: {{game.max_round}}</h1>
+    <h1 class="col" style="text-align: center">Game time: {{game.game_time}}</h1>
+  </div>
+  <div style="margin-top: 10px">
+    <h1>Rounds list:</h1>
+  </div>
+  <div style="height: 280px">
+    <div class="row m_card m_border"  *ngFor="let round of rounds; let i = index" (click)="onRoundClick(i)">
+      <h1 class="col-5 m_text"> Round: {{round.round}} </h1>
+      <h1 class="col-5 m_text"> Points: {{round.points}} </h1>
+      <div class="col-2">
+        <img class="custom-image" src="assets/userInfo/right-arrow.png " alt="image not found"/>
+      </div>
+    </div>
+  </div>
+</div>

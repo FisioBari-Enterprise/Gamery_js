@@ -6,6 +6,9 @@ import { PauseComponent } from './pause/pause.component';
 import { CompleteLevelComponent } from './complete-level/complete-level.component';
 import { LoseComponent } from './lose/lose.component';
 import {SharedModule} from "../shared/shared.module";
+import { SimpleTextComponent } from './simple-text/simple-text.component';
+import { WordListComponent } from './word-list/word-list.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 
@@ -15,7 +18,10 @@ import {SharedModule} from "../shared/shared.module";
     LoadingComponent,
     PauseComponent,
     CompleteLevelComponent,
-    LoseComponent
+    LoseComponent,
+    SimpleTextComponent,
+    WordListComponent,
+    SettingsComponent
   ],
     imports: [
         CommonModule,

@@ -1,0 +1,35 @@
+<div class="main-container-home-ranking">
+  <h1>Ranking</h1>
+  <!--Scelta se la classifica è globale o locale-->
+  <div class="row justify-content-center">
+    <div class="col" align="center">
+      <!--Bottone per la visualizzazione della classifica globale-->
+      <app-card [width]="150" [showArrow]="false" [text]="'GLOBAL'"
+                [image]="'./assets/userInfo/earth_globe.png'" [isSelected]="globalSelect"
+                (OnClick)="onButtonSelect(true)"></app-card>
+    </div>
+    <div class="col" align="center" [style.display]="user != null && user.country != null ? 'inline' : 'none'">
+      <!--Bottone per la visualizzazione della classifica locale-->
+      <app-card [width]="150" [showArrow]="false" [text]="'LOCAL'"
+                [image]="userFlag" [isSelected]="!globalSelect"
+                (OnClick)="onButtonSelect(false)"></app-card>
+    </div>
+  </div>
+  <!--Visualizzato solo quando l'utente è stato caricato-->
+  <ng-container *ngIf="this.user != null">
+    <!--Ultima data di aggiornamento della classifica-->
+    <h3 class="last-update-text">{{getLastUpdateDateString()}}</h3>
+    <!--Visualizzazione della classifica complessivo-->
+    <div class="container-all-leaderboard">
+      <ng-container *ngFor="let item of leaderboard; let i = index">
+        <app-card-ranking [leaderboardData]="item" [spacingBottom]="5"></app-card-ranking>
+      </ng-container>
+    </div>
+    <!--Divisore-->
+    <div class="division-leaderboards"></div>
+    <!--Visualizzazione della classifica complessivo-->
+    <div class="container-my-leaderboard">
+      <app-card-ranking [leaderboardData]="userLeaderboard"></app-card-ranking>
+    </div>
+  </ng-container>
+</div>
