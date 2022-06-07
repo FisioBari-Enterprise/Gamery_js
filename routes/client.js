@@ -5,17 +5,26 @@ const Token = require("../classes/token");
 const User = require("../classes/users/user");
 const UserValidator = require("../classes/users/validator/userValidator");
 let router = express.Router();
+
 /**
  * @openapi
  * \api\client\login:
  *  post:
  *      description: Effettua il login
  *      tags: [Users]
+ *      requestBody:
+ *          $ref: '#/components/requestBodies/client/login'
  *      produces:
  *          - application/json
  *      responses:
  *          200:
  *              description: Login effettuato con successo
+ *              content:
+ *                  application\json:
+ *                      schema:
+ *                          $ref: '#/components/responses/login_response'
+ *          400:
+ *              $ref: '#/components/responses/bad_request'
  */
 router.post("/login", async function (req, res) {
     let user = new Client();
@@ -31,13 +40,13 @@ router.post("/login", async function (req, res) {
         return StaticFunctions.sendError(res, error);
     }
 });
+
 /**
  * @openapi
  * \api\client\register\temporary:
- *  post:
+ *  get:
  *      description: Registra un nuovo utente temporaneo
  *      tags: [Users]
- *
  *      produces:
  *          - application/json
  *      responses:
@@ -56,14 +65,13 @@ router.get("/register/temporary", function (req, res) {
        }
     });
 });
+
 /**
  * @openapi
  * \api\client\register:
  *  post:
  *      description: Registra un nuovo utente
  *      tags: [Users]
- *      security:
- *          - userAuth: []
  *      requestBody:
  *          description: Dati per la creazione dell'utente
  *          require: true
@@ -102,6 +110,8 @@ router.post('/register', async function (req, res) {
  *  post:
  *      description: Controllo che il token passato sia valido
  *      tags: [Users]
+ *      security:
+ *          - userAuth: []
  *      produces:
  *          - application/json
  *      responses:

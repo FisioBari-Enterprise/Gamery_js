@@ -26,6 +26,42 @@
 
     },
     "requestBodies": {
+      "client": {
+        "login": {
+          "description": "Dati per effettuare il login",
+          "require": true,
+          "content": {
+            "application\\json": {
+              "schema": {
+                "oneOf": {
+                  "temporary": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "credentials": {
+                    "type": "object",
+                    "properties": {
+                      "usernameEmail": {
+                        "type": "string"
+                      },
+                      "password": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "example": {
+                "uuid": "00000000-0000-0000-0000-000000000000"
+              }
+            }
+          }
+        }
+      },
       "registration_body": {
         "type": "object",
         "required": true,
@@ -37,18 +73,6 @@
             "type": "string"
           },
           "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
-      "login_body": {
-        "type": "object",
-        "required": true,
-        "properties": {
-          "usernameEmail": {
             "type": "string"
           },
           "password": {
@@ -311,6 +335,24 @@
       },
       "game": {
 
+      },
+      "bad_request": {
+        "description": "Errore durante l'esecuzione dell'azione",
+        "content": {
+          "application\\json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "error": "Descrizione dell'errore riscontrato"
+            }
+          }
+        }
       }
     }
   },

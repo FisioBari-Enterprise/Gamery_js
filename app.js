@@ -26,7 +26,13 @@ mongoose.connect(
 );
 
 // Opzioni della documentazione
-const definition = JSON.parse(fs.readFileSync('./json/apiDefinition.json', 'utf8'));
+let definition;
+try {
+    definition = JSON.parse(fs.readFileSync('./json/apiDefinition.json', 'utf8'));
+} catch (error) {
+    console.log("Errore nel json di definizione delle api docs");
+    definition = {}
+}
 const swaggerOptions = {
     definition: definition,
     apis: ['./routes/*.js'],
