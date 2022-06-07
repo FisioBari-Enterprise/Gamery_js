@@ -330,7 +330,7 @@ router.put('/settings', Token.autenticateUser, async function(req, res) {
 
     try {
         await user.changeSettings(font_size, volume, sound);
-        StaticFunctions.sendSuccess(res, user.user);
+        StaticFunctions.sendSuccess(res, true);
     } catch (error) {
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
