@@ -21,8 +21,7 @@ let router = express.Router();
  *              description: Login effettuato con successo
  *              content:
  *                  application\json:
- *                      schema:
- *                          $ref: '#/components/responses/login_response'
+ *                      $ref: '#/components/responses/login_response'
  *          400:
  *              $ref: '#/components/responses/bad_request'
  */
@@ -51,9 +50,12 @@ router.post("/login", async function (req, res) {
  *          - application/json
  *      responses:
  *          200:
- *              description: Token di accesso e uuid assegnato
+ *              description: Registrazione di un nuovo utente temporaneo
+ *              content:
+ *                  application\json:
+ *                      $ref: '#/components/responses/login_response'
  *          400:
- *              description: Errore riscontrato in fase di creazione
+ *              $ref: '#/components/responses/bad_request'
  */
 router.get("/register/temporary", function (req, res) {
     const newUser = new Client();
@@ -73,12 +75,7 @@ router.get("/register/temporary", function (req, res) {
  *      description: Registra un nuovo utente
  *      tags: [Users]
  *      requestBody:
- *          description: Dati per la creazione dell'utente
- *          require: true
- *          content:
- *              application\json:
- *                  schema:
- *                      $ref: '#/components/requestBodies/registration_body'
+ *          $ref: '#/components/requestBodies/client/registration'
  *      produces:
  *          - application/json
  *      responses:
@@ -89,7 +86,7 @@ router.get("/register/temporary", function (req, res) {
  *                      schema:
  *                          $ref: '#components/responses/login_response'
  *          400:
- *              description: Errore riscontrato in fase di creazione
+ *              $ref: '#/components/responses/bad_request'
  */
 router.post('/register', async function (req, res) {
     let user = new User();
@@ -108,7 +105,7 @@ router.post('/register', async function (req, res) {
  * @openapi
  * \api\client\check:
  *  post:
- *      description: Controllo che il token passato sia valido
+ *      description: Controllo che il token sia valido
  *      tags: [Users]
  *      security:
  *          - userAuth: []
@@ -116,9 +113,11 @@ router.post('/register', async function (req, res) {
  *          - application/json
  *      responses:
  *          200:
- *              description: Token di accesso e uuid assegnato
+ *              $ref: '#/components/responses/base_response'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Accesso non consentito
+ *              $ref: '#/components/responses/no_access'
  */
 router.get("/check", Token.autenticateUser, function (req, res) {
     StaticFunctions.sendSuccess(res,true);
@@ -127,17 +126,19 @@ router.get("/check", Token.autenticateUser, function (req, res) {
  * @openapi
  * \api\client\logout:
  *  get:
- *      description: Effettua ol logout
+ *      description: Effettua il logout
  *      tags: [Users]
  *      produces:
  *          - application/json
  *      responses:
  *          200:
- *              description: Risposta di base
+ *              $ref: '#/components/responses/base_response'
  *          400:
- *              description: Errore durante l'esecuzione dell'azione
+ *              $ref: '#/components/responses/bad_request'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Accesso non consentito
+ *              $ref: '#/components/responses/no_access'
  */
 router.get('/logout', Token.autenticateUser, async function (req, res) {
     let user = new User(req.user._id);

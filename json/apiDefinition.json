@@ -60,23 +60,37 @@
               }
             }
           }
-        }
-      },
-      "registration_body": {
-        "type": "object",
-        "required": true,
-        "properties": {
-          "uuid": {
-            "type": "string"
-          },
-          "username": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
+        },
+        "registration": {
+          "description": "Dati per effettuare la registrazione del nuovo utente",
+          "require": true,
+          "content": {
+            "application\\json": {
+              "schema": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                  "uuid": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "uuid": "00000000-0000-0000-0000-000000000000",
+                "username": "test",
+                "email": "test@gamery.com",
+                "password": "password"
+              }
+            }
           }
         }
       },
@@ -143,18 +157,95 @@
       }
     },
     "responses": {
+      "no_token": {
+        "description": "Nessun token di accesso trovato",
+        "content": {
+          "application\\json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "error": "Token not found"
+            }
+          }
+        }
+      },
+      "no_access": {
+        "description": "Accesso non consentito. Token o sessione non validi",
+        "content": {
+          "application\\json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "error": "Token not valid"
+            }
+          }
+        }
+      },
+      "base_response": {
+        "description": "Successo del completamento dell'azione",
+        "content": {
+          "application\\json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "example": {
+              "data": true
+            }
+          }
+        }
+      },
+      "bad_request": {
+        "description": "Errore durante l'esecuzione dell'azione",
+        "content": {
+          "application\\json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": {
+              "error": "Descrizione dell'errore riscontrato"
+            }
+          }
+        }
+      },
       "client": {
         "login": {
-          "type": "object",
-          "properties": {
-            "access": {
-              "type": "string",
-              "example": "token di accesso"
-            },
-            "uuid": {
-              "type": "string",
-              "example": "uuid per l'utente"
+          "schema": {
+            "type": "object",
+            "properties": {
+              "access": {
+                "type": "string",
+                "example": "token di accesso"
+              },
+              "uuid": {
+                "type": "string",
+                "example": "uuid per l'utente"
+              }
             }
+          },
+          "example": {
+            "error": "Descrizione dell'errore riscontrato"
           }
         },
         "user": {
@@ -289,16 +380,16 @@
               "_id": {
                 "type": "string"
               },
-              "_code": {
+              "code": {
                 "type": "string"
               },
-              "_name": {
+              "name": {
                 "type": "string"
               },
-              "_createdAt": {
+              "createdAt": {
                 "type": "string"
               },
-              "_updatedAt": {
+              "updatedAt": {
                 "type": "string"
               }
             }
@@ -335,24 +426,6 @@
       },
       "game": {
 
-      },
-      "bad_request": {
-        "description": "Errore durante l'esecuzione dell'azione",
-        "content": {
-          "application\\json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string"
-                }
-              }
-            },
-            "example": {
-              "error": "Descrizione dell'errore riscontrato"
-            }
-          }
-        }
       }
     }
   },
