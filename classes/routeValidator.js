@@ -18,7 +18,7 @@ function routeValidator(req, res, next) {
     url = url.substring(1, url.length);
     // Effettua il redirect
     res.writeHead(301, {
-        Location: `${req.protocol}://${req.get('host')}?path=${url}`
+        Location: `https://web-gamery.herokuapp.com?path=${url}`
     }).end();
 }
 
