@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 jest.setTimeout(60000)
 
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOWYyZjMwNzVhMTQ5YjNhYmY0NGM4ZSIsImlhdCI6MTY1NDYwODExOSwiZXhwIjoxNjU0NjE1MzE5fQ.Ht5MnMd4YGKD8G_dLrK2TenaerbPgUgaOWALbEIpbV8"
+let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTRmM2NkMDY2NmRjZWVhMTVhMWQxZSIsImlhdCI6MTY1NDYxNjE0MywiZXhwIjoxNjU0NjIzMzQzfQ.qRl5ZyXs_cKAdTOOLk5NOqwpBB1A0scP_y8AQpGkY_A"
 
 beforeAll((done) => {
     mongoose.connection.once('open', async () => {

@@ -4,10 +4,11 @@ const mongoose = require("mongoose");
 
 jest.setTimeout(60000)
 
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOWYyZjMwNzVhMTQ5YjNhYmY0NGM4ZSIsImlhdCI6MTY1NDYwODExOSwiZXhwIjoxNjU0NjE1MzE5fQ.Ht5MnMd4YGKD8G_dLrK2TenaerbPgUgaOWALbEIpbV8"
+let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTRmM2NkMDY2NmRjZWVhMTVhMWQxZSIsImlhdCI6MTY1NDYxNjE0MywiZXhwIjoxNjU0NjIzMzQzfQ.qRl5ZyXs_cKAdTOOLk5NOqwpBB1A0scP_y8AQpGkY_A"
 
 beforeAll((done) => {
     mongoose.connection.once('open', async () => {
+
         done();
     });
     mongoose.connection.once('error', async () => {
@@ -15,18 +16,9 @@ beforeAll((done) => {
     });
 });
 
-test('Ottenimento di tutti i country', () => {
+test('Rimuovo il country per l\'utente selezionato', () => {
     return request(app)
-        .get('/api/country')
-        .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
-        .then(response => {
-            expect(response.status).toBe(200)
-        })
-})
-
-test('Ottenimento country dell\'utente ', () => {
-    return request(app)
-        .get('/api/country/client')
+        .delete('/api/country/client')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .then(response => {
             expect(response.status).toBe(200)
@@ -43,18 +35,25 @@ test('Cambio del country per l\'utente che ha fatto la richiesta', () => {
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .send(body)
         .then(response => {
+            console.log(response.body)
             expect(response.status).toBe(200)
         })
 })
 
-test('Rimuovo il country per l\'utente selezionato', () => {
+test('Ottenimento country dell\'utente ', () => {
     return request(app)
-        .delete('/api/country/client')
+        .get('/api/country/client')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .then(response => {
-            expect(response.status).toBe(200)
+            expect(Object.keys(response.body.data).includes('_id')).toBe(true)
+            expect(Object.keys(response.body.data).includes('code')).toBe(true)
+            expect(Object.keys(response.body.data).includes('name')).toBe(true)
+            expect(Object.keys(response.body.data).includes('createdAt')).toBe(true)
+            expect(Object.keys(response.body.data).includes('updatedAt')).toBe(true)
         })
 })
+
+
 
 afterAll(async () => {
     await mongoose.connection.close();
