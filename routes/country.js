@@ -17,12 +17,11 @@ router.post("", UserValidator.onlyLocalHost, async function (req, res, next) {
 
 /**
  * @openapi
- * \api\country:
+ * /api/country:
  *  get:
  *      description: Ottiene tutti gli stati con le bandiere supportati
  *      tags: [Country]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Lista degli stati
@@ -41,12 +40,11 @@ router.get("", Token.autenticateUser, async function (req, res, next) {
 
 /**
  * @openapi
- * \api\country\client:
+ * /api/country/client:
  *  get:
  *      description: Ottiene il country scelto dall'utente
  *      tags: [Country]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Il country selezionato dall'utente
@@ -66,12 +64,11 @@ router.get("/client", Token.autenticateUser, async function (req, res, next) {
 
 /**
  * @openapi
- * \api\country\client:
+ * /api/country/client:
  *  put:
  *      description: Aggiorna lo stato assegnato all'utente
  *      tags: [Country]
- *      produces:
- *          - application/json
+ *      
  *      parameters:
  *          - name: id
  *            description: Id dello stato
@@ -103,12 +100,11 @@ router.put("/client", Token.autenticateUser, async function (req, res, next) {
 
 /**
  * @openapi
- * \api\country\client:
+ * /api/country/client:
  *  delete:
  *      description: Rimuove il country selezionato dall'utente
  *      tags: [Country]
- *      produces:
- *          - application/json
+ *      
  *      responses:
  *          200:
  *              description: Il country selezionato dall'utente

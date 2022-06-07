@@ -8,20 +8,16 @@ let router = express.Router();
 
 /**
  * @openapi
- * \api\client\login:
+ * /api/client/login:
  *  post:
  *      description: Effettua il login
  *      tags: [Users]
  *      requestBody:
- *          $ref: '#/components/requestBodies/client/login'
- *      produces:
- *          - application/json
+ *          $ref: '#/components/requestBodies/login'
+ *
  *      responses:
  *          200:
- *              description: Login effettuato con successo
- *              content:
- *                  application\json:
- *                      $ref: '#/components/responses/client/login'
+ *              $ref: '#/components/responses/login'
  *          400:
  *              $ref: '#/components/responses/bad_request'
  */
@@ -42,18 +38,14 @@ router.post("/login", async function (req, res) {
 
 /**
  * @openapi
- * \api\client\register\temporary:
+ * /api/client/register/temporary:
  *  get:
  *      description: Registra un nuovo utente temporaneo
  *      tags: [Users]
- *      produces:
- *          - application/json
+ *
  *      responses:
  *          200:
- *              description: Registrazione di un nuovo utente temporaneo
- *              content:
- *                  application\json:
- *                      $ref: '#/components/responses/client/login'
+ *              $ref: '#/components/responses/login'
  *          400:
  *              $ref: '#/components/responses/bad_request'
  */
@@ -70,21 +62,16 @@ router.get("/register/temporary", function (req, res) {
 
 /**
  * @openapi
- * \api\client\register:
+ * /api/client/register:
  *  post:
  *      description: Registra un nuovo utente
  *      tags: [Users]
  *      requestBody:
- *          $ref: '#/components/requestBodies/client/registration'
- *      produces:
- *          - application/json
+ *          $ref: '#/components/requestBodies/registration'
+ *
  *      responses:
  *          200:
- *              description: Token di accesso e uuid assegnato
- *              content:
- *                  application\json:
- *                      schema:
- *                          $ref: '#components/responses/client/login'
+ *              $ref: '#components/responses/login'
  *          400:
  *              $ref: '#/components/responses/bad_request'
  */
@@ -103,14 +90,13 @@ router.post('/register', async function (req, res) {
 });
 /**
  * @openapi
- * \api\client\check:
+ * /api/client/check:
  *  post:
  *      description: Controllo che il token sia valido
  *      tags: [Users]
  *      security:
  *          - userAuth: []
- *      produces:
- *          - application/json
+ *
  *      responses:
  *          200:
  *              $ref: '#/components/responses/base_response'
@@ -124,12 +110,11 @@ router.get("/check", Token.autenticateUser, function (req, res) {
 });
 /**
  * @openapi
- * \api\client\logout:
+ * /api/client/logout:
  *  get:
  *      description: Effettua il logout
  *      tags: [Users]
- *      produces:
- *          - application/json
+ *
  *      security:
  *          - userAuth: []
  *      responses:
@@ -153,21 +138,16 @@ router.get('/logout', Token.autenticateUser, async function (req, res) {
 })
 /**
  * @openapi
- * \api\client:
+ * /api/client:
  *  get:
  *      description: Informazioni dell'utente
  *      tags: [Users]
  *      security:
  *          - userAuth: []
- *      produces:
- *          - application/json
+ *
  *      responses:
  *          200:
- *              description: Dati dell'utente
- *              content:
- *                  application\json:
- *                      schema:
- *                          $ref: '#components/responses/client/user'
+ *              $ref: '#components/responses/full_user'
  *          400:
  *              $ref: '#/components/responses/bad_request'
  *          401:
@@ -187,7 +167,7 @@ router.get("", Token.autenticateUser, async function(req,res){
 });
 /**
  * @openapi
- * \api\client\confirm:
+ * /api/client/confirm:
  *  get:
  *      description: Conferma l'indirizzo email
  *      tags: [Users]
@@ -197,8 +177,7 @@ router.get("", Token.autenticateUser, async function(req,res){
  *            in: query
  *            required: true
  *            type: string
- *      produces:
- *          - text/html
+ *
  *      responses:
  *          200:
  *              description: HTML con l'indicazione del successo dell'azione
@@ -210,7 +189,7 @@ router.get("/confirm", UserValidator.checkConfirmEmail, function(req,res){
 });
 /**
  * @openapi
- * \api\client\change\password:
+ * /api/client/change/password:
  *  get:
  *      description: Form per inviare la modifica della password
  *      tags: [Users]
@@ -220,8 +199,7 @@ router.get("/confirm", UserValidator.checkConfirmEmail, function(req,res){
  *            in: query
  *            required: true
  *            type: string
- *      produces:
- *          - application/json
+ *
  *      responses:
  *          200:
  *              description: Pagina web per il ripristino della password
@@ -236,7 +214,7 @@ router.get("/change/password", UserValidator.checkResetPassword, async function(
 });
 /**
  * @openapi
- * \api\client\change\password:
+ * /api/client/change/password:
  *  post:
  *      description: Resetta la password per l'utente
  *      tags: [Users]
@@ -256,8 +234,7 @@ router.get("/change/password", UserValidator.checkResetPassword, async function(
  *            in: formData
  *            required: true
  *            type: string
- *      produces:
- *          - application/json
+ *
  *      responses:
  *          200:
  *              description: Successo dell'azione
@@ -285,7 +262,7 @@ router.post("/change/password", UserValidator.checkResetPassword, async function
 });
 /**
  * @openapi
- * \api\client\change\password:
+ * /api/client/change/password:
  *  put:
  *      description: Richiede un reset della password. Il link viene inviato per email
  *      tags: [Users]
@@ -295,8 +272,7 @@ router.post("/change/password", UserValidator.checkResetPassword, async function
  *            in: formData
  *            required: true
  *            type: string
- *      produces:
- *          - application/json
+ *
  *      responses:
  *          200:
  *              description: Successo dell'azione
@@ -330,7 +306,7 @@ router.put('/settings', Token.autenticateUser, async function(req, res) {
 
     try {
         await user.changeSettings(font_size, volume, sound);
-        StaticFunctions.sendSuccess(res, user.user);
+        StaticFunctions.sendSuccess(res, true);
     } catch (error) {
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
@@ -338,26 +314,25 @@ router.put('/settings', Token.autenticateUser, async function(req, res) {
 
 /**
  * * @openapi
- *  * \api\client\id:
- *  *  put:
- *  *      description: Richiedo le informazioni indicate dall'id
- *  *      tags: [Users]
- *  *      parameters:
- *  *          - name: id
- *  *            description: Id dell'utente da ricercare
- *  *            in: formData
- *  *            required: true
- *  *            type: string
- *  *      produces:
- *  *          - application/json
- *  *      responses:
- *  *          200:
- *  *              description: Ricezione delle informazioni dell'utente
- *  *          400:
- *  *              description: Errore durante l'esecuzione dell'azione
- *  *          403:
- *  *              description: Accesso non consentito. Token non valido
- *  */
+ * /api/client/id:
+ *  put:
+ *      description: Richiedo le informazioni indicate dall'id
+ *      tags: [Users]
+ *      parameters:
+ *          - name: id
+ *            description: Id dell'utente da ricercare
+ *            in: formData
+ *            required: true
+ *            type: string
+ *
+ *      responses:
+ *          200:
+ *              description: Ricezione delle informazioni dell'utente
+ *          400:
+ *              description: Errore durante l'esecuzione dell'azione
+ *          403:
+ *              description: Accesso non consentito. Token non valido
+ */
 router.get('/:id', Token.autenticateUser, async function(req, res) {
     let user = new User(req.params.id);
 

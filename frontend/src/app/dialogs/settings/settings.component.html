@@ -1,27 +1,36 @@
-<div class="main.container">
-  <div class="close_button">
-    <input class="button" type="button" value="X" onclick="close()" >
+<div class="main-container">
+  <div class="close" (click)="close()">
+    <img  class="close_icon" src="assets/userInfo/close.png" alt="Image not found">
   </div>
   <div class="title">
-    <div class="image">
+    <!--<div class="image">
       <img class="custom-image" src="./assets/home/settings_icon.png" alt="image not found"/>
-    </div>
+    </div>-->
     <p>SETTINGS</p>
   </div>
 
   <div class="modify-settings">
-    <div class="font_size">
-      <label class="form-label my-text" >FONT SIZE</label>
+    <div class=" row param-container">
+      <label class="col form-label my-text" >FONT SIZE:{{font_size}}</label>
+      <div class="col center-element">
+        <input #font type="range" id="font" min="10" max="30" value="{{font_size}}" (change)="changeFontValue(font.value)" >
+      </div>
     </div>
-    <div class="volume">
-      <label class="form-label my-text2" >VOLUME</label>
+    <div class=" row param-container">
+      <label class="col form-label my-text" >VOLUME:{{volumeValue}}</label>
+      <div class="col center-element">
+        <input #volume type="range" id="volume" min="0" max="10" value="{{volumeValue}}" (change)="changeVolume(volume.value)">
+      </div>
     </div>
-    <div class="col sound">
-      <label class="form-label my-text3" >SOUND</label>
-      <label class="switch">
-        <input type="checkbox">
-        <span class="slider round"></span>
-      </label>
+    <div class=" row param-container">
+      <label class="col form-label my-text" >SOUND</label>
+      <div class="col center-element">
+        <label class="switch">
+          <input #sound type="checkbox" id="sound" value="{{isSound}}" (change)="changeSound(sound.value)">
+          <span class="slider round"></span>
+        </label>
+      </div>
     </div>
   </div>
+  <app-button [setCenter]="true" [image]="null" [title]="'SAVE'" [colorSchema]="colorSave" (onClick)="save()">SAVE</app-button>
 </div>

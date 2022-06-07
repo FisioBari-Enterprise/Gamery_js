@@ -41,7 +41,7 @@ const swaggerOptions = {
 const swaggerDocument = swaggerJsDoc(swaggerOptions);
 // Salva su file la documentazione la documentazione
 try {
-    //fs.writeFileSync('./json/apiDocProduction.json', JSON.stringify(swaggerDocument, null, 4))
+    fs.writeFileSync('./json/apiDocProduction.json', JSON.stringify(swaggerDocument, null, 4))
 } catch (error) {
     console.log('Impossibile salvare su file')
 }
