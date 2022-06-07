@@ -20,6 +20,22 @@
             </SchemaInfo>
           </value>
         </entry>
+        <entry key="yamllint">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="yamllint" />
+              <option name="relativePathToSchema" value="https://json.schemastore.org/yamllint.json" />
+              <option name="applicationDefined" value="true" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value="docs/apiDefinition.yaml" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
       </map>
     </state>
   </component>
