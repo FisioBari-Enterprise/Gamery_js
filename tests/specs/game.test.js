@@ -47,12 +47,12 @@ test('Ottenimento ultima partita creata per l\'utente corrente', () => {
         })
 })
 
-test('Errore nella creazione di una nuovo round prima della creazione di uno nuovo', () => {
+test('Errore nella creazione di una nuovo round prima della termine dell\'ultimo', () => {
     return request(app)
         .post('/api/game/round')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .then(response => {
-            expect(response.status).toBe(400)
+            expect(response.error.text).toEqual("{\"error\":\"You haven\'t completed last round\"}")
         })
 })
 

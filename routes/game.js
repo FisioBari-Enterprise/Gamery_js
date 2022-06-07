@@ -126,7 +126,6 @@ router.post('/round', Token.autenticateUser, async function (req, res) {
        await game.generateNewRound();
        response = await game.getRound(game.game.max_round, true);
    } catch (error) {
-       console.log(error);
        return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
    }
    return StaticFunctions.sendSuccess(res, response, 201);
