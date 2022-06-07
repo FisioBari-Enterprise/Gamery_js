@@ -15,7 +15,7 @@ let router = express.Router();
  *      requestBody:
  *          $ref: '#/components/requestBodies/login'
  *      responses:
- *          200:
+ *          201:
  *              $ref: '#/components/responses/login'
  *          400:
  *              $ref: '#/components/responses/bad_request'
@@ -27,7 +27,7 @@ router.post("/login", async function (req, res) {
             if(err !== null) {
                 StaticFunctions.sendError(res, err.message);
             } else {
-                StaticFunctions.sendSuccess(res, {access: token, uuid: user.uuid});
+                StaticFunctions.sendSuccess(res, {access: token, uuid: user.uuid}, 201);
             }
         });
     } catch (error) {
@@ -67,7 +67,7 @@ router.get("/register/temporary", function (req, res) {
  *      requestBody:
  *          $ref: '#/components/requestBodies/registration'
  *      responses:
- *          200:
+ *          201:
  *              $ref: '#components/responses/login'
  *          400:
  *              $ref: '#/components/responses/bad_request'
@@ -79,7 +79,7 @@ router.post('/register', async function (req, res) {
             if (err !== null) {
                 return StaticFunctions.sendError(res, err);
             }
-            StaticFunctions.sendSuccess(res, {access: token, uuid: user.user.uuid});
+            StaticFunctions.sendSuccess(res, {access: token, uuid: user.user.uuid}, 201);
         });
     } catch (error) {
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
@@ -88,7 +88,7 @@ router.post('/register', async function (req, res) {
 /**
  * @openapi
  * /api/client/check:
- *  post:
+ *  get:
  *      description: Controllo che il token sia valido
  *      tags: [Users]
  *      security:
@@ -291,7 +291,7 @@ router.put("/change/password", Token.autenticateUser, async function(req,res) {
  *          $ref: '#/components/requestBodies/setting'
  *      responses:
  *          200:
- *              $ref: '#/components/responses/full_user'
+ *              $ref: '#/components/responses/base_response'
  *          400:
  *              $ref: '#/components/responses/bad_request'
  *          401:

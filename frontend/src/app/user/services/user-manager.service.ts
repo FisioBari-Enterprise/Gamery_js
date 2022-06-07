@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Game, GameResponse, GameRound, GameRoundResponse, GameRounds, Games} from "../../game/classes/game";
 import {AllCountryResponse} from "../../home/classes/country";
-import {UserResponse} from "../../classes/UserResponse";
+import {Settings, UserResponse} from "../../classes/UserResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -66,5 +66,10 @@ export class UserManagerService {
     }
     let headers = this.base.TokenHeader;
     return this.http.put<any>(this.base.apiUrl("client", "settings"),body,{headers});
+  }
+
+  getSettings() : Observable<Settings>{
+    let headers = this.base.TokenHeader;
+    return this.http.get<Settings>(this.base.apiUrl("client", "settings"), {headers});
   }
 }
