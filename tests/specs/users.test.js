@@ -3,6 +3,8 @@ const app = require("../../app");
 const mongoose = require("mongoose");
 const Token = require("../../classes/token");
 const SessionModel = require('../../database/users/session');
+const UserModel = require('../../database/users/user');
+const CredentialsModel = require('../../database/users/credentials');
 
 jest.setTimeout(60000)
 
@@ -27,11 +29,12 @@ beforeAll((done) => {
 });
 
 
-/*test('Registrazione con utente temporaneo', () => {
+test('Registrazione con utente temporaneo', () => {
     return request(app)
         .get('/api/client/register/temporary')
         .set('Accept', 'application/json')
         .then(response => {
+            expect(response.status).toBe(200);
             expect(Object.keys(response.body.data).includes('access')).toBe(true)
             expect(Object.keys(response.body.data).includes('uuid')).toBe(true)
             // Salva il uuid per eliminarlo
@@ -46,40 +49,11 @@ test('Login con utente temporaneo', () => {
         .set('Accept', 'application/json')
         .send(body)
         .then(response => {
-            expect(response.status).toBe(200);
+            expect(response.status).toBe(201);
         });
 })
 
-test('registrazione utente', () => {
-    const body = {
-        'uuid': uuid,
-        'username': 'postman',
-        'email': 'postman@gamery.com',
-        'password': 'postman123'
-    }
-    return request(app)
-        .post('/api/client/register')
-        .set('Accept', 'application/json')
-        .send(body)
-        .then(response => {
-            console.log(response)
-            expect(response.status).toBe(200)
-            token = response._body.data.access
-        })
-})*/
-
-test('Errore nel login con utente temporaneo', () => {
-    const body = {}
-    return request(app)
-        .post('/api/client/login')
-        .set('Accept', 'application/json')
-        .send(body)
-        .then(response => {
-            expect(response.status).toBe(400);
-        });
-})
-
-test('Errore per registrazione utente', () => {
+test('Errore per registrazione utente (email non valida)', () => {
     const body = {
         'uuid': uuid,
         'username': 'postman',
@@ -92,7 +66,54 @@ test('Errore per registrazione utente', () => {
         .send(body)
         .then(response => {
             expect(response.status).toBe(400)
+            expect(response.body.error).toBe('email: cannot be empty')
         })
+})
+
+test('Errore per registrazione utente (username già presente)', () => {
+    const body = {
+        'uuid': uuid,
+        'username': 'postman',
+        'email': 'postman@gamery.com',
+        'password': 'postman123'
+    }
+    return request(app)
+        .post('/api/client/register')
+        .set('Accept', 'application/json')
+        .send(body)
+        .then(response => {
+            expect(response.status).toBe(400)
+            expect(response.body.error).toBe('username: username already used')
+        })
+})
+
+test('registrazione utente', () => {
+    const body = {
+        'uuid': uuid,
+        'username': 'postman_1',
+        'email': 'postman_1@gamery.com',
+        'password': 'postman123'
+    }
+    return request(app)
+        .post('/api/client/register')
+        .set('Accept', 'application/json')
+        .send(body)
+        .then(response => {
+            expect(response.status).toBe(201)
+            expect(Object.keys(response.body.data).includes('access')).toBe(true)
+            expect(Object.keys(response.body.data).includes('uuid')).toBe(true)
+        })
+})
+
+test('Errore nel login con utente temporaneo', () => {
+    const body = {}
+    return request(app)
+        .post('/api/client/login')
+        .set('Accept', 'application/json')
+        .send(body)
+        .then(response => {
+            expect(response.status).toBe(400);
+        });
 })
 
 
@@ -139,23 +160,25 @@ test('Errore nel login con credenziali vuote', () => {
 })
 
 test('Ottenimento info utente', async () => {
-    const res = await request(app)
+    return request(app)
         .get('/api/client')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
-
-    return expect(res.status).toBe(200)
+        .then(response => {
+            expect(response.status).toBe(200)
+        })
 })
 
 test('Ottenimento info utente non autorizzato', async () => {
-    const res = await request(app)
+    return request(app)
         .get('/api/client')
-
-    return expect(res.status).toBe(401)
+        .then(response => {
+            expect(response.status).toBe(401)
+        })
 })
 
 test('Ottenimento utente tramite un id', () => {
     return request(app)
-        .get('/api/client/62948c597e80f38444338830')
+        .get('/api/client/' + uuid)
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .then(response => {
             expect(response.status).toBe(200)
@@ -165,6 +188,8 @@ test('Ottenimento utente tramite un id', () => {
 afterAll(async () => {
     // Rimuove le sessioni di test
     await SessionModel.deleteMany({token: token, ipAddress: 'test_user'})
+    await UserModel.deleteOne({uuid: uuid});
+    await CredentialsModel.deleteOne({email: 'postman_1@gamery.com'});
     console.log("Deleted session");
     await mongoose.connection.close();
 });

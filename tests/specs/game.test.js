@@ -1,14 +1,18 @@
 const request = require("supertest");
 const app = require("../../app");
 const mongoose = require("mongoose");
+const ObjectId = require("mongoose").Types.ObjectId;
 const {response} = require("express");
 const Token = require("../../classes/token");
 const SessionModel = require('../../database/users/session');
+const SingleGameModel = require('../../database/game/singleGame');
+const GameRoundModel = require('../../database/game/gameRound');
 
 jest.setTimeout(60000)
 
 const userId = '629f2f3075a149b3abf44c8e';
 let token = '';
+let gameId = '';
 
 beforeAll((done) => {
     mongoose.connection.once('open', async () => {
@@ -36,10 +40,12 @@ test('Creazione di una nuova partita', () => {
             expect(Object.keys(response.body.data).includes('points')).toBe(true)
             expect(Object.keys(response.body.data).includes('complete')).toBe(true)
             expect(Object.keys(response.body.data).includes('words')).toBe(true)
+            // Salva il game id
+            gameId = response.body.data.game._id;
         })
 })
 
-test('Errore Creazione di una nuova partita prima della conclusione della precedente', () => {
+test('Errore creazione di una nuova partita prima della conclusione della precedente', () => {
     return request(app)
         .post('/api/game')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
@@ -110,6 +116,8 @@ test('Tentativo fallito di inserimento di parole per l\'ultimo round', () => {
 
 afterAll(async () => {
     await SessionModel.deleteMany({token: token, ipAddress: 'test_game'})
+    await GameRoundModel.deleteMany({game: gameId})
+    await SingleGameModel.deleteMany({_id: new ObjectId(gameId)})
     console.log("Deleted session");
     await mongoose.connection.close();
 });
