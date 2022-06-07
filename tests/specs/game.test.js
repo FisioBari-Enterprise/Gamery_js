@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("../../app");
 const mongoose = require("mongoose");
+const {response} = require("express");
 
 jest.setTimeout(60000)
 
@@ -15,6 +16,28 @@ beforeAll((done) => {
     });
 });
 
+test('Creazione di una nuova partita', () => {
+    return request(app)
+        .post('/api/game')
+        .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
+        .then(response => {
+            expect(Object.keys(response.body.data).includes('game')).toBe(true)
+            expect(Object.keys(response.body.data).includes('round')).toBe(true)
+            expect(Object.keys(response.body.data).includes('points')).toBe(true)
+            expect(Object.keys(response.body.data).includes('complete')).toBe(true)
+            expect(Object.keys(response.body.data).includes('words')).toBe(true)
+        })
+})
+
+test('Errore Creazione di una nuova partita prima della conclusione della precedente', () => {
+    return request(app)
+        .post('/api/game')
+        .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
+        .then(response => {
+            expect(response.status).toBe(400)
+        })
+})
+
 test('Ottenimento ultima partita creata per l\'utente corrente', () => {
     return request(app)
         .get('/api/game')
@@ -23,10 +46,10 @@ test('Ottenimento ultima partita creata per l\'utente corrente', () => {
             expect(response.status).toBe(200)
         })
 })
-/*
-test('Creazione di una nuova partita', () => {
+
+test('Creazione di una nuovo round', () => {
     return request(app)
-        .post('/api/game')
+        .post('/api/game/round')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .then(response => {
             expect(response.status).toBe(200)
@@ -42,15 +65,25 @@ test('Ottenimento dell\'ultimo round dell\'ultima partita', () => {
         })
 })
 
-test('Creazione di una nuovo round', () => {
+test('Tentativo fallito di inserimento di parole per l\'ultimo round', () => {
+    let body = {
+        words: ["ciao", "two"],
+        game_time: "13"
+    };
+
     return request(app)
         .post('/api/game/round')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
+        .send(body)
         .then(response => {
-            expect(response.status).toBe(200)
+            console.log(response)
+            expect(response.status).toBe(400)
         })
+
 })
-*/
+
+
+
 afterAll(async () => {
     await mongoose.connection.close();
 });

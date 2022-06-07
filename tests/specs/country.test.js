@@ -35,8 +35,7 @@ test('Cambio del country per l\'utente che ha fatto la richiesta', () => {
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .send(body)
         .then(response => {
-            console.log(response.body)
-            expect(response.status).toBe(200)
+            expect(response.body.data.country.code).toBe("it");
         })
 })
 
