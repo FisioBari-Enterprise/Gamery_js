@@ -17,7 +17,7 @@ beforeAll((done) => {
         // Prende il token di accesso per i test
         Token.createToken(userId, 'test_user', (err, tokenUser) => {
             if (err != null) {
-                throw new Error("Errore durante la crezione della sessione");
+                throw new Error("Errore durante la creazione della sessione");
             }
             token = tokenUser
             done();
