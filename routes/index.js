@@ -2,19 +2,10 @@ let express = require("express");
 let router = express.Router();
 const StaticFunctions = require("../static");
 const {EmailManager} = require('../classes/email');
+const UserModel = require('../database/users/user');
+const fs = require("fs");
 
-/**
- * @openapi
- * \api\:
- *  get:
- *      description: End point di prova
- *      tags: [Default]
- *      produces:
- *          - application/json
- *      responses:
- *          200:
- *              description: Risposta corretta
- */
+// Endpoint per fare i test
 router.get("", async function (req, res, next) {
     //return StaticFunctions.sendSuccess(res, require('crypto').randomBytes(64).toString('hex'));
     /* const email = new EmailManager();
@@ -29,6 +20,21 @@ router.get("", async function (req, res, next) {
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
      */
+    /*let all_users;
+    try {
+        all_users = JSON.parse(fs.readFileSync('./json/users.json', 'utf-8'));
+    } catch {
+        return StaticFunctions.sendError(res, 'Impossibile get users');
+    }
+    // Ripristina gli utenti
+    let to_insert = [];
+    all_users.forEach(item => {
+        if (item.username == null) {
+            return;
+        }
+       to_insert.push({username: item.username, uuid: item.uuid});
+    });
+    await UserModel.insertMany(to_insert);*/
     return StaticFunctions.sendSuccess(res, true);
 });
 

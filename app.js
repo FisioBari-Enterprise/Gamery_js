@@ -26,13 +26,25 @@ mongoose.connect(
 );
 
 // Opzioni della documentazione
-const definition = JSON.parse(fs.readFileSync('./json/apiDefinition.json', 'utf8'));
+let definition;
+try {
+    definition = JSON.parse(fs.readFileSync('./json/apiDefinition.json', 'utf8'));
+} catch (error) {
+    console.log("Errore nel json di definizione delle api docs");
+    definition = {}
+}
 const swaggerOptions = {
     definition: definition,
     apis: ['./routes/*.js'],
 };
 //End point per la documentazione
 const swaggerDocument = swaggerJsDoc(swaggerOptions);
+// Salva su file la documentazione la documentazione
+try {
+    //fs.writeFileSync('./json/apiDocProduction.json', JSON.stringify(swaggerDocument, null, 4))
+} catch (error) {
+    console.log('Impossibile salvare su file')
+}
 // console.log(JSON.stringify(swaggerDocument));
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
     explorer: true

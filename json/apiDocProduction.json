@@ -1,0 +1,2376 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Gamery js",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Development"
+        },
+        {
+            "url": "https://web-gamery.herokuapp.com",
+            "description": "Production"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "userAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "body_temporary": {
+                "type": "object",
+                "properties": {
+                    "uuid": {
+                        "type": "string"
+                    }
+                }
+            },
+            "body_credentials": {
+                "type": "object",
+                "properties": {
+                    "usernameEmail": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "body_registration": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                    "uuid": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "body_change_password": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                    "password": {
+                        "type": "string"
+                    },
+                    "passwordConfirm": {
+                        "type": "string"
+                    }
+                }
+            },
+            "body_request_change_password": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    }
+                }
+            },
+            "body_settings": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                    "font_size": {
+                        "type": "number"
+                    },
+                    "volume": {
+                        "type": "number"
+                    },
+                    "sound": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "body_change_country": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "required": false
+                    },
+                    "code": {
+                        "type": "string",
+                        "required": false
+                    }
+                }
+            },
+            "body_game_round": {
+                "type": "object",
+                "required": true,
+                "properties": {
+                    "words": {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "game_time": {
+                        "type": "number"
+                    }
+                }
+            },
+            "response_login": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "access": {
+                                "type": "string"
+                            },
+                            "uuid": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "response_full_user": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "username": {
+                                "type": "string"
+                            },
+                            "uuid": {
+                                "type": "string"
+                            },
+                            "active": {
+                                "type": "boolean"
+                            },
+                            "createdAt": {
+                                "type": "string"
+                            },
+                            "updatedAt": {
+                                "type": "string"
+                            },
+                            "settings": {
+                                "type": "object",
+                                "properties": {
+                                    "font_size": {
+                                        "type": "number"
+                                    },
+                                    "volume": {
+                                        "type": "number"
+                                    },
+                                    "sound": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            },
+                            "preferences": {
+                                "type": "object",
+                                "properties": {
+                                    "language": {
+                                        "type": "number"
+                                    },
+                                    "color_icon": {
+                                        "type": "array",
+                                        "items": [
+                                            {
+                                                "type": "string"
+                                            }
+                                        ]
+                                    },
+                                    "orientation_icon": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "statistics": {
+                                "type": "object",
+                                "properties": {
+                                    "game_time": {
+                                        "type": "number"
+                                    },
+                                    "tot_games": {
+                                        "type": "number"
+                                    },
+                                    "tot_points": {
+                                        "type": "number"
+                                    },
+                                    "max_points": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "country": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "createdAt": {
+                                        "type": "string"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "response_simple_user": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "username": {
+                                "type": "string"
+                            },
+                            "createdAt": {
+                                "type": "string"
+                            },
+                            "updatedAt": {
+                                "type": "string"
+                            },
+                            "statistics": {
+                                "type": "object",
+                                "properties": {
+                                    "game_time": {
+                                        "type": "number"
+                                    },
+                                    "tot_games": {
+                                        "type": "number"
+                                    },
+                                    "tot_points": {
+                                        "type": "number"
+                                    },
+                                    "max_points": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "country": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "code": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "createdAt": {
+                                        "type": "string"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "response_all_countries": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": [
+                            {
+                                "$ref": "#/components/schemas/response_country"
+                            }
+                        ]
+                    }
+                }
+            },
+            "response_country": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "_code": {
+                        "type": "string"
+                    },
+                    "_name": {
+                        "type": "string"
+                    },
+                    "_createdAt": {
+                        "type": "string"
+                    },
+                    "_updatedAt": {
+                        "type": "string"
+                    }
+                }
+            },
+            "response_game_data": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "game": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "user": {
+                                        "type": "string"
+                                    },
+                                    "language": {
+                                        "type": "number"
+                                    },
+                                    "game_time": {
+                                        "type": "number"
+                                    },
+                                    "points": {
+                                        "type": "number"
+                                    },
+                                    "record": {
+                                        "type": "boolean"
+                                    },
+                                    "max_round": {
+                                        "type": "number"
+                                    },
+                                    "remaining_pause": {
+                                        "type": "number"
+                                    },
+                                    "memorize_time_for_round": {
+                                        "type": "number"
+                                    },
+                                    "writing_time_for_round": {
+                                        "type": "number"
+                                    },
+                                    "complete": {
+                                        "type": "boolean"
+                                    },
+                                    "createdAt": {
+                                        "type": "string"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "response_game_round": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "game": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "user": {
+                                        "type": "string"
+                                    },
+                                    "language": {
+                                        "type": "number"
+                                    },
+                                    "game_time": {
+                                        "type": "number"
+                                    },
+                                    "points": {
+                                        "type": "number"
+                                    },
+                                    "record": {
+                                        "type": "boolean"
+                                    },
+                                    "max_round": {
+                                        "type": "number"
+                                    },
+                                    "remaining_pause": {
+                                        "type": "number"
+                                    },
+                                    "memorize_time_for_round": {
+                                        "type": "number"
+                                    },
+                                    "writing_time_for_round": {
+                                        "type": "number"
+                                    },
+                                    "complete": {
+                                        "type": "boolean"
+                                    },
+                                    "createdAt": {
+                                        "type": "string"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "_id": {
+                                "type": "string"
+                            },
+                            "round": {
+                                "type": "number"
+                            },
+                            "complete": {
+                                "type": "boolean"
+                            },
+                            "createdAt": {
+                                "type": "string"
+                            },
+                            "updatedAt": {
+                                "type": "string"
+                            },
+                            "words": {
+                                "type": "array",
+                                "items": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "word": {
+                                                "type": "string"
+                                            },
+                                            "word_insert": {
+                                                "type": "string"
+                                            },
+                                            "correct": {
+                                                "type": "boolean"
+                                            },
+                                            "points": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "response_all_game_data": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "user": {
+                                        "type": "string"
+                                    },
+                                    "language": {
+                                        "type": "number"
+                                    },
+                                    "game_time": {
+                                        "type": "number"
+                                    },
+                                    "points": {
+                                        "type": "number"
+                                    },
+                                    "record": {
+                                        "type": "boolean"
+                                    },
+                                    "max_round": {
+                                        "type": "number"
+                                    },
+                                    "remaining_pause": {
+                                        "type": "number"
+                                    },
+                                    "memorize_time_for_round": {
+                                        "type": "number"
+                                    },
+                                    "writing_time_for_round": {
+                                        "type": "number"
+                                    },
+                                    "complete": {
+                                        "type": "boolean"
+                                    },
+                                    "createdAt": {
+                                        "type": "string"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "response_all_data_preview": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "round": {
+                                        "type": "number"
+                                    },
+                                    "points": {
+                                        "type": "number"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "response_game_rounds_data": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "game": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "language": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "_id": {
+                                "type": "string"
+                            },
+                            "round": {
+                                "type": "number"
+                            },
+                            "words": {
+                                "type": "array",
+                                "items": [
+                                    {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "word": {
+                                                "type": "string"
+                                            },
+                                            "word_insert": {
+                                                "type": "string"
+                                            },
+                                            "correct": {
+                                                "type": "boolean"
+                                            },
+                                            "points": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "response_leaderboard_list": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "game": {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "user": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "username": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "points": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    },
+                                    "type": {
+                                        "type": "number"
+                                    },
+                                    "country": {
+                                        "type": "string"
+                                    },
+                                    "position": {
+                                        "type": "number"
+                                    },
+                                    "prev_position": {
+                                        "type": "number"
+                                    },
+                                    "createdAt": {
+                                        "type": "string"
+                                    },
+                                    "updatedAt": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "response_leaderboard": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "game": {
+                                "type": "object",
+                                "properties": {
+                                    "_id": {
+                                        "type": "string"
+                                    },
+                                    "user": {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "username": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "points": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "type": {
+                                "type": "number"
+                            },
+                            "country": {
+                                "type": "string"
+                            },
+                            "position": {
+                                "type": "number"
+                            },
+                            "prev_position": {
+                                "type": "number"
+                            },
+                            "createdAt": {
+                                "type": "string"
+                            },
+                            "updatedAt": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "response_leaderboard_type": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": [
+                            {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "number"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "requestBodies": {
+            "login": {
+                "description": "Dati per effettuare il login",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "oneOf": [
+                                {
+                                    "$ref": "#/components/schemas/body_temporary"
+                                },
+                                {
+                                    "$ref": "#/components/schemas/body_credentials"
+                                }
+                            ]
+                        },
+                        "example": {
+                            "uuid": "00000000-0000-0000-0000-000000000000"
+                        }
+                    }
+                }
+            },
+            "registration": {
+                "description": "Dati per effettuare la registrazione del nuovo utente",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/body_registration"
+                        },
+                        "example": {
+                            "uuid": "00000000-0000-0000-0000-000000000000",
+                            "username": "test",
+                            "email": "test@gamery.com",
+                            "password": "password"
+                        }
+                    }
+                }
+            },
+            "change_password": {
+                "description": "Dati per il reset della password",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/body_change_password"
+                        },
+                        "example": {
+                            "password": "nuovaPassword",
+                            "passwordConfirm": "nuovaPassword"
+                        }
+                    }
+                }
+            },
+            "change_password_email": {
+                "description": "Email per l'invio del link per il reset",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/body_request_change_password"
+                        },
+                        "example": {
+                            "email": "test@gamery.com"
+                        }
+                    }
+                }
+            },
+            "setting": {
+                "description": "Dati per la modifica delle impostazioni",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/body_settings"
+                        },
+                        "example": {
+                            "font_size": 24,
+                            "volume": 100,
+                            "sound": true
+                        }
+                    }
+                }
+            },
+            "change_country": {
+                "description": "Modifica la preferenza del country",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/body_change_country"
+                        },
+                        "example": {
+                            "code": "it"
+                        }
+                    }
+                }
+            },
+            "game_round": {
+                "description": "Dati del round",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/body_game_round"
+                        },
+                        "example": {
+                            "words": [
+                                "hello",
+                                "hi"
+                            ],
+                            "game_time": 10
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "no_token": {
+                "description": "Nessun token di accesso trovato",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "example": {
+                            "error": "Token not found"
+                        }
+                    }
+                }
+            },
+            "no_access": {
+                "description": "Accesso non consentito. Token o sessione non validi",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "example": {
+                            "error": "Token not valid"
+                        }
+                    }
+                }
+            },
+            "base_response": {
+                "description": "Successo del completamento dell'azione",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "data": {
+                                    "type": "boolean"
+                                }
+                            }
+                        },
+                        "example": {
+                            "data": true
+                        }
+                    }
+                }
+            },
+            "bad_request": {
+                "description": "Errore durante l'esecuzione dell'azione",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "example": {
+                            "error": "Descrizione dell'errore riscontrato"
+                        }
+                    }
+                }
+            },
+            "login": {
+                "description": "Dati per l'accesso",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_login"
+                        },
+                        "example": {
+                            "access": "token di accesso",
+                            "uuid": "00000000-0000-0000-0000-000000000000"
+                        }
+                    }
+                }
+            },
+            "full_user": {
+                "description": "Dati completi dell'utente",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_full_user"
+                        },
+                        "examples": {
+                            "User with country": {
+                                "value": {
+                                    "data": {
+                                        "statistics": {
+                                            "game_time": 30,
+                                            "tot_games": 2,
+                                            "tot_points": 200,
+                                            "max_points": 100,
+                                            "best_placement": 1
+                                        },
+                                        "preferences": {
+                                            "language": 1,
+                                            "colors_icon": [
+                                                "#2AF39A",
+                                                "#00A1F9"
+                                            ],
+                                            "orientation_icon": 0
+                                        },
+                                        "settings": {
+                                            "font_size": 14,
+                                            "volume": 8,
+                                            "sound": true
+                                        },
+                                        "_id": "000000000000000000000000",
+                                        "username": "username",
+                                        "uuid": "00000000-0000-0000-0000-000000000000",
+                                        "active": true,
+                                        "country": {
+                                            "_id": "000000000000000000000000",
+                                            "code": "af",
+                                            "name": "Afghanistan",
+                                            "createdAt": "2022-01-01T00:00:00.0000Z",
+                                            "updatedAt": "2022-01-01T00:00:00.0000Z"
+                                        },
+                                        "createdAt": "2022-01-01T00:00:00.0000Z",
+                                        "updatedAt": "2022-01-01T00:00:00.0000Z"
+                                    }
+                                }
+                            },
+                            "User without country": {
+                                "value": {
+                                    "data": {
+                                        "statistics": {
+                                            "game_time": 30,
+                                            "tot_games": 2,
+                                            "tot_points": 200,
+                                            "max_points": 100,
+                                            "best_placement": 1
+                                        },
+                                        "preferences": {
+                                            "language": 1,
+                                            "colors_icon": [
+                                                "#2AF39A",
+                                                "#00A1F9"
+                                            ],
+                                            "orientation_icon": 0
+                                        },
+                                        "settings": {
+                                            "font_size": 14,
+                                            "volume": 8,
+                                            "sound": true
+                                        },
+                                        "_id": "000000000000000000000000",
+                                        "username": "username",
+                                        "uuid": "00000000-0000-0000-0000-000000000000",
+                                        "active": true,
+                                        "country": null,
+                                        "createdAt": "2022-01-01T00:00:00.0000Z",
+                                        "updatedAt": "2022-01-01T00:00:00.0000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "simple_user": {
+                "description": "Dati di un utente qualsiasi",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_simple_user"
+                        },
+                        "example": {
+                            "data": {
+                                "statistics": {
+                                    "game_time": 30,
+                                    "tot_games": 2,
+                                    "tot_points": 200,
+                                    "max_points": 100,
+                                    "best_placement": 1
+                                },
+                                "_id": "000000000000000000000000",
+                                "username": "username",
+                                "country": {
+                                    "_id": "000000000000000000000000",
+                                    "code": "af",
+                                    "name": "Afghanistan",
+                                    "createdAt": "2022-01-01T00:00:00.0000Z",
+                                    "updatedAt": "2022-01-01T00:00:00.0000Z"
+                                },
+                                "createdAt": "2022-01-01T00:00:00.0000Z",
+                                "updatedAt": "2022-01-01T00:00:00.0000Z"
+                            }
+                        }
+                    }
+                }
+            },
+            "all_country": {
+                "description": "Tutti gli stati presenti",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_all_countries"
+                        },
+                        "example": {
+                            "data": [
+                                {
+                                    "_id": "000000000000000000000000",
+                                    "code": "it",
+                                    "name": "Italy",
+                                    "createdAt": "2022-01-01T00:00:00.0000Z",
+                                    "updatedAt": "2022-01-01T00:00:00.0000Z"
+                                },
+                                "..."
+                            ]
+                        }
+                    }
+                }
+            },
+            "user_country": {
+                "description": "Lo stato selezionato dall'utente",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_country"
+                        },
+                        "examples": {
+                            "Country exists": {
+                                "value": {
+                                    "data": {
+                                        "_id": "000000000000000000000000",
+                                        "code": "it",
+                                        "name": "Italy",
+                                        "createdAt": "2022-01-01T00:00:00.0000Z",
+                                        "updatedAt": "2022-01-01T00:00:00.0000Z"
+                                    }
+                                }
+                            },
+                            "Country not exists": {
+                                "value": {
+                                    "data": null
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "user_delete_country": {
+                "description": "Dati completi dell'utente",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_full_user"
+                        },
+                        "example": {
+                            "data": {
+                                "statistics": {
+                                    "game_time": 30,
+                                    "tot_games": 2,
+                                    "tot_points": 200,
+                                    "max_points": 100,
+                                    "best_placement": 1
+                                },
+                                "preferences": {
+                                    "language": 1,
+                                    "colors_icon": [
+                                        "#2AF39A",
+                                        "#00A1F9"
+                                    ],
+                                    "orientation_icon": 0
+                                },
+                                "settings": {
+                                    "font_size": 14,
+                                    "volume": 8,
+                                    "sound": true
+                                },
+                                "_id": "000000000000000000000000",
+                                "username": "username",
+                                "uuid": "00000000-0000-0000-0000-000000000000",
+                                "active": true,
+                                "country": null,
+                                "createdAt": "2022-01-01T00:00:00.0000Z",
+                                "updatedAt": "2022-01-01T00:00:00.0000Z"
+                            }
+                        }
+                    }
+                }
+            },
+            "game": {
+                "description": "Dati della partita",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_game_data"
+                        },
+                        "example": {
+                            "data": {
+                                "game": {
+                                    "_id": "000000000000000000000000",
+                                    "user": "000000000000000000000000",
+                                    "language": 1,
+                                    "game_time": 0,
+                                    "points": 0,
+                                    "record": false,
+                                    "max_round": 1,
+                                    "remaining_pause": 3,
+                                    "memorize_time_for_round": 21,
+                                    "writing_time_for_round": 28,
+                                    "complete": false,
+                                    "createdAt": "2022-01-01T00:00:00.000Z",
+                                    "updatedAt": "2022-01-01T00:00:00.000Z"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "game_round": {
+                "description": "Ottiene la partita con le informazioni della partita e del round",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_game_round"
+                        },
+                        "example": {
+                            "data": {
+                                "_id": "000000000000000000000000",
+                                "game": {
+                                    "_id": "000000000000000000000000",
+                                    "user": "000000000000000000000000",
+                                    "language": 1,
+                                    "game_time": 0,
+                                    "points": 0,
+                                    "record": false,
+                                    "max_round": 1,
+                                    "remaining_pause": 3,
+                                    "memorize_time_for_round": 21,
+                                    "writing_time_for_round": 28,
+                                    "complete": false,
+                                    "createdAt": "2022-01-01T00:00:00.000Z",
+                                    "updatedAt": "2022-01-01T00:00:00.000Z"
+                                },
+                                "round": 1,
+                                "points": 0,
+                                "complete": false,
+                                "words": [
+                                    {
+                                        "word": "word",
+                                        "word_insert": null,
+                                        "correct": null,
+                                        "points": 0,
+                                        "_id": "000000000000000000000000"
+                                    },
+                                    {
+                                        "word": "word",
+                                        "word_insert": null,
+                                        "correct": null,
+                                        "points": 0,
+                                        "_id": "000000000000000000000000"
+                                    },
+                                    {
+                                        "word": "word",
+                                        "word_insert": null,
+                                        "correct": null,
+                                        "points": 0,
+                                        "_id": "000000000000000000000000"
+                                    },
+                                    {
+                                        "word": "word",
+                                        "word_insert": null,
+                                        "correct": null,
+                                        "points": 0,
+                                        "_id": "000000000000000000000000"
+                                    }
+                                ],
+                                "createdAt": "2022-01-01T00:00:00.000Z",
+                                "updatedAt": "2022-01-01T00:00:00.000Z"
+                            }
+                        }
+                    }
+                }
+            },
+            "recent_games": {
+                "description": "Lista delle partite recenti",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_all_game_data"
+                        },
+                        "example": {
+                            "data": [
+                                {
+                                    "_id": "000000000000000000000000",
+                                    "user": "000000000000000000000000",
+                                    "language": 1,
+                                    "game_time": 0,
+                                    "points": 0,
+                                    "record": false,
+                                    "max_round": 1,
+                                    "remaining_pause": 3,
+                                    "memorize_time_for_round": 21,
+                                    "writing_time_for_round": 28,
+                                    "complete": false,
+                                    "createdAt": "2022-01-01T00:00:00.000Z",
+                                    "updatedAt": "2022-01-01T00:00:00.000Z"
+                                },
+                                "..."
+                            ]
+                        }
+                    }
+                }
+            },
+            "game_rounds": {
+                "description": "Lista delle ultime 50 partite",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_all_data_preview"
+                        },
+                        "example": {
+                            "data": [
+                                {
+                                    "_id": "000000000000000000000000",
+                                    "round": 1,
+                                    "points": 0
+                                },
+                                "..."
+                            ]
+                        }
+                    }
+                }
+            },
+            "game_with_rounds": {
+                "description": "Infomazioni sui round della partita",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_game_rounds_data"
+                        },
+                        "example": {
+                            "data": {
+                                "_id": "000000000000000000000000",
+                                "game": {
+                                    "_id": "000000000000000000000000",
+                                    "language": 1
+                                },
+                                "round": 1,
+                                "words": [
+                                    {
+                                        "word": "word",
+                                        "word_insert": "word",
+                                        "correct": true,
+                                        "points": 1,
+                                        "_id": "000000000000000000000000"
+                                    },
+                                    {
+                                        "word": "word",
+                                        "word_insert": "word",
+                                        "correct": true,
+                                        "points": 1,
+                                        "_id": "000000000000000000000000"
+                                    },
+                                    {
+                                        "word": "word",
+                                        "word_insert": "word",
+                                        "correct": true,
+                                        "points": 1,
+                                        "_id": "000000000000000000000000"
+                                    },
+                                    {
+                                        "word": "word",
+                                        "word_insert": "word",
+                                        "correct": true,
+                                        "points": 1,
+                                        "_id": "000000000000000000000000"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "leaderboard_list": {
+                "description": "Lista delle posizioni nella classifica",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_leaderboard_list"
+                        },
+                        "examples": {
+                            "Leaderboard with country": {
+                                "value": {
+                                    "data": [
+                                        {
+                                            "_id": "000000000000000000000000",
+                                            "game": {
+                                                "_id": "000000000000000000000000",
+                                                "user": {
+                                                    "_id": "000000000000000000000000",
+                                                    "username": "Player4"
+                                                },
+                                                "points": 151
+                                            },
+                                            "type": 1,
+                                            "country": "000000000000000000000000",
+                                            "position": 1,
+                                            "prev_position": 1,
+                                            "__v": 0,
+                                            "createdAt": "2022-01-01T00:00:00.000Z",
+                                            "updatedAt": "2022-01-01T00:00:00.000Z"
+                                        }
+                                    ]
+                                }
+                            },
+                            "Leaderboard without country": {
+                                "value": {
+                                    "data": [
+                                        {
+                                            "_id": "000000000000000000000000",
+                                            "game": {
+                                                "_id": "000000000000000000000000",
+                                                "user": {
+                                                    "_id": "000000000000000000000000",
+                                                    "username": "Player4"
+                                                },
+                                                "points": 151
+                                            },
+                                            "type": 1,
+                                            "country": null,
+                                            "position": 1,
+                                            "prev_position": 1,
+                                            "__v": 0,
+                                            "createdAt": "2022-01-01T00:00:00.000Z",
+                                            "updatedAt": "2022-01-01T00:00:00.000Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "leaderboard_user": {
+                "description": "Posizione in classifica",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_leaderboard"
+                        },
+                        "examples": {
+                            "Leaderboard with country": {
+                                "value": {
+                                    "data": {
+                                        "_id": "000000000000000000000000",
+                                        "game": {
+                                            "_id": "000000000000000000000000",
+                                            "user": {
+                                                "_id": "000000000000000000000000",
+                                                "username": "Player4"
+                                            },
+                                            "points": 151
+                                        },
+                                        "type": 1,
+                                        "country": "000000000000000000000000",
+                                        "position": 1,
+                                        "prev_position": 1,
+                                        "__v": 0,
+                                        "createdAt": "2022-01-01T00:00:00.000Z",
+                                        "updatedAt": "2022-01-01T00:00:00.000Z"
+                                    }
+                                }
+                            },
+                            "Leaderboard without country": {
+                                "value": {
+                                    "data": {
+                                        "_id": "000000000000000000000000",
+                                        "game": {
+                                            "_id": "000000000000000000000000",
+                                            "user": {
+                                                "_id": "000000000000000000000000",
+                                                "username": "Player4"
+                                            },
+                                            "points": 151
+                                        },
+                                        "type": 1,
+                                        "country": null,
+                                        "position": 1,
+                                        "prev_position": 1,
+                                        "__v": 0,
+                                        "createdAt": "2022-01-01T00:00:00.000Z",
+                                        "updatedAt": "2022-01-01T00:00:00.000Z"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "leaderboard_types": {
+                "description": "Tipi di leaderboard supportati",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/response_leaderboard_type"
+                        },
+                        "example": {
+                            "data": [
+                                {
+                                    "type": 0,
+                                    "name": "name"
+                                },
+                                "..."
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/api/client/login": {
+            "post": {
+                "description": "Effettua il login",
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/login"
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/login"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    }
+                }
+            }
+        },
+        "/api/client/register/temporary": {
+            "get": {
+                "description": "Registra un nuovo utente temporaneo",
+                "tags": [
+                    "Users"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/login"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    }
+                }
+            }
+        },
+        "/api/client/register": {
+            "post": {
+                "description": "Registra un nuovo utente",
+                "tags": [
+                    "Users"
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/registration"
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#components/responses/login"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    }
+                }
+            }
+        },
+        "/api/client/check": {
+            "get": {
+                "description": "Controllo che il token sia valido",
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/base_response"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/client/logout": {
+            "get": {
+                "description": "Effettua il logout",
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/base_response"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/client": {
+            "get": {
+                "description": "Informazioni dell'utente",
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#components/responses/full_user"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/client/confirm": {
+            "get": {
+                "description": "Conferma l'indirizzo email",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "description": "Token inviato per email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "HTML con l'indicazione del successo dell'azione"
+                    },
+                    "400": {
+                        "description": "HTML con la descrizione dell'errore"
+                    }
+                }
+            }
+        },
+        "/api/client/change/password": {
+            "get": {
+                "description": "Form per inviare la modifica della password",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "description": "Token inviato per email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pagina web per il ripristino della password"
+                    },
+                    "400": {
+                        "description": "HTML con la descrizione dell'errore"
+                    }
+                }
+            },
+            "post": {
+                "description": "Resetta la password per l'utente",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "token",
+                        "description": "Token inviato per email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/change_password"
+                },
+                "responses": {
+                    "200": {
+                        "description": "HTML con l'indicazione del successo dell'azione"
+                    },
+                    "400": {
+                        "description": "HTML con la descrizione dell'errore"
+                    }
+                }
+            },
+            "put": {
+                "description": "Richiede un reset della password. Il link viene inviato per email",
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/change_password_email"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/base_response"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/client/settings": {
+            "put": {
+                "description": "Modifica le importazioni dell'utente",
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/setting"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/base_response"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/client/{id}": {
+            "get": {
+                "description": "Richiedo le informazioni di un utente attraverso l'id",
+                "tags": [
+                    "Users"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id dell'utente da ricercare",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/simple_user"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/country": {
+            "get": {
+                "description": "Ottiene tutti gli stati con le bandiere supportati",
+                "tags": [
+                    "Country"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/all_country"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/country/client": {
+            "get": {
+                "description": "Ottiene il country scelto dall'utente",
+                "tags": [
+                    "Country"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/user_country"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            },
+            "put": {
+                "description": "Aggiorna lo stato assegnato all'utente",
+                "tags": [
+                    "Country"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/full_user"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Rimuove il country selezionato dall'utente",
+                "tags": [
+                    "Country"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/user_delete_country"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/game/": {
+            "get": {
+                "description": "Ottiene l'ultima partita creata",
+                "tags": [
+                    "Game"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/game"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            },
+            "post": {
+                "description": "Genera una nuova partita",
+                "tags": [
+                    "Game"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/game_round"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/game/round": {
+            "get": {
+                "description": "Lista dell'ultimo round dell'ultima partita generata",
+                "tags": [
+                    "Game"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/game_round"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            },
+            "post": {
+                "description": "Genera un nuovo round per l'ultima partita generata dall'utente",
+                "tags": [
+                    "Game"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/game_round"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            },
+            "put": {
+                "description": "Controllo su parole inserite al termine del round",
+                "tags": [
+                    "Game"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/game_round"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/game_round"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/game/round/{id}": {
+            "get": {
+                "description": "informazioni di un terminato round",
+                "tags": [
+                    "Game"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Numero del round",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/game_round"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/game/recent": {
+            "get": {
+                "description": "Ottengo le ultime partite dell'utente",
+                "tags": [
+                    "Statistics"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/recent_games"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/game/{id}/rounds": {
+            "get": {
+                "description": "Ottengo i round per una specifica partita",
+                "tags": [
+                    "Statistics"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id della partita",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/game_rounds"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/game/{id}/round/{number}": {
+            "get": {
+                "description": "Ottengo il round indicato per una specifica partita",
+                "tags": [
+                    "Statistics"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Id della partita",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "number",
+                        "description": "Numero del round",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/game_with_rounds"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/leaderboard": {
+            "get": {
+                "description": "Ottiene la classifica con i filtri applicati",
+                "tags": [
+                    "Leaderboard"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "type",
+                        "description": "Tipo di classifica",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "start",
+                        "description": "Indice della posizione di inizio",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "count",
+                        "description": "Numero di elementi richiesti. Max = 100",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "country",
+                        "description": "Id o code del country per la leaderboard di tipo 1",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/leaderboard_list"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/leaderboard/client": {
+            "get": {
+                "description": "Ottiene la posizione in classifica dell'utente",
+                "tags": [
+                    "Leaderboard"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "type",
+                        "description": "Tipo di classifica",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "country",
+                        "description": "Id o code del country per la leaderboard di tipo 1",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/leaderboard_user"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/leaderboard/client/{idOrUsername}": {
+            "get": {
+                "description": "Ottiene la posizione in classifica di un utente",
+                "tags": [
+                    "Leaderboard"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "idOrUsername",
+                        "description": "Id o username di un utente",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "description": "Tipo di classifica",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "country",
+                        "description": "Id o code del country per la leaderboard di tipo 1",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/leaderboard_user"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        },
+        "/api/leaderboard/type": {
+            "get": {
+                "description": "Ottiene i tipi di leaderboard supportati dalle API",
+                "tags": [
+                    "Leaderboard"
+                ],
+                "security": [
+                    {
+                        "userAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/leaderboard_types"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/bad_request"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/no_token"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/no_access"
+                    }
+                }
+            }
+        }
+    },
+    "tags": []
+}

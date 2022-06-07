@@ -1,7 +1,7 @@
 import {Country} from "../home/classes/country";
 
 export class UserResponse {
-    data : UserInfo
+    data : UserInfo;
 }
 
 export class UserInfo{
@@ -33,8 +33,8 @@ export class Preferences {
 }
 
 export class Settings {
-  font_size : Number;
-  volume : Number;
-  sound : Boolean;
+  font_size : number;
+  volume : number;
+  sound : boolean;
 
 }

@@ -35,10 +35,10 @@ export class HomePlayComponent implements OnInit {
   }
 
   info() {
-    let text = 'This is a memory game where you have to remember the word the are shown on screen. \n\n ' +
-      'The game is divided in two phases: \n ' +
-      'MEMORIZATION PHASE: Some word are shown on screen. Try to remember more that you can in the time that is given \n' +
-      'INSERT PHASE: Insert the word that you remember. If you insert all the word you pass the level. \n\n If you forget at least one the game is over';
+    let text = 'This is a game to improve your memory. You have to read and memorize the words that are shown on the screen. \n\n ' +
+      'The rounds of the game are divided in two phases: \n ' +
+      'MEMORIZATION PHASE: Some words are shown on the screen. Memorize as much words as possible in the given time\n' +
+      'INSERT PHASE: Insert the words that you remember. If you insert all the words correctly you move on to the next round. \n\n If you forget or spell incorrectly one or more words, the game is over.';
     this.dialogManager.showDialog(SimpleTextComponent, () => {} , {data : text});
   }
 

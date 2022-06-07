@@ -1,10 +1,10 @@
-const {Port, UpdateOnLoad} = require('./config');
+const {UpdateOnLoad} = require('./config');
 const app = require("./app");
 const {Leaderboard} = require("./classes/leaderboard/leaderboard");
 const cron = require("node-cron");
 
-app.listen(Port | 3000, async () => {
-    console.log("Server listening on port " + (Port | 3000));
+app.listen(process.env.PORT || 3000, async () => {
+    console.log("Server listening on port " + 3000);
     // Primo aggiornamento della classifica
     if (UpdateOnLoad != null && UpdateOnLoad === 'true') {
         await Leaderboard.update();
