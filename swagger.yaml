@@ -378,7 +378,7 @@ components:
               createdAt: '2022-01-01T00:00:00.000Z'
               updatedAt: '2022-01-01T00:00:00.000Z'
 paths:
-  "\api\client\login":
+  "/api/client/login":
     post:
       description: Effettua il login
       tags:
@@ -386,7 +386,7 @@ paths:
       requestBody:
         "$ref": "#/components/requestBodies/client/login"
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Login effettuato con successo
@@ -395,13 +395,13 @@ paths:
               "$ref": "#/components/responses/client/login"
         '400':
           "$ref": "#/components/responses/bad_request"
-  "\api\client\register\temporary":
+  "/api/client/register/temporary":
     get:
       description: Registra un nuovo utente temporaneo
       tags:
         - Users
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Registrazione di un nuovo utente temporaneo
@@ -410,7 +410,7 @@ paths:
               "$ref": "#/components/responses/client/login"
         '400':
           "$ref": "#/components/responses/bad_request"
-  "\api\client\register":
+  "/api/client/register":
     post:
       description: Registra un nuovo utente
       tags:
@@ -418,7 +418,7 @@ paths:
       requestBody:
         "$ref": "#/components/requestBodies/client/registration"
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Token di accesso e uuid assegnato
@@ -428,7 +428,7 @@ paths:
                 "$ref": "#components/responses/client/login"
         '400':
           "$ref": "#/components/responses/bad_request"
-  "\api\client\check":
+  "/api/client/check":
     post:
       description: Controllo che il token sia valido
       tags:
@@ -436,7 +436,7 @@ paths:
       security:
         - userAuth: []
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           "$ref": "#/components/responses/base_response"
@@ -444,13 +444,13 @@ paths:
           "$ref": "#/components/responses/no_token"
         '403':
           "$ref": "#/components/responses/no_access"
-  "\api\client\logout":
+  "/api/client/logout":
     get:
       description: Effettua il logout
       tags:
         - Users
       produces:
-        - application/json
+        - application\json
       security:
         - userAuth: []
       responses:
@@ -462,7 +462,7 @@ paths:
           "$ref": "#/components/responses/no_token"
         '403':
           "$ref": "#/components/responses/no_access"
-  "\api\client":
+  "/api/client":
     get:
       description: Informazioni dell'utente
       tags:
@@ -470,7 +470,7 @@ paths:
       security:
         - userAuth: []
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Dati dell'utente
@@ -484,7 +484,7 @@ paths:
           "$ref": "#/components/responses/no_token"
         '403':
           "$ref": "#/components/responses/no_access"
-  "\api\client\confirm":
+  "/api/client/confirm":
     get:
       description: Conferma l'indirizzo email
       tags:
@@ -502,7 +502,7 @@ paths:
           description: HTML con l'indicazione del successo dell'azione
         '400':
           description: HTML con la descrizione dell'errore
-  "\api\client\change\password":
+  "/api/client/change/password":
     get:
       description: Form per inviare la modifica della password
       tags:
@@ -514,7 +514,7 @@ paths:
           required: true
           type: string
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Pagina web per il ripristino della password
@@ -543,7 +543,7 @@ paths:
           required: true
           type: string
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Successo dell'azione
@@ -562,7 +562,7 @@ paths:
           required: true
           type: string
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Successo dell'azione
@@ -570,25 +570,25 @@ paths:
           description: Errore durante l'esecuzione dell'azione
         '403':
           description: Accesso non consentito. Token non valido
-  "\api\country":
+  "/api/country":
     get:
       description: Ottiene tutti gli stati con le bandiere supportati
       tags:
         - Country
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Lista degli stati
         '403':
           description: Accesso negato
-  "\api\country\client":
+  "/api/country/client":
     get:
       description: Ottiene il country scelto dall'utente
       tags:
         - Country
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Il country selezionato dall'utente
@@ -601,7 +601,7 @@ paths:
       tags:
         - Country
       produces:
-        - application/json
+        - application\json
       parameters:
         - name: id
           description: Id dello stato
@@ -625,7 +625,7 @@ paths:
       tags:
         - Country
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Il country selezionato dall'utente
@@ -633,13 +633,13 @@ paths:
           description: Errore riscontrato nell'esecuzione
         '403':
           description: Accesso negato
-  "\api\game\":
+  "/api/game/":
     get:
       description: Ottiene l'ultima partita creata
       tags:
         - Game
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: L'istanza del gioco
@@ -657,7 +657,7 @@ paths:
       tags:
         - Game
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: L'istanza del gioco
@@ -667,13 +667,13 @@ paths:
           description: Token non passato
         '403':
           description: Sessione o token non validi
-  "\api\game\round":
+  "/api/game/round":
     post:
       description: Genera un nuovo round per l'ultima partita generata dall'utente
       tags:
         - Game
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Lista dei round
@@ -688,7 +688,7 @@ paths:
       tags:
         - Game
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Lista dei round
@@ -703,7 +703,7 @@ paths:
       tags:
         - Game
       produces:
-        - application/json
+        - application\json
       parameters:
         - name: words
           description: Lista delle parole inserite dall'utente
@@ -726,13 +726,13 @@ paths:
           description: Token non passato
         '403':
           description: Sessione o token non validi
-  "\api\game\recent":
+  "/api/game/recent":
     put:
       description: Ottengo le ultime partite dell'utente
       tags:
         - Statistics
       produces:
-        - application/json
+        - application\json
       parameters:
       responses:
         '200':
@@ -743,13 +743,13 @@ paths:
           description: Token non passato
         '403':
           description: Sessione o token non validi
-  "\api\game\{id}\rounds":
+  "/api/game/{id}/rounds":
     get:
       description: Ottengo i round per una specifica partita
       tags:
         - Statistics
       produces:
-        - application/json
+        - application\json
       parameters:
       responses:
         '200':
@@ -760,13 +760,13 @@ paths:
           description: Token non passato
         '403':
           description: Sessione o token non validi
-  "\api\game\{id}\round\{number}":
+  "/api/game/{id}/round/{number}":
     get:
       description: Ottengo il round indicato per una specifica partita
       tags:
         - Statistics
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Round della partita richiesto
@@ -776,13 +776,13 @@ paths:
           description: Token non passato
         '403':
           description: Sessione o token non validi
-  "\api\leaderboard":
+  "/api/leaderboard":
     get:
       description: Ottiene la classifica con i filtri applicati
       tags:
         - Leaderboard
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Classifica
@@ -790,13 +790,13 @@ paths:
           description: Errore durante la generazione
         '403':
           description: Accesso non consentito
-  "\api\leaderboard\client":
+  "/api/leaderboard/client":
     get:
       description: Ottiene la posizione in classifica dell'utente
       tags:
         - Leaderboard
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Posizione in classifica
@@ -804,14 +804,14 @@ paths:
           description: Errore durante la generazione
         '403':
           description: Accesso non consentito
-  "\api\leaderboard\client\:idOrUsername":
+  "/api/leaderboard/client/{idOrUsername}":
     get:
       description: Ottiene la posizione in classifica di un utente in base all'id
         o al username
       tags:
         - Leaderboard
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: Posizione in classifica
@@ -819,13 +819,13 @@ paths:
           description: Errore durante la generazione
         '403':
           description: Accesso non consentito
-  "\api\leaderboard\type":
+  "/api/leaderboard/type":
     get:
       description: Ottiene i tipi di leaderboard supportati dalle API
       tags:
         - Leaderboard
       produces:
-        - application/json
+        - application\json
       responses:
         '200':
           description: I tipi di classifica
