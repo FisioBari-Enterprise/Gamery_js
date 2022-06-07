@@ -15,6 +15,24 @@ beforeAll((done) => {
     });
 });
 
+test('Ottenimento della classifica globale', () => {
+    return request(app)
+        .get('/api/leaderboard')
+        .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
+        .then(response => {
+            expect(response.status).toBe(200)
+        })
+})
+
+test('Ottenimento di una classifica locale', () => {
+    return request(app)
+        .get('/api/leaderboard?type=1&country=it')
+        .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
+        .then(response => {
+            expect(response.status).toBe(200)
+        })
+})
+
 afterAll(async () => {
     await mongoose.connection.close();
 });

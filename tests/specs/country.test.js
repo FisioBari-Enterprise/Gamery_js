@@ -24,7 +24,7 @@ test('Ottenimento di tutti i country', () => {
         })
 })
 
-test('Ottenimento country di dell\'utente ', () => {
+test('Ottenimento country dell\'utente ', () => {
     return request(app)
         .get('/api/country/client')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
