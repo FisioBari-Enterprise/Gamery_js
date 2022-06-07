@@ -16,18 +16,18 @@
     <div class="row button-area">
       <!--No logged-->
       <ng-container *ngIf="currentType === 0">
-        <!--<div class="col">
+        <div class="col">
           <app-button [title]="'SETTINGS'" (click)="openSettings()" [image]="'settings_icon'" [colorSchema]="colorSchemaSettings"></app-button>
-        </div>-->
+        </div>
         <div class="col">
           <app-button [title]="'LOGIN'" (click)="onLoginClick()" [image]="'login'" [colorSchema]="colorSchemaLogin"></app-button>
         </div>
       </ng-container>
       <!--Logged-->
       <ng-container *ngIf="currentType === 1">
-        <!--<div class="col">
+        <div class="col">
           <app-button [title]="'SETTINGS'" (click)="openSettings()" [image]="'settings_icon'" [colorSchema]="colorSchemaSettings"></app-button>
-        </div>-->
+        </div>
         <div class="col">
           <app-button [title]="'LOGOUT'" (click)="onLogoutClick()" [image]="'logout'" [colorSchema]="colorSchemaLogout"></app-button>
         </div>

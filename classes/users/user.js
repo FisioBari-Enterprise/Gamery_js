@@ -373,8 +373,17 @@ class User {
         await this.buildUser();
 
         //Controlla che i tipi delle variabili siano corretti
-        if (typeof font_size != "number" || typeof volume != "number" || typeof sound != "boolean") {
+        /*if (typeof font_size != "number" || typeof volume != "number" || typeof sound != "boolean") {
             throw "Typing does not match";
+        }*/
+        if(typeof font_size != "number"){
+            throw "Typing of font size does not match";
+        }
+        if(typeof volume != "number"){
+            throw "Typing of volume does not match";
+        }
+        if(typeof sound != "boolean"){
+            throw "Typing of sound does not match";
         }
         //Controlla che i valori delle variabili siano nel range ammesso
         if (font_size < 10 || font_size > 24) {

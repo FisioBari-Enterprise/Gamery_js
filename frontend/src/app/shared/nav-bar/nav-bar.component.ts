@@ -247,7 +247,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
   openSettings() {
     //Mostro dialog delle impostazioni
-    this.dialog.showDialog(SettingsComponent, () => {});
+    this.dialog.showDialog(SettingsComponent, () => {},{data : this.userInfo});
   }
 
   /**
