@@ -81,7 +81,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     if (uuidUser != null && this.currentType !== NavBarType.ShowHome) {
       this.login();
     } else {
-      if (uuid === null || this.currentType === NavBarType.ShowHome) {
+      if (uuid === null) {
         this.newTemporaryUser();
       } else {
         this.checkToken();
@@ -149,6 +149,14 @@ export class NavBarComponent implements OnInit, OnDestroy {
       }, error => {
         this.dialog.closeDialog();
         let err = error.error.error;
+        // Controlla credenziali errate
+        if (err === 'password: password not correct') {
+          // Login con l'utente temporaneo salvato
+          const uuid = localStorage.getItem('uuid')!;
+          localStorage.removeItem('uuidUser');
+          this.loginUserTemporary(uuid);
+          return;
+        }
         if (err != null) {
           err = err.split(':')[1];
         }
@@ -177,7 +185,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         this.getUserInfo()
       }, error => {
         if(error.status == 403 || error.status == 401) {
-          //Il token non è più valido quindi fa il login
+          // Il token non è più valido quindi fa il login
           const uuid = localStorage.getItem('uuid')!;
           this.loginUserTemporary(uuid);
         } else {
