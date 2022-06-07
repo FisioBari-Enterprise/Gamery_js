@@ -39,7 +39,7 @@ test('Cambio del country per l\'utente che ha fatto la richiesta', () => {
         })
 })
 
-test('Ottenimento country dell\'utente ', () => {
+test('Ottenimento country dell\'utente', () => {
     return request(app)
         .get('/api/country/client')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
