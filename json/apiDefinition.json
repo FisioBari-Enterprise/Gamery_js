@@ -386,47 +386,79 @@
           }
         },
         "simple_user": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string"
-            },
-            "username": {
-              "type": "string"
-            },
-            "statistics": {
-              "type": "object",
-              "properties": {
-                "game_time": {
-                  "type": "number"
-                },
-                "tot_games": {
-                  "type": "number"
-                },
-                "tot_points": {
-                  "type": "number"
-                },
-                "max_points": {
-                  "type": "number"
+          "scheme": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "statistics": {
+                      "type": "object",
+                      "properties": {
+                        "game_time": {
+                          "type": "number"
+                        },
+                        "tot_games": {
+                          "type": "number"
+                        },
+                        "tot_points": {
+                          "type": "number"
+                        },
+                        "max_points": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "country": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "updatedAt": {
+                        "type": "string"
+                      }
+                    }
+                  }
                 }
               }
-            },
-            "country": {
-              "_id": {
-                "type": "string"
+            }
+          },
+          "example": {
+            "data": {
+              "statistics": {
+                "game_time": 30,
+                "tot_games": 2,
+                "tot_points": 200,
+                "max_points": 100,
+                "best_placement": 1
               },
-              "code": {
-                "type": "string"
+              "_id": "000000000000000000000000",
+              "username": "username",
+              "country": {
+                "_id": "000000000000000000000000",
+                "code": "af",
+                "name": "Afghanistan",
+                "createdAt": "2022-01-01T00:00:00.0000Z",
+                "updatedAt": "2022-01-01T00:00:00.0000Z"
               },
-              "name": {
-                "type": "string"
-              },
-              "createdAt": {
-                "type": "string"
-              },
-              "updatedAt": {
-                "type": "string"
-              }
+              "createdAt": "2022-01-01T00:00:00.0000Z",
+              "updatedAt": "2022-01-01T00:00:00.0000Z"
             }
           }
         }

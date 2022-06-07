@@ -39,6 +39,12 @@ const swaggerOptions = {
 };
 //End point per la documentazione
 const swaggerDocument = swaggerJsDoc(swaggerOptions);
+// Salva su file la documentazione la documentazione
+try {
+    //fs.writeFileSync('./json/apiDocProduction.json', JSON.stringify(swaggerDocument, null, 4))
+} catch (error) {
+    console.log('Impossibile salvare su file')
+}
 // console.log(JSON.stringify(swaggerDocument));
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument, {
     explorer: true

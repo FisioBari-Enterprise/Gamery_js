@@ -82,7 +82,7 @@ router.get("/register/temporary", function (req, res) {
  *          200:
  *              description: Token di accesso e uuid assegnato
  *              content:
- *                  object:
+ *                  application\json:
  *                      schema:
  *                          $ref: '#components/responses/client/login'
  *          400:
@@ -130,6 +130,8 @@ router.get("/check", Token.autenticateUser, function (req, res) {
  *      tags: [Users]
  *      produces:
  *          - application/json
+ *      security:
+ *          - userAuth: []
  *      responses:
  *          200:
  *              $ref: '#/components/responses/base_response'
@@ -155,6 +157,8 @@ router.get('/logout', Token.autenticateUser, async function (req, res) {
  *  get:
  *      description: Informazioni dell'utente
  *      tags: [Users]
+ *      security:
+ *          - userAuth: []
  *      produces:
  *          - application/json
  *      responses:
@@ -162,11 +166,14 @@ router.get('/logout', Token.autenticateUser, async function (req, res) {
  *              description: Dati dell'utente
  *              content:
  *                  application\json:
- *                      $ref: '#/components/responses/client/user'
+ *                      schema:
+ *                          $ref: '#components/responses/client/user'
  *          400:
- *              description: Errore durante l'esecuzione dell'azione
+ *              $ref: '#/components/responses/bad_request'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Accesso non consentito
+ *              $ref: '#/components/responses/no_access'
  */
 router.get("", Token.autenticateUser, async function(req,res){
 
@@ -191,14 +198,12 @@ router.get("", Token.autenticateUser, async function(req,res){
  *            required: true
  *            type: string
  *      produces:
- *          - application/json
+ *          - text/html
  *      responses:
  *          200:
- *              description: Risultato dell'operazione
+ *              description: HTML con l'indicazione del successo dell'azione
  *          400:
- *              description: Errore durante l'esecuzione dell'azione
- *          403:
- *              description: Accesso non consentito. Token non valido
+ *              description: HTML con la descrizione dell'errore
  */
 router.get("/confirm", UserValidator.checkConfirmEmail, function(req,res){
     return StaticFunctions.sendResultHTML(res, 'Account successfully confirmed', false);

@@ -1,77 +1,490 @@
+---
 openapi: 3.0.0
 info:
   title: Gamery js
   version: '0.1'
+servers:
+  - url: http://localhost:3000
+    description: Development
+  - url: https://web-gamery.herokuapp.com
+    description: Production
+components:
+  securitySchemes:
+    userAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas: {}
+  requestBodies:
+    client:
+      login:
+        description: Dati per effettuare il login
+        require: true
+        content:
+          application\json:
+            schema:
+              oneOf:
+                temporary:
+                  type: object
+                  properties:
+                    uuid:
+                      type: string
+                credentials:
+                  type: object
+                  properties:
+                    usernameEmail:
+                      type: string
+                    password:
+                      type: string
+            example:
+              uuid: 00000000-0000-0000-0000-000000000000
+      registration:
+        description: Dati per effettuare la registrazione del nuovo utente
+        require: true
+        content:
+          application\json:
+            schema:
+              type: object
+              required: true
+              properties:
+                uuid:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+            example:
+              uuid: 00000000-0000-0000-0000-000000000000
+              username: test
+              email: test@gamery.com
+              password: password
+    change_password_body:
+      type: object
+      required: true
+      properties:
+        password:
+          type: string
+        passwordConfirm:
+          type: string
+    change_password_email_body:
+      type: object
+      required: true
+      properties:
+        email:
+          type: string
+    setting_body:
+      type: object
+      required: true
+      properties:
+        font_size:
+          type: number
+        volume:
+          type: number
+        sound:
+          type: boolean
+    change_country_body:
+      type: object
+      required: true
+      properties:
+        id:
+          type: string
+        code:
+          type: string
+    game_body:
+      type: object
+      required: true
+      properties:
+        words:
+          type: array
+          item: string
+        game_time:
+          type: number
+  responses:
+    no_token:
+      description: Nessun token di accesso trovato
+      content:
+        application\json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+          example:
+            error: Token not found
+    no_access:
+      description: Accesso non consentito. Token o sessione non validi
+      content:
+        application\json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+          example:
+            error: Token not valid
+    base_response:
+      description: Successo del completamento dell'azione
+      content:
+        application\json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: boolean
+          example:
+            data: true
+    bad_request:
+      description: Errore durante l'esecuzione dell'azione
+      content:
+        application\json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+          example:
+            error: Descrizione dell'errore riscontrato
+    client:
+      login:
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                access:
+                  type: string
+                uuid:
+                  type: string
+        example:
+          access: Token di accesso
+          uuid: 00000000-0000-0000-0000-000000000000
+      user:
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                _id:
+                  type: string
+                username:
+                  type: string
+                uuid:
+                  type: string
+                active:
+                  type: boolean
+                createdAt:
+                  type: string
+                updatedAt:
+                  type: string
+                settings:
+                  type: object
+                  properties:
+                    font_size:
+                      type: number
+                    volume:
+                      type: number
+                    sound:
+                      type: boolean
+                preferences:
+                  type: object
+                  properties:
+                    language:
+                      type: number
+                    color_icon:
+                      type: array
+                      item: string
+                    orientation_icon:
+                      type: number
+                statistics:
+                  type: object
+                  properties:
+                    game_time:
+                      type: number
+                    tot_games:
+                      type: number
+                    tot_points:
+                      type: number
+                    max_points:
+                      type: number
+                country:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    code:
+                      type: string
+                    name:
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
+        example:
+          data:
+            statistics:
+              game_time: 30
+              tot_games: 2
+              tot_points: 200
+              max_points: 100
+              best_placement: 1
+            preferences:
+              language: 1
+              colors_icon:
+                - "#2AF39A"
+                - "#00A1F9"
+              orientation_icon: 0
+            settings:
+              font_size: 14
+              volume: 8
+              sound: true
+            _id: '000000000000000000000000'
+            username: username
+            uuid: 00000000-0000-0000-0000-000000000000
+            active: true
+            country:
+              _id: '000000000000000000000000'
+              code: af
+              name: Afghanistan
+              createdAt: '2022-01-01T00:00:00.0000Z'
+              updatedAt: '2022-01-01T00:00:00.0000Z'
+            createdAt: '2022-01-01T00:00:00.0000Z'
+            updatedAt: '2022-01-01T00:00:00.0000Z'
+      simple_user:
+        scheme:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  username:
+                    type: string
+                  statistics:
+                    type: object
+                    properties:
+                      game_time:
+                        type: number
+                      tot_games:
+                        type: number
+                      tot_points:
+                        type: number
+                      max_points:
+                        type: number
+                  country:
+                    _id:
+                      type: string
+                    code:
+                      type: string
+                    name:
+                      type: string
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
+        example:
+          data:
+            statistics:
+              game_time: 30
+              tot_games: 2
+              tot_points: 200
+              max_points: 100
+              best_placement: 1
+            _id: '000000000000000000000000'
+            username: username
+            country:
+              _id: '000000000000000000000000'
+              code: af
+              name: Afghanistan
+              createdAt: '2022-01-01T00:00:00.0000Z'
+              updatedAt: '2022-01-01T00:00:00.0000Z'
+            createdAt: '2022-01-01T00:00:00.0000Z'
+            updatedAt: '2022-01-01T00:00:00.0000Z'
+    country:
+      allCountry:
+        type: object
+        properties:
+          type: array
+          item:
+            type: object
+            properties:
+              _id:
+                type: string
+              _code:
+                type: string
+              _name:
+                type: string
+              _createdAt:
+                type: string
+              _updatedAt:
+                type: string
+    game:
+      game:
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                game:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    user:
+                      type: string
+                    language:
+                      type: number
+                    game_time:
+                      type: number
+                    points:
+                      type: number
+                    record:
+                      type: boolean
+                    max_round:
+                      type: number
+                    remaining_pause:
+                      type: number
+                    memorize_time_for_round:
+                      type: number
+                    writing_time_for_round:
+                      type: number
+                    complete:
+                      type: boolean
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
+        example:
+          data:
+            game:
+              _id: '000000000000000000000000'
+              user: '000000000000000000000000'
+              language: 1
+              game_time: 0
+              points: 0
+              record: false
+              max_round: 1
+              remaining_pause: 3
+              memorize_time_for_round: 21
+              writing_time_for_round: 28
+              complete: false
+              createdAt: '2022-01-01T00:00:00.000Z'
+              updatedAt: '2022-01-01T00:00:00.000Z'
 paths:
-  "/api/client/login":
+  "\api\client\login":
     post:
       description: Effettua il login
       tags:
         - Users
-
+      requestBody:
+        "$ref": "#/components/requestBodies/client/login"
+      produces:
+        - application/json
       responses:
         '200':
           description: Login effettuato con successo
-  "/api/client/register/temporary":
-    post:
+          content:
+            application\json:
+              "$ref": "#/components/responses/client/login"
+        '400':
+          "$ref": "#/components/responses/bad_request"
+  "\api\client\register\temporary":
+    get:
       description: Registra un nuovo utente temporaneo
       tags:
         - Users
-
+      produces:
+        - application/json
       responses:
         '200':
-          description: Token di accesso e uuid assegnato
+          description: Registrazione di un nuovo utente temporaneo
+          content:
+            application\json:
+              "$ref": "#/components/responses/client/login"
         '400':
-          description: Errore riscontrato in fase di creazione
-  "/api/client/register":
+          "$ref": "#/components/responses/bad_request"
+  "\api\client\register":
     post:
       description: Registra un nuovo utente
       tags:
         - Users
-
+      requestBody:
+        "$ref": "#/components/requestBodies/client/registration"
+      produces:
+        - application/json
       responses:
         '200':
           description: Token di accesso e uuid assegnato
+          content:
+            application\json:
+              schema:
+                "$ref": "#components/responses/client/login"
         '400':
-          description: Errore riscontrato in fase di creazione
-  "/api/client/check":
+          "$ref": "#/components/responses/bad_request"
+  "\api\client\check":
     post:
-      description: Controllo che il token passato sia valido
+      description: Controllo che il token sia valido
       tags:
         - Users
-
+      security:
+        - userAuth: []
+      produces:
+        - application/json
       responses:
         '200':
-          description: Token di accesso e uuid assegnato
+          "$ref": "#/components/responses/base_response"
+        '401':
+          "$ref": "#/components/responses/no_token"
         '403':
-          description: Accesso non consentito
-  "/api/client/logout":
+          "$ref": "#/components/responses/no_access"
+  "\api\client\logout":
     get:
-      description: Effettua ol logout
+      description: Effettua il logout
       tags:
         - Users
-
+      produces:
+        - application/json
+      security:
+        - userAuth: []
       responses:
         '200':
-          description: Risposta di base
+          "$ref": "#/components/responses/base_response"
         '400':
-          description: Errore durante l'esecuzione dell'azione
+          "$ref": "#/components/responses/bad_request"
+        '401':
+          "$ref": "#/components/responses/no_token"
         '403':
-          description: Accesso non consentito
-  "/api/client":
+          "$ref": "#/components/responses/no_access"
+  "\api\client":
     get:
       description: Informazioni dell'utente
       tags:
         - Users
-
+      security:
+        - userAuth: []
+      produces:
+        - application/json
       responses:
         '200':
           description: Dati dell'utente
+          content:
+            application\json:
+              schema:
+                "$ref": "#components/responses/client/user"
         '400':
-          description: Errore durante l'esecuzione dell'azione
+          "$ref": "#/components/responses/bad_request"
+        '401':
+          "$ref": "#/components/responses/no_token"
         '403':
-          description: Accesso non consentito
-  "/api/client/confirm":
+          "$ref": "#/components/responses/no_access"
+  "\api\client\confirm":
     get:
       description: Conferma l'indirizzo email
       tags:
@@ -82,15 +495,14 @@ paths:
           in: query
           required: true
           type: string
-
+      produces:
+        - text/html
       responses:
         '200':
-          description: Risultato dell'operazione
+          description: HTML con l'indicazione del successo dell'azione
         '400':
-          description: Errore durante l'esecuzione dell'azione
-        '403':
-          description: Accesso non consentito. Token non valido
-  "/api/client/change/password":
+          description: HTML con la descrizione dell'errore
+  "\api\client\change\password":
     get:
       description: Form per inviare la modifica della password
       tags:
@@ -100,12 +512,12 @@ paths:
           description: Token inviato per email
           in: query
           required: true
-          schema:
-            type: string
-
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
-          description: Pagina web
+          description: Pagina web per il ripristino della password
         '400':
           description: Errore durante l'esecuzione dell'azione
         '403':
@@ -119,21 +531,19 @@ paths:
           description: Token inviato per email
           in: query
           required: true
-          schema:
-           type: string
+          type: string
         - name: password
           description: La nuova password
           in: formData
           required: true
-          schema:
-            type: string
+          type: string
         - name: passwordConfirm
           description: Il doppio inserimento della nuova password
           in: formData
           required: true
-          schema:
-           type: string
-
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Successo dell'azione
@@ -150,9 +560,9 @@ paths:
           description: Email al quale inviare il reset della password
           in: formData
           required: true
-          schema:
-           type: string
-
+          type: string
+      produces:
+        - application/json
       responses:
         '200':
           description: Successo dell'azione
@@ -160,35 +570,25 @@ paths:
           description: Errore durante l'esecuzione dell'azione
         '403':
           description: Accesso non consentito. Token non valido
-  "/api/country":
+  "\api\country":
     get:
       description: Ottiene tutti gli stati con le bandiere supportati
       tags:
         - Country
-
+      produces:
+        - application/json
       responses:
         '200':
           description: Lista degli stati
         '403':
           description: Accesso negato
-    post:
-      description: Aggiunge i country al DB. Disponibile solo in localhost
-      tags:
-        - Country
-
-      responses:
-        '200':
-          description: Il risultato dell'operazione
-        '400':
-          description: L'errore riscontrato se trovato
-        '403':
-          description: Accesso negato
-  "/api/country/client":
+  "\api\country\client":
     get:
       description: Ottiene il country scelto dall'utente
       tags:
         - Country
-
+      produces:
+        - application/json
       responses:
         '200':
           description: Il country selezionato dall'utente
@@ -200,7 +600,8 @@ paths:
       description: Aggiorna lo stato assegnato all'utente
       tags:
         - Country
-
+      produces:
+        - application/json
       parameters:
         - name: id
           description: Id dello stato
@@ -212,11 +613,6 @@ paths:
           in: formData
           required: false
           type: string
-        - name: remove
-          description: Rimuove la preferenza dello stato
-          in: formData
-          required: false
-          type: boolean
       responses:
         '200':
           description: L'utente aggiornato
@@ -228,7 +624,8 @@ paths:
       description: Rimuove il country selezionato dall'utente
       tags:
         - Country
-
+      produces:
+        - application/json
       responses:
         '200':
           description: Il country selezionato dall'utente
@@ -236,32 +633,19 @@ paths:
           description: Errore riscontrato nell'esecuzione
         '403':
           description: Accesso negato
-  "/api/game/word/":
-    post:
-      description: Aggiunge le parole al DB (solo LOCALHOST)
-      tags:
-        - Word
-
-      parameters:
-        - name: words
-          description: All words
-          in: formData
-          required: true
-          type: object
-      responses:
-        '200':
-          description: Tutto salvato correttamente
-        '403':
-          description: Accesso non consentito
-  "/api/game/":
+  "\api\game\":
     get:
       description: Ottiene l'ultima partita creata
       tags:
         - Game
-
+      produces:
+        - application/json
       responses:
         '200':
           description: L'istanza del gioco
+          content:
+            application\json:
+              "$ref": "#/components/responses/game/game"
         '400':
           description: Istanza non trovata
         '401':
@@ -272,7 +656,8 @@ paths:
       description: Genera una nuova partita
       tags:
         - Game
-
+      produces:
+        - application/json
       responses:
         '200':
           description: L'istanza del gioco
@@ -282,12 +667,13 @@ paths:
           description: Token non passato
         '403':
           description: Sessione o token non validi
-  "/api/game/round":
+  "\api\game\round":
     post:
       description: Genera un nuovo round per l'ultima partita generata dall'utente
       tags:
         - Game
-
+      produces:
+        - application/json
       responses:
         '200':
           description: Lista dei round
@@ -301,7 +687,8 @@ paths:
       description: informazioni di un terminato round
       tags:
         - Game
-
+      produces:
+        - application/json
       responses:
         '200':
           description: Lista dei round
@@ -315,7 +702,8 @@ paths:
       description: Controllo su parole inserite al termine del round
       tags:
         - Game
-
+      produces:
+        - application/json
       parameters:
         - name: words
           description: Lista delle parole inserite dall'utente
@@ -338,12 +726,13 @@ paths:
           description: Token non passato
         '403':
           description: Sessione o token non validi
-  "/api/game/recent":
+  "\api\game\recent":
     put:
       description: Ottengo le ultime partite dell'utente
       tags:
         - Statistics
-
+      produces:
+        - application/json
       parameters:
       responses:
         '200':
@@ -354,20 +743,46 @@ paths:
           description: Token non passato
         '403':
           description: Sessione o token non validi
-  "/api/":
+  "\api\game\{id}\rounds":
     get:
-      description: End point di prova
+      description: Ottengo i round per una specifica partita
       tags:
-        - Default
-
+        - Statistics
+      produces:
+        - application/json
+      parameters:
       responses:
         '200':
-          description: Risposta corretta
-  "/api/leaderboard":
+          description: Elenco dei round per la partita
+        '400':
+          description: Errore riscontrato in fase di update
+        '401':
+          description: Token non passato
+        '403':
+          description: Sessione o token non validi
+  "\api\game\{id}\round\{number}":
+    get:
+      description: Ottengo il round indicato per una specifica partita
+      tags:
+        - Statistics
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Round della partita richiesto
+        '400':
+          description: Errore riscontrato in fase di update
+        '401':
+          description: Token non passato
+        '403':
+          description: Sessione o token non validi
+  "\api\leaderboard":
     get:
       description: Ottiene la classifica con i filtri applicati
       tags:
         - Leaderboard
+      produces:
+        - application/json
       responses:
         '200':
           description: Classifica
@@ -375,17 +790,46 @@ paths:
           description: Errore durante la generazione
         '403':
           description: Accesso non consentito
-  "/api/leaderboard/type":
+  "\api\leaderboard\client":
+    get:
+      description: Ottiene la posizione in classifica dell'utente
+      tags:
+        - Leaderboard
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Posizione in classifica
+        '400':
+          description: Errore durante la generazione
+        '403':
+          description: Accesso non consentito
+  "\api\leaderboard\client\:idOrUsername":
+    get:
+      description: Ottiene la posizione in classifica di un utente in base all'id
+        o al username
+      tags:
+        - Leaderboard
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Posizione in classifica
+        '400':
+          description: Errore durante la generazione
+        '403':
+          description: Accesso non consentito
+  "\api\leaderboard\type":
     get:
       description: Ottiene i tipi di leaderboard supportati dalle API
       tags:
         - Leaderboard
-
+      produces:
+        - application/json
       responses:
         '200':
           description: I tipi di classifica
         '403':
           description: Accesso non consentito
-components: {}
 tags: []
 
