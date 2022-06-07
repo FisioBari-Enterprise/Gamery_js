@@ -192,15 +192,13 @@ router.get("/confirm", UserValidator.checkConfirmEmail, function(req,res){
  *            description: Token inviato per email
  *            in: query
  *            required: true
- *            type: string
- *
+ *            schema:
+ *              type: string
  *      responses:
  *          200:
  *              description: Pagina web per il ripristino della password
  *          400:
- *              description: Errore durante l'esecuzione dell'azione
- *          403:
- *              description: Accesso non consentito. Token non valido
+ *              description: HTML con la descrizione dell'errore
  */
 router.get("/change/password", UserValidator.checkResetPassword, async function(req,res) {
     // Renderizza la pagina HTML
@@ -217,25 +215,15 @@ router.get("/change/password", UserValidator.checkResetPassword, async function(
  *            description: Token inviato per email
  *            in: query
  *            required: true
- *            type: string
- *          - name: password
- *            description: La nuova password
- *            in: formData
- *            required: true
- *            type: string
- *          - name: passwordConfirm
- *            description: Il doppio inserimento della nuova password
- *            in: formData
- *            required: true
- *            type: string
- *
+ *            schema:
+ *              type: string
+ *      requestBody:
+ *          $ref: '#/components/requestBodies/change_password'
  *      responses:
  *          200:
- *              description: Successo dell'azione
+ *              description: HTML con l'indicazione del successo dell'azione
  *          400:
- *              description: Errore durante l'esecuzione dell'azione
- *          403:
- *              description: Accesso non consentito. Token non valido
+ *              description: HTML con la descrizione dell'errore
  */
 router.post("/change/password", UserValidator.checkResetPassword, async function(req,res){
     const link = '/api/client/change/password?token=' + req.query.token;
@@ -254,26 +242,26 @@ router.post("/change/password", UserValidator.checkResetPassword, async function
         return StaticFunctions.sendResultHTML(res, typeof  error === 'string' ? error : error.message, true, link);
     }
 });
+
 /**
  * @openapi
  * /api/client/change/password:
  *  put:
  *      description: Richiede un reset della password. Il link viene inviato per email
  *      tags: [Users]
- *      parameters:
- *          - name: email
- *            description: Email al quale inviare il reset della password
- *            in: formData
- *            required: true
- *            type: string
- *
+ *      security:
+ *          - userAuth: []
+ *      requestBody:
+ *          $ref: '#/components/requestBodies/change_password_email'
  *      responses:
  *          200:
- *              description: Successo dell'azione
+ *              $ref: '#/components/responses/base_response'
  *          400:
- *              description: Errore durante l'esecuzione dell'azione
+ *              $ref: '#/components/responses/bad_request'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Accesso non consentito. Token non valido
+ *              $ref: '#/components/responses/no_access'
  */
 router.put("/change/password", Token.autenticateUser, async function(req,res) {
     const user = new User(req.user._id);
@@ -291,6 +279,26 @@ router.put("/change/password", Token.autenticateUser, async function(req,res) {
     }
 });
 
+/**
+ * @openapi
+ * /api/client/settings:
+ *  put:
+ *      description: Modifica le importazioni dell'utente
+ *      tags: [Users]
+ *      security:
+ *          - userAuth: []
+ *      requestBody:
+ *          $ref: '#/components/requestBodies/setting'
+ *      responses:
+ *          200:
+ *              $ref: '#/components/responses/full_user'
+ *          400:
+ *              $ref: '#/components/responses/bad_request'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
+ *          403:
+ *              $ref: '#/components/responses/no_access'
+ */
 router.put('/settings', Token.autenticateUser, async function(req, res) {
     const user = new User(req.user._id);
 
@@ -307,25 +315,29 @@ router.put('/settings', Token.autenticateUser, async function(req, res) {
 });
 
 /**
- * * @openapi
- * /api/client/id:
- *  put:
- *      description: Richiedo le informazioni indicate dall'id
+ * @openapi
+ * /api/client/{id}:
+ *  get:
+ *      description: Richiedo le informazioni di un utente attraverso l'id
  *      tags: [Users]
+ *      security:
+ *          - userAuth: []
  *      parameters:
  *          - name: id
  *            description: Id dell'utente da ricercare
- *            in: formData
+ *            in: path
  *            required: true
- *            type: string
- *
+ *            schema:
+ *              type: string
  *      responses:
  *          200:
- *              description: Ricezione delle informazioni dell'utente
+ *              $ref: '#/components/responses/simple_user'
  *          400:
- *              description: Errore durante l'esecuzione dell'azione
+ *              $ref: '#/components/responses/bad_request'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Accesso non consentito. Token non valido
+ *              $ref: '#/components/responses/no_access'
  */
 router.get('/:id', Token.autenticateUser, async function(req, res) {
     let user = new User(req.params.id);
