@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {AuthField} from "../../classes/authField";
 import {ColorButtons} from "../../../shared/enum/colorButtons";
 import {Router} from "@angular/router";
@@ -13,6 +13,8 @@ import {SimpleTextComponent} from "../../../dialogs/simple-text/simple-text.comp
   styleUrls: ['./send-email.component.css']
 })
 export class SendEmailComponent implements OnInit, OnDestroy {
+
+  @Output() onClose: EventEmitter<boolean> = new EventEmitter();
 
   /** Campo per la email */
   email : AuthField
@@ -29,7 +31,7 @@ export class SendEmailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions = []
-
+    this.email = new AuthField();
   }
 
   ngOnDestroy() {
@@ -40,12 +42,12 @@ export class SendEmailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.userService.sendEmail(this.email.value).subscribe(res => {
       this.dialogManager.showDialog(SimpleTextComponent,() => {},{data: "Email sent successfully"})
     }, err => {
-      this.email.error = err.error
+      this.email.error = err.error.error
     }))
   }
 
   cancel(){
-    this.router.navigateByUrl('home')
+    this.onClose.emit(false);
   }
 
 }

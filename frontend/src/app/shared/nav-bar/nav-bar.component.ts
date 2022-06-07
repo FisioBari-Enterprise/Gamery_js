@@ -13,10 +13,6 @@ import {SettingsComponent} from "../../dialogs/settings/settings.component";
 import {SimpleTextComponent} from "../../dialogs/simple-text/simple-text.component";
 import {UserManagerService} from "../../user/services/user-manager.service";
 
-// TODO: Bottone di pausa e gestione
-// TODO: Bottone di login se non ha un account registrato attivo e mostra la view dedicata
-// TODO: Bottone di logout e gestione
-
 
 @Component({
   selector: 'app-nav-bar',
@@ -77,18 +73,15 @@ export class NavBarComponent implements OnInit, OnDestroy {
     if (this.gameMode) {
       this.currentType = NavBarType.Game;
     }
-    if (this.currentType === NavBarType.ShowHome) {
-      return;
-    }
     // Controllo sul uuid dell'utente temporaneo
     this.dialog.showLoading("Checking data...");
     const uuid = localStorage.getItem('uuid');
     const uuidUser = localStorage.getItem('uuidUser');
     // Controlla il login da fare
-    if (uuidUser != null) {
+    if (uuidUser != null && this.currentType !== NavBarType.ShowHome) {
       this.login();
     } else {
-      if (uuid === null) {
+      if (uuid === null || this.currentType === NavBarType.ShowHome) {
         this.newTemporaryUser();
       } else {
         this.checkToken();

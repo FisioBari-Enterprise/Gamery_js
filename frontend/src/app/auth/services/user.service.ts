@@ -122,7 +122,7 @@ export class UserService {
    */
   sendEmail(email: string) : Observable<any>{
     let headers = this.base.TokenHeader;
-    return this.http.post<any>(this.base.apiUrl('client','reset/password'), {
+    return this.http.put<any>(this.base.apiUrl('client','change/password'), {
       email: email
     }, {headers})
   }

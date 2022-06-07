@@ -1,12 +1,12 @@
-<h1> Insert your email</h1>
 <div>
+  <label for="email" class="form-label my-text">Email:</label>
   <div class="input-group">
-    <input type="text" class="form-control myinput" id="email" aria-describedby="basic-addon3" [(ngModel)]="email.value">
+    <input type="text" class="form-control my-input" id="email" aria-describedby="basic-addon3" [(ngModel)]="email.value">
   </div>
-  <p class="errormsg">{{email.error}}</p>
+  <p class="error-msg">{{email.error}}</p>
 </div>
 
 <div style="padding-top: 20px;">
-  <app-button [setCenter]="true" [image]="null" [title]="'REGISTER'" (onClick)="sendEmail()"></app-button>
+  <app-button [setCenter]="true" [image]="null" [title]="'SEND EMAIL'" (onClick)="sendEmail()"></app-button>
   <app-button [setCenter]="true" [image]="null" [title]="'CANCEL'" [colorSchema]="colorCancel" (onClick)="cancel()"></app-button>
 </div>
