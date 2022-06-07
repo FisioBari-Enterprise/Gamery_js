@@ -20,7 +20,6 @@ beforeAll((done) => {
             done();
         })
     });
-    mongo
     mongoose.connection.once('error', async () => {
         throw new Error("Error during connection to MongoDB");
     });
