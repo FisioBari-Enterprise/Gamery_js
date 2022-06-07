@@ -596,6 +596,134 @@
             }
           }
         }
+      },
+      "response_leaderboard_list": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "game": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "points": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "type": {
+                  "type": "number"
+                },
+                "country": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": "number"
+                },
+                "prev_position": {
+                  "type": "number"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              }
+            }]
+          }
+        }
+      },
+      "response_leaderboard": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "game": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string"
+                      },
+                      "username": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "points": {
+                    "type": "number"
+                  }
+                }
+              },
+              "type": {
+                "type": "number"
+              },
+              "country": {
+                "type": "string"
+              },
+              "position": {
+                "type": "number"
+              },
+              "prev_position": {
+                "type": "number"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "response_leaderboard_type": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": [{
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }]
+          }
+        }
       }
     },
     "requestBodies": {
@@ -1191,6 +1319,141 @@
                   }
                 ]
               }
+            }
+          }
+        }
+      },
+      "leaderboard_list": {
+        "description": "Lista delle posizioni nella classifica",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/response_leaderboard_list"
+            },
+            "examples": {
+              "Leaderboard with country": {
+                "value": {
+                  "data": [
+                    {
+                      "_id": "000000000000000000000000",
+                      "game": {
+                        "_id": "000000000000000000000000",
+                        "user": {
+                          "_id": "000000000000000000000000",
+                          "username": "Player4"
+                        },
+                        "points": 151
+                      },
+                      "type": 1,
+                      "country": "000000000000000000000000",
+                      "position": 1,
+                      "prev_position": 1,
+                      "__v": 0,
+                      "createdAt": "2022-01-01T00:00:00.000Z",
+                      "updatedAt": "2022-01-01T00:00:00.000Z"
+                    }
+                  ]
+                }
+              },
+              "Leaderboard without country": {
+                "value": {
+                  "data": [
+                    {
+                      "_id": "000000000000000000000000",
+                      "game": {
+                        "_id": "000000000000000000000000",
+                        "user": {
+                          "_id": "000000000000000000000000",
+                          "username": "Player4"
+                        },
+                        "points": 151
+                      },
+                      "type": 1,
+                      "country": null,
+                      "position": 1,
+                      "prev_position": 1,
+                      "__v": 0,
+                      "createdAt": "2022-01-01T00:00:00.000Z",
+                      "updatedAt": "2022-01-01T00:00:00.000Z"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "leaderboard_user": {
+        "description": "Posizione in classifica",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/response_leaderboard"
+            },
+            "examples": {
+              "Leaderboard with country": {
+                "value": {
+                  "data": {
+                    "_id": "000000000000000000000000",
+                    "game": {
+                      "_id": "000000000000000000000000",
+                      "user": {
+                        "_id": "000000000000000000000000",
+                        "username": "Player4"
+                      },
+                      "points": 151
+                    },
+                    "type": 1,
+                    "country": "000000000000000000000000",
+                    "position": 1,
+                    "prev_position": 1,
+                    "__v": 0,
+                    "createdAt": "2022-01-01T00:00:00.000Z",
+                    "updatedAt": "2022-01-01T00:00:00.000Z"
+                  }
+                }
+              },
+              "Leaderboard without country": {
+                "value": {
+                  "data": {
+                    "_id": "000000000000000000000000",
+                    "game": {
+                      "_id": "000000000000000000000000",
+                      "user": {
+                        "_id": "000000000000000000000000",
+                        "username": "Player4"
+                      },
+                      "points": 151
+                    },
+                    "type": 1,
+                    "country": null,
+                    "position": 1,
+                    "prev_position": 1,
+                    "__v": 0,
+                    "createdAt": "2022-01-01T00:00:00.000Z",
+                    "updatedAt": "2022-01-01T00:00:00.000Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "leaderboard_types": {
+        "description": "Tipi di leaderboard supportati",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/response_leaderboard_type"
+            },
+            "example": {
+              "data": [
+                {
+                  "type": 0,
+                  "name": "name"
+                },
+                "..."
+              ]
             }
           }
         }
