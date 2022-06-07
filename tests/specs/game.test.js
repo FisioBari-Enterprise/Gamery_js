@@ -5,7 +5,7 @@ const {response} = require("express");
 
 jest.setTimeout(60000)
 
-let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTRmM2NkMDY2NmRjZWVhMTVhMWQxZSIsImlhdCI6MTY1NDYxNjE0MywiZXhwIjoxNjU0NjIzMzQzfQ.qRl5ZyXs_cKAdTOOLk5NOqwpBB1A0scP_y8AQpGkY_A"
+let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTRmM2NkMDY2NmRjZWVhMTVhMWQxZSIsImlhdCI6MTY1NDYyMzc1MSwiZXhwIjoxNjU0NjMwOTUxfQ.YCECmpenM67lup1Rmx4RIUnSiuSwko6WSBeLpJN2a00"
 
 beforeAll((done) => {
     mongoose.connection.once('open', async () => {
@@ -47,37 +47,51 @@ test('Ottenimento ultima partita creata per l\'utente corrente', () => {
         })
 })
 
-test('Creazione di una nuovo round', () => {
+test('Errore nella creazione di una nuovo round prima della creazione di uno nuovo', () => {
     return request(app)
         .post('/api/game/round')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .then(response => {
-            expect(response.status).toBe(200)
+            expect(response.status).toBe(400)
         })
 })
 
 test('Ottenimento dell\'ultimo round dell\'ultima partita', () => {
     return request(app)
-        .post('/api/game/round')
+        .get('/api/game/round')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .then(response => {
-            expect(response.status).toBe(200)
+            expect(Object.keys(response.body.data).includes('_id')).toBe(true)
+            expect(Object.keys(response.body.data).includes('game')).toBe(true)
+            expect(Object.keys(response.body.data).includes('round')).toBe(true)
+            expect(Object.keys(response.body.data).includes('points')).toBe(true)
+            expect(Object.keys(response.body.data).includes('complete')).toBe(true)
+            expect(Object.keys(response.body.data).includes('words')).toBe(true)
+            expect(Object.keys(response.body.data).includes('createdAt')).toBe(true)
+            expect(Object.keys(response.body.data).includes('updatedAt')).toBe(true)
         })
 })
 
 test('Tentativo fallito di inserimento di parole per l\'ultimo round', () => {
     let body = {
-        words: ["ciao", "two"],
-        game_time: "13"
+        'words' : ["wide", "fight"],
+        'gameTime' : 13
     };
 
     return request(app)
-        .post('/api/game/round')
+        .put('/api/game/round')
         .set({'Accept': 'application/json', 'Authorization': `Bearer ${token}`})
         .send(body)
         .then(response => {
-            console.log(response)
-            expect(response.status).toBe(400)
+            expect(Object.keys(response.body.data).includes('_id')).toBe(true)
+            expect(Object.keys(response.body.data).includes('game')).toBe(true)
+            expect(Object.keys(response.body.data).includes('round')).toBe(true)
+            expect(Object.keys(response.body.data).includes('points')).toBe(true)
+            expect(Object.keys(response.body.data).includes('complete')).toBe(true)
+            expect(Object.keys(response.body.data).includes('words')).toBe(true)
+            expect(Object.keys(response.body.data).includes('createdAt')).toBe(true)
+            expect(Object.keys(response.body.data).includes('updatedAt')).toBe(true)
+
         })
 
 })
