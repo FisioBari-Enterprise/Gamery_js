@@ -4,8 +4,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports = {
-    Host: process.env.HOST,
-    Port: process.env.PORT,
     MongoDBUser: process.env.MONGODB_USER,
     MongoDBPassword: process.env.MONGODB_PASSWORD,
     TokenSecret: process.env.TOKEN_SECRET,
