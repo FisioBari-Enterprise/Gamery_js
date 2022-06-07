@@ -9,7 +9,7 @@ const UserValidator = require("../classes/users/validator/userValidator");
 router.post("", UserValidator.onlyLocalHost, async function (req, res, next) {
     try {
         await updateCountries(req.body.countries);
-        return StaticFunctions.sendSuccess(res, true);
+        return StaticFunctions.sendSuccess(res, true, 201);
     } catch (error) {
         return StaticFunctions.sendError(res, typeof  error === 'string' ? error : error.message);
     }
@@ -21,12 +21,17 @@ router.post("", UserValidator.onlyLocalHost, async function (req, res, next) {
  *  get:
  *      description: Ottiene tutti gli stati con le bandiere supportati
  *      tags: [Country]
- *      
+ *      security:
+ *          - userAuth: []
  *      responses:
  *          200:
- *              description: Lista degli stati
+ *              $ref: '#/components/responses/all_country'
+ *          400:
+ *              $ref: '#/components/responses/bad_request'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Accesso negato
+ *              $ref: '#/components/responses/no_access'
  */
 router.get("", Token.autenticateUser, async function (req, res, next) {
     const country = new Country();
@@ -44,14 +49,17 @@ router.get("", Token.autenticateUser, async function (req, res, next) {
  *  get:
  *      description: Ottiene il country scelto dall'utente
  *      tags: [Country]
- *      
+ *      security:
+ *          - userAuth: []
  *      responses:
  *          200:
- *              description: Il country selezionato dall'utente
+ *              $ref: '#/components/responses/user_country'
  *          400:
- *              description: Errore riscontrato nell'esecuzione
+ *              $ref: '#/components/responses/bad_request'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Accesso negato
+ *              $ref: '#/components/responses/no_access'
  */
 router.get("/client", Token.autenticateUser, async function (req, res, next) {
     const country = new Country(req.user);
@@ -68,25 +76,17 @@ router.get("/client", Token.autenticateUser, async function (req, res, next) {
  *  put:
  *      description: Aggiorna lo stato assegnato all'utente
  *      tags: [Country]
- *      
- *      parameters:
- *          - name: id
- *            description: Id dello stato
- *            in: formData
- *            required: false
- *            type: string
- *          - name: code
- *            description: Codice dello stato
- *            in: formData
- *            required: false
- *            type: string
+ *      security:
+ *          - userAuth: []
  *      responses:
  *          200:
- *              description: L'utente aggiornato
+ *              $ref: '#/components/responses/full_user'
  *          400:
- *              description: Errore riscontrato nell'esecuzione
+ *              $ref: '#/components/responses/bad_request'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Accesso negato
+ *              $ref: '#/components/responses/no_access'
  */
 router.put("/client", Token.autenticateUser, async function (req, res, next) {
     const country = new Country(req.user);
@@ -104,14 +104,17 @@ router.put("/client", Token.autenticateUser, async function (req, res, next) {
  *  delete:
  *      description: Rimuove il country selezionato dall'utente
  *      tags: [Country]
- *      
+ *      security:
+ *          - userAuth: []
  *      responses:
  *          200:
- *              description: Il country selezionato dall'utente
+ *              $ref: '#/components/responses/user_delete_country'
  *          400:
- *              description: Errore riscontrato nell'esecuzione
+ *              $ref: '#/components/responses/bad_request'
+ *          401:
+ *              $ref: '#/components/responses/no_token'
  *          403:
- *              description: Accesso negato
+ *              $ref: '#/components/responses/no_access'
  */
 router.delete("/client", Token.autenticateUser, async function (req, res, next) {
     const country = new Country(req.user);
