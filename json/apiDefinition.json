@@ -119,103 +119,198 @@
       }
     },
     "responses": {
-      "login_response": {
-        "type" : "object",
-        "properties": {
-          "access": {
-            "type": "string",
-            "example" : "token di accesso"
-          },
-          "uuid": {
-            "type": "string",
-            "example": "uuid per l'utente"
+      "client": {
+        "login": {
+          "type": "object",
+          "properties": {
+            "access": {
+              "type": "string",
+              "example": "token di accesso"
+            },
+            "uuid": {
+              "type": "string",
+              "example": "uuid per l'utente"
+            }
+          }
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "0000000getihogtehiej"
+            },
+            "username": {
+              "type": "string",
+              "example": "Player2"
+            },
+            "uuid": {
+              "type": "string",
+              "example": "uuid dell'utente"
+            },
+            "active": {
+              "type": "boolean",
+              "example": "true"
+            },
+            "createdAt": {
+              "type": "string",
+              "example": "2022-05-30T16:41:49.997Z"
+            },
+            "updatedAt": {
+              "type": "string",
+              "example": "2022-05-30T16:41:49.997Z"
+            },
+            "settings": {
+              "type": "object",
+              "properties": {
+                "font_size": {
+                  "type": "number",
+                  "example": "15"
+                },
+                "volume": {
+                  "type": "number",
+                  "example": "8"
+                },
+                "sound": {
+                  "type": "boolean",
+                  "example": "true"
+                }
+              }
+            },
+            "preferences": {
+              "type": "object",
+              "properties": {
+                "language": {
+                  "type": "number",
+                  "example": "1"
+                },
+                "color_icon": {
+                  "type": "array",
+                  "item": "string",
+                  "example": "#2AF39A,#2AF39A"
+                },
+                "orientation_icon": {
+                  "type": "number",
+                  "example": "0"
+                }
+              }
+            },
+            "statistics": {
+              "type": "object",
+              "properties": {
+                "game_time": {
+                  "type": "number",
+                  "example": "320"
+                },
+                "tot_games": {
+                  "type": "number",
+                  "example": "11"
+                },
+                "tot_points": {
+                  "type": "number",
+                  "example": "123"
+                },
+                "max_points": {
+                  "type": "number",
+                  "example": "4"
+                }
+              }
+            },
+            "country": {
+              "_id": {
+                "type": "string"
+              },
+              "_code": {
+                "type": "string"
+              },
+              "_name": {
+                "type": "string"
+              },
+              "_createdAt": {
+                "type": "string"
+              },
+              "_updatedAt": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "simple_user": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "username": {
+              "type": "string"
+            },
+            "statistics": {
+              "type": "object",
+              "properties": {
+                "game_time": {
+                  "type": "number"
+                },
+                "tot_games": {
+                  "type": "number"
+                },
+                "tot_points": {
+                  "type": "number"
+                },
+                "max_points": {
+                  "type": "number"
+                }
+              }
+            },
+            "country": {
+              "_id": {
+                "type": "string"
+              },
+              "_code": {
+                "type": "string"
+              },
+              "_name": {
+                "type": "string"
+              },
+              "_createdAt": {
+                "type": "string"
+              },
+              "_updatedAt": {
+                "type": "string"
+              }
+            }
           }
         }
       },
-      "user_response": {
-        "type": "object",
-        "properties": {
-          "_id" : {
-            "type" : "string",
-            "example": "0000000getihogtehiej"
-          },
-          "username" : {
-            "type" : "string",
-            "example": "Player2"
-          },
-          "uuid" : {
-            "type" : "string",
-            "example": "uuid dell'utente"
-          },
-          "active" : {
-            "type" : "boolean",
-            "example": "true"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "example": "2022-05-30T16:41:49.997Z"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "example": "2022-05-30T16:41:49.997Z"
-          },
-          "settings": {
-            "type": "object",
-            "properties": {
-              "font_size": {
-                "type": "number",
-                "example": "15"
-              },
-              "volume": {
-                "type": "number",
-                "example": "8"
-              },
-              "sound": {
-                "type": "boolean",
-                "example": "true"
-              }
-            }
-          },
-          "preferences": {
-            "type": "object",
-            "properties":{
-              "language": {
-                "type": "number",
-                "example": "1"
-              },
-              "color_icon": {
-                "type": "array",
-                "item": "string",
-                "example": "#2AF39A,#2AF39A"
-              },
-              "orientation_icon": {
-                "type": "number",
-                "example": "0"
-              }
-            }
-          },
-          "statistics": {
-            "type": "object",
-            "properties": {
-              "game_time": {
-                "type": "number",
-                "example": "320"
-              },
-              "tot_games": {
-                "type": "number",
-                "example": "11"
-              },
-              "tot_points": {
-                "type": "number",
-                "example": "123"
-              },
-              "max_points": {
-                "type": "number",
-                "example": "4"
+      "country": {
+        "allCountry": {
+          "type": "object",
+          "properties": {
+            "type": "array",
+            "item": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "_code": {
+                  "type": "string"
+                },
+                "_name": {
+                  "type": "string"
+                },
+                "_createdAt": {
+                  "type": "string"
+                },
+                "_updatedAt": {
+                  "type": "string"
+                }
               }
             }
           }
         }
+      },
+      "game": {
+
       }
     }
   },
